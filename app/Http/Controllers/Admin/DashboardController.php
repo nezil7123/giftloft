@@ -5,23 +5,29 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Event;
 use App\Models\Gift;
-use App\Models\Puzzle;
+use App\Models\Product;
 use App\Models\User;
-use Illuminate\Http\Request;
+use App\Models\Wishlist;
 use Inertia\Inertia;
 
 class DashboardController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
         return Inertia::render('Admin/Dashboard', [
-            'user' => $request->user(),
             'stats' => [
                 'users' => User::count(),
                 'events' => Event::count(),
+                'published_events' => Event::where('status', 'published')->count(),
+                'wishlists' => Wishlist::count(),
+                'products' => Product::count(),
+                'active_products' => Product::where('is_active', true)->count(),
                 'gifts' => Gift::count(),
-                'puzzles' => Puzzle::count(),
+                'revenue' => (float) Gift::where('status', 'completed')->sum('amount'),
             ],
+            'recentUsers' => User::latest()->take(5)->get(['id', 'name', 'email', 'created_at', 'is_admin']),
+            'recentGifts' => Gift::with('buyer:id,name', 'recipient:id,name', 'wishlistItem:id,title')
+                ->latest()->take(5)->get(),
         ]);
     }
 }

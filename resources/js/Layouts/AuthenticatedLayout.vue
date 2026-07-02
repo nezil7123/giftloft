@@ -45,7 +45,7 @@ watch(
                             <NavLink :href="route('wishlists.index')" :active="route().current('wishlists.*')">Wishlists</NavLink>
                             <NavLink :href="route('gifts.index')" :active="route().current('gifts.*')">Gifts</NavLink>
                             <template v-if="$page.props.auth.user.is_admin">
-                                <NavLink :href="route('admin.dashboard')" :active="route().current('admin.dashboard')">Admin</NavLink>
+                                <NavLink :href="route('admin.dashboard')" :active="route().current('admin.*')">Admin</NavLink>
                             </template>
                         </div>
                     </div>
@@ -94,7 +94,7 @@ watch(
                     <ResponsiveNavLink :href="route('wishlists.index')" :active="route().current('wishlists.*')">Wishlists</ResponsiveNavLink>
                     <ResponsiveNavLink :href="route('gifts.index')" :active="route().current('gifts.*')">Gifts</ResponsiveNavLink>
                     <template v-if="$page.props.auth.user.is_admin">
-                        <ResponsiveNavLink :href="route('admin.dashboard')" :active="route().current('admin.dashboard')">Admin</ResponsiveNavLink>
+                        <ResponsiveNavLink :href="route('admin.dashboard')" :active="route().current('admin.*')">Admin</ResponsiveNavLink>
                     </template>
                 </div>
                 <div class="border-t border-slate-200 pb-3 pt-4">
