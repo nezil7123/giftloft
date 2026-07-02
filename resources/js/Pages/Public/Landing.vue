@@ -5,6 +5,14 @@ import { ref, onMounted, onUnmounted } from 'vue';
 
 defineProps({ canLogin: Boolean, canRegister: Boolean });
 
+// ── Marquee band ──
+const marqueeItems = ['Weddings', '✦', 'Birthdays', '✦', 'Baby Showers', '✦', 'Anniversaries', '✦', 'Proposals', '✦', 'Graduations', '✦', 'Housewarmings', '✦'];
+
+// ── Hero starfield (deterministic positions) ──
+const stars = Array.from({ length: 24 }, (_, i) => ({
+    top: (i * 41) % 100, left: (i * 61) % 100, delay: (i % 8) * 0.35, size: i % 5 === 0 ? 2 : 1,
+}));
+
 // ── Celebration categories (full Tailwind class strings so JIT picks them up) ──
 const categories = [
     { name: 'Wedding',     emoji: '💍', blurb: 'Celebrate your love story with a site your guests will adore.', grad: 'from-rose-500 to-pink-700',     glow: 'hover:shadow-rose-500/40',    tint: 'text-rose-100/80' },
@@ -69,56 +77,59 @@ onUnmounted(() => {
         <Head title="Gift Loft — The most beautiful way to celebrate & gift" />
 
         <!-- ╔══════════════════════════════════════════╗ -->
-        <!-- ║  HERO                                    ║ -->
+        <!-- ║  HERO — cinematic mesh + grain           ║ -->
         <!-- ╚══════════════════════════════════════════╝ -->
-        <section class="relative flex min-h-[100svh] items-center overflow-hidden bg-neutral-950">
-            <!-- Gradient wash -->
+        <section class="gl-grain relative flex min-h-[100svh] items-center overflow-hidden bg-[#0d0b14]">
+            <!-- Animated mesh + blobs -->
             <div class="pointer-events-none absolute inset-0">
-                <div class="absolute inset-0 bg-gradient-to-br from-indigo-950 via-neutral-950 to-violet-950 opacity-90"></div>
-                <div class="blob absolute -left-48 top-0 h-[600px] w-[600px] rounded-full bg-indigo-800/25 blur-3xl"></div>
-                <div class="blob blob-b absolute -right-32 bottom-0 h-[500px] w-[500px] rounded-full bg-violet-700/20 blur-3xl"></div>
-                <div class="blob blob-c absolute left-1/2 top-1/3 h-96 w-96 -translate-x-1/2 rounded-full bg-rose-700/10 blur-3xl"></div>
+                <div class="gl-mesh-dark gl-mesh-anim absolute inset-0 opacity-80"></div>
+                <div class="gl-blob absolute -left-48 top-0 h-[600px] w-[600px] rounded-full bg-indigo-800/25 blur-3xl"></div>
+                <div class="gl-blob absolute -right-32 bottom-0 h-[500px] w-[500px] rounded-full bg-violet-700/20 blur-3xl" style="animation-delay:5s"></div>
+                <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#0d0b14]"></div>
             </div>
 
-            <!-- Grid overlay (subtle texture) -->
-            <div class="pointer-events-none absolute inset-0 opacity-[0.03]" style="background-image:linear-gradient(white 1px,transparent 1px),linear-gradient(90deg,white 1px,transparent 1px);background-size:60px 60px"></div>
+            <!-- Starfield -->
+            <div class="pointer-events-none absolute inset-0">
+                <span v-for="(s, i) in stars" :key="i" class="gl-twinkle absolute rounded-full bg-white"
+                    :style="`top:${s.top}%;left:${s.left}%;height:${s.size}px;width:${s.size}px;animation-delay:${s.delay}s`"></span>
+            </div>
 
-            <div class="relative mx-auto max-w-7xl px-6 py-32 sm:px-10 lg:px-12">
+            <div class="relative mx-auto w-full max-w-7xl px-6 py-32 sm:px-10 lg:px-12">
                 <div class="grid gap-16 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
 
                     <!-- Left: copy -->
                     <div class="space-y-9">
-                        <div class="inline-flex items-center gap-2.5 rounded-full border border-white/15 bg-white/8 px-4 py-2 backdrop-blur-sm">
-                            <span class="h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_3px_rgba(52,211,153,0.5)]"></span>
-                            <span class="text-[11px] font-semibold uppercase tracking-[0.18em] text-white/70">Celebrating love, life & every moment</span>
+                        <div class="gl-enter inline-flex items-center gap-2.5 rounded-full border border-white/15 bg-white/5 px-4 py-2 backdrop-blur-sm">
+                            <span class="gl-pulse h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_3px_rgba(52,211,153,0.5)]"></span>
+                            <span class="text-[11px] font-semibold uppercase tracking-[0.28em] text-white/70">Celebrating love, life & every moment</span>
                         </div>
 
-                        <h1 class="text-[3.5rem] font-extrabold leading-[1.06] tracking-[-0.02em] text-white sm:text-6xl lg:text-[4.5rem]">
-                            Create a<br/>
-                            <span class="bg-gradient-to-r from-indigo-300 via-violet-300 to-pink-300 bg-clip-text text-transparent">
-                                celebration
-                            </span><br/>
-                            they'll never forget.
+                        <h1 class="text-[clamp(3.5rem,8vw,6.75rem)] font-extrabold leading-[0.95] tracking-[-0.03em] text-white">
+                            <span class="gl-clip block">Create a</span>
+                            <span class="gl-clip block" style="animation-delay:.12s">
+                                <span class="gl-pan bg-gradient-to-r from-indigo-300 via-violet-300 to-rose-300 bg-clip-text text-transparent">celebration</span>
+                            </span>
+                            <span class="gl-clip block" style="animation-delay:.24s">they'll never<br class="hidden sm:block"/> forget.</span>
                         </h1>
 
-                        <p class="max-w-[480px] text-lg leading-8 text-white/55">
+                        <p class="gl-enter gl-d2 max-w-[480px] text-lg leading-8 text-white/55">
                             Beautiful event websites, curated gift registries, and a guest-friendly shop — all in one elegant platform.
                         </p>
 
-                        <div class="flex flex-col gap-4 sm:flex-row sm:items-center">
-                            <Link href="/register" class="inline-flex items-center justify-center gap-2 rounded-full bg-white px-8 py-3.5 text-sm font-bold text-neutral-900 shadow-xl shadow-black/30 transition hover:bg-neutral-100">
+                        <div class="gl-enter gl-d3 flex flex-col gap-4 sm:flex-row sm:items-center">
+                            <Link href="/register" class="gl-btn inline-flex items-center justify-center gap-2 rounded-full bg-white px-8 py-3.5 text-sm font-bold text-neutral-900 shadow-xl shadow-black/30 transition hover:scale-105">
                                 Get Started Free
                                 <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7l5 5m0 0l-5 5m5-5H6" />
                                 </svg>
                             </Link>
-                            <Link href="/shop" class="inline-flex items-center justify-center rounded-full border border-white/25 px-8 py-3.5 text-sm font-semibold text-white/80 backdrop-blur-sm transition hover:border-white/50 hover:text-white">
-                                Browse the Shop
+                            <Link href="/templates" class="inline-flex items-center justify-center rounded-full border border-white/25 px-8 py-3.5 text-sm font-semibold text-white/80 backdrop-blur-sm transition hover:border-white/50 hover:text-white">
+                                Explore the designs
                             </Link>
                         </div>
 
                         <!-- Social proof -->
-                        <div class="flex items-center gap-4 pt-1">
+                        <div class="gl-enter gl-d4 flex items-center gap-4 pt-1">
                             <div class="flex -space-x-2.5">
                                 <div class="h-9 w-9 rounded-full ring-2 ring-neutral-950 bg-gradient-to-br from-rose-400 to-pink-600"></div>
                                 <div class="h-9 w-9 rounded-full ring-2 ring-neutral-950 bg-gradient-to-br from-violet-400 to-purple-600"></div>
@@ -132,7 +143,7 @@ onUnmounted(() => {
                     <!-- Right: floating glass UI mockup -->
                     <div class="relative hidden h-[580px] lg:block">
                         <!-- Main event card -->
-                        <div class="float absolute right-0 top-4 w-[290px] overflow-hidden rounded-3xl border border-white/15 bg-white/8 shadow-2xl backdrop-blur-xl">
+                        <div class="gl-float-soft gl-pop absolute right-0 top-4 w-[290px] overflow-hidden rounded-3xl border border-white/15 bg-white/5 shadow-2xl backdrop-blur-xl">
                             <div class="bg-gradient-to-r from-rose-600/40 to-pink-600/30 px-6 py-4">
                                 <div class="flex items-center gap-3">
                                     <span class="text-2xl">💍</span>
@@ -165,7 +176,7 @@ onUnmounted(() => {
                         </div>
 
                         <!-- Registry card -->
-                        <div class="float-delay absolute left-0 top-56 w-[240px] rounded-3xl border border-white/15 bg-white/8 p-5 shadow-2xl backdrop-blur-xl">
+                        <div class="gl-float-soft gl-pop gl-d2 absolute left-0 top-56 w-[240px] rounded-3xl border border-white/15 bg-white/5 p-5 shadow-2xl backdrop-blur-xl" style="animation-delay:2s,.3s">
                             <p class="text-[10px] uppercase tracking-widest text-white/45">Gift Registry</p>
                             <div class="mt-3 space-y-2.5">
                                 <div class="flex items-center justify-between text-sm">
@@ -185,7 +196,7 @@ onUnmounted(() => {
                         </div>
 
                         <!-- Gift purchased -->
-                        <div class="float absolute bottom-24 right-4 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 px-5 py-3 shadow-xl shadow-emerald-900/40">
+                        <div class="gl-float-soft gl-pop gl-d3 absolute bottom-24 right-4 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 px-5 py-3 shadow-xl shadow-emerald-900/40" style="animation-delay:1s,.45s">
                             <div class="flex items-center gap-2.5">
                                 <span class="text-xl">🎁</span>
                                 <div>
@@ -196,7 +207,7 @@ onUnmounted(() => {
                         </div>
 
                         <!-- Invite sent -->
-                        <div class="float-slow absolute bottom-48 right-16 rounded-2xl border border-violet-400/20 bg-violet-600/20 px-4 py-2.5 backdrop-blur-md">
+                        <div class="gl-float gl-pop gl-d4 absolute bottom-48 right-16 rounded-2xl border border-violet-400/20 bg-violet-600/20 px-4 py-2.5 backdrop-blur-md" style="animation-delay:1.5s,.6s">
                             <p class="text-xs text-violet-200">✉️ Invite sent to 24 guests</p>
                         </div>
                     </div>
@@ -205,15 +216,27 @@ onUnmounted(() => {
                 <!-- Scroll hint -->
                 <div class="absolute bottom-8 left-1/2 flex -translate-x-1/2 flex-col items-center gap-2">
                     <p class="text-[10px] uppercase tracking-[0.2em] text-white/25">Scroll</p>
-                    <div class="bounce-y text-white/25">
+                    <div class="gl-float-soft text-white/25">
                         <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                         </svg>
                     </div>
                 </div>
             </div>
-
         </section>
+
+        <!-- ╔══════════════════════════════════════════╗ -->
+        <!-- ║  MARQUEE BAND                            ║ -->
+        <!-- ╚══════════════════════════════════════════╝ -->
+        <div class="overflow-hidden border-y border-white/10 bg-neutral-950 py-5">
+            <div class="gl-marquee">
+                <span v-for="g in 2" :key="g" class="flex items-center">
+                    <span v-for="(m, i) in marqueeItems" :key="i"
+                        class="mx-6 font-black uppercase tracking-tight"
+                        :class="m === '✦' ? 'text-xl text-violet-400/70' : (i % 4 === 0 ? 'gl-outline text-3xl text-white' : 'text-3xl text-white')">{{ m }}</span>
+                </span>
+            </div>
+        </div>
 
         <!-- ╔══════════════════════════════════════════╗ -->
         <!-- ║  FEATURES — parallax showcase            ║ -->
@@ -224,9 +247,9 @@ onUnmounted(() => {
 
                     <!-- LEFT · intro -->
                     <div data-animate class="lg:sticky lg:top-28">
-                        <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-indigo-500">Everything you need</p>
-                        <h2 class="mt-4 text-4xl font-extrabold tracking-tight text-neutral-950 sm:text-5xl">One platform,<br/>endless celebration.</h2>
-                        <p class="mt-5 max-w-md text-lg leading-8 text-neutral-500">Beautiful, free, and uniquely yours — with clever features for every step from the first invite to the very last gift.</p>
+                        <p class="text-xs font-semibold uppercase tracking-[0.35em] text-indigo-500">Everything you need</p>
+                        <h2 class="mt-4 text-4xl font-extrabold tracking-tight text-neutral-950 sm:text-6xl">One platform,<br/>endless<br/><span class="font-serif font-medium italic text-indigo-600">celebration.</span></h2>
+                        <p class="mt-6 max-w-md text-lg leading-8 text-neutral-500">Beautiful, free, and uniquely yours — with clever features for every step from the first invite to the very last gift.</p>
 
                         <div class="mt-8 flex flex-wrap gap-2.5">
                             <span class="rounded-full bg-rose-50 px-3.5 py-1.5 text-xs font-semibold text-rose-600 ring-1 ring-rose-100">Events</span>
@@ -237,7 +260,7 @@ onUnmounted(() => {
                             <span class="rounded-full bg-emerald-50 px-3.5 py-1.5 text-xs font-semibold text-emerald-600 ring-1 ring-emerald-100">Collections</span>
                         </div>
 
-                        <Link href="/register" class="mt-10 inline-flex items-center gap-2 rounded-full bg-neutral-950 px-7 py-3.5 text-sm font-semibold text-white transition hover:bg-neutral-800">
+                        <Link href="/register" class="gl-btn mt-10 inline-flex items-center gap-2 rounded-full bg-neutral-950 px-7 py-3.5 text-sm font-semibold text-white transition hover:bg-neutral-800">
                             Start for free
                             <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg>
                         </Link>
@@ -335,9 +358,9 @@ onUnmounted(() => {
         <!-- ╚══════════════════════════════════════════╝ -->
         <section class="bg-white py-28">
             <div class="mx-auto max-w-7xl px-6 sm:px-10 lg:px-12">
-                <div data-animate class="mx-auto max-w-xl text-center">
-                    <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-indigo-500">Made for every moment</p>
-                    <h2 class="mt-4 text-4xl font-extrabold tracking-tight text-neutral-950 sm:text-5xl">Every celebration, beautifully done.</h2>
+                <div data-animate class="mx-auto max-w-2xl text-center">
+                    <p class="text-xs font-semibold uppercase tracking-[0.35em] text-indigo-500">Made for every moment</p>
+                    <h2 class="mt-4 text-4xl font-extrabold tracking-tight text-neutral-950 sm:text-6xl">Every celebration,<br/><span class="font-serif font-medium italic text-indigo-600">beautifully</span> done.</h2>
                 </div>
 
                 <div class="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
@@ -369,39 +392,94 @@ onUnmounted(() => {
                     </Link>
                 </div>
             </div>
+        </section>
 
+        <!-- ╔══════════════════════════════════════════╗ -->
+        <!-- ║  TEMPLATES SHOWCASE                      ║ -->
+        <!-- ╚══════════════════════════════════════════╝ -->
+        <section class="border-t border-neutral-200 bg-neutral-50 py-28">
+            <div class="mx-auto max-w-7xl px-6 sm:px-10 lg:px-12">
+                <div data-animate class="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+                    <div>
+                        <p class="text-xs font-semibold uppercase tracking-[0.35em] text-indigo-500">Designs that wow</p>
+                        <h2 class="mt-4 text-4xl font-extrabold tracking-tight text-neutral-950 sm:text-6xl">Twelve templates,<br/>endlessly <span class="font-serif font-medium italic text-indigo-600">yours.</span></h2>
+                    </div>
+                    <Link href="/templates" class="group inline-flex shrink-0 items-center gap-2 text-sm font-bold text-neutral-900 transition hover:text-indigo-600">
+                        Explore the gallery
+                        <svg class="h-4 w-4 transition-transform group-hover:translate-x-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg>
+                    </Link>
+                </div>
+
+                <div class="mt-14 grid gap-6 sm:grid-cols-3">
+                    <!-- Midnight -->
+                    <Link href="/templates" data-animate class="group relative block rotate-[-1.5deg] overflow-hidden rounded-[1.75rem] bg-[#080611] p-8 shadow-lg transition-all duration-500 hover:rotate-0 hover:-translate-y-2 hover:shadow-2xl" style="transition-delay:.05s">
+                        <span v-for="i in 6" :key="i" class="gl-twinkle absolute h-1 w-1 rounded-full bg-amber-100"
+                            :style="`top:${[12,30,18,64,42,78][i-1]}%;left:${[15,80,50,25,70,88][i-1]}%;animation-delay:${i*0.4}s`"></span>
+                        <p class="text-[10px] font-semibold uppercase tracking-[0.3em] text-amber-300/80">The Midnight</p>
+                        <p class="mt-8 bg-gradient-to-b from-amber-100 to-amber-300 bg-clip-text font-serif text-4xl text-transparent">Sarah &amp; James</p>
+                        <p class="mt-2 font-serif text-sm italic text-white/40">An evening to remember</p>
+                        <div class="mt-10 h-px w-16 bg-amber-300/40 transition-all duration-500 group-hover:w-28"></div>
+                        <p class="mt-4 text-[10px] uppercase tracking-widest text-white/30">Event website</p>
+                    </Link>
+
+                    <!-- Botanical -->
+                    <Link href="/templates" data-animate class="group relative block overflow-hidden rounded-[1.75rem] bg-[#f3f4ee] p-8 shadow-lg ring-1 ring-emerald-900/10 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl sm:translate-y-6" style="transition-delay:.15s">
+                        <div class="gl-float pointer-events-none absolute -right-4 -top-4 text-6xl opacity-15">🌿</div>
+                        <div class="gl-float pointer-events-none absolute -bottom-5 -left-3 text-5xl opacity-15" style="animation-delay:2s">🍃</div>
+                        <p class="text-[10px] font-semibold uppercase tracking-[0.3em] text-emerald-700">The Botanical</p>
+                        <p class="mt-8 font-serif text-4xl text-emerald-950">Meera &amp; Dev</p>
+                        <p class="mt-2 font-serif text-sm italic text-emerald-700/70">Growing together, always</p>
+                        <div class="mt-10 flex items-center gap-2 text-emerald-600/60">
+                            <span class="h-px w-10 bg-emerald-600/40 transition-all duration-500 group-hover:w-20"></span>❀
+                        </div>
+                        <p class="mt-4 text-[10px] uppercase tracking-widest text-emerald-800/40">Event website</p>
+                    </Link>
+
+                    <!-- Modern -->
+                    <Link href="/templates" data-animate class="group relative block rotate-[1.5deg] overflow-hidden rounded-[1.75rem] bg-[#f4f3f0] p-8 shadow-lg ring-1 ring-neutral-900/10 transition-all duration-500 hover:rotate-0 hover:-translate-y-2 hover:shadow-2xl" style="transition-delay:.25s">
+                        <p class="text-[10px] font-bold uppercase tracking-[0.3em] text-neutral-400">The Modern</p>
+                        <p class="mt-8 text-4xl font-black uppercase leading-[0.95] tracking-tight text-neutral-950">Aisha<br/>&amp; Rahul</p>
+                        <p class="mt-3 text-sm text-neutral-500">12 · 04 · 2026 — Goa</p>
+                        <div class="mt-10 h-0.5 w-16 bg-neutral-950 transition-all duration-500 group-hover:w-28"></div>
+                        <p class="mt-4 text-[10px] uppercase tracking-widest text-neutral-400">Event website</p>
+                    </Link>
+                </div>
+
+                <p data-animate class="mt-10 text-center text-sm text-neutral-400">6 website designs · 6 invitation cards · every event type, beautifully themed</p>
+            </div>
         </section>
 
         <!-- ╔══════════════════════════════════════════╗ -->
         <!-- ║  HOW IT WORKS (dark)                     ║ -->
         <!-- ╚══════════════════════════════════════════╝ -->
-        <section class="bg-neutral-950 py-28">
-            <div class="mx-auto max-w-7xl px-6 sm:px-10 lg:px-12">
+        <section class="gl-grain relative overflow-hidden bg-neutral-950 py-28">
+            <div class="gl-mesh-dark gl-mesh-anim pointer-events-none absolute inset-0 opacity-30"></div>
+            <div class="relative mx-auto max-w-7xl px-6 sm:px-10 lg:px-12">
                 <div data-animate class="mx-auto max-w-xl text-center">
-                    <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-violet-400">Simple as 1 – 2 – 3</p>
-                    <h2 class="mt-4 text-4xl font-extrabold tracking-tight text-white sm:text-5xl">How Gift Loft works.</h2>
+                    <p class="text-xs font-semibold uppercase tracking-[0.35em] text-violet-400">Simple as 1 – 2 – 3</p>
+                    <h2 class="mt-4 text-4xl font-extrabold tracking-tight text-white sm:text-6xl">How Gift Loft works.</h2>
                 </div>
 
                 <div class="mt-14 grid gap-5 lg:grid-cols-3">
-                    <div data-animate class="group relative overflow-hidden rounded-[1.75rem] border border-white/8 bg-white/[0.04] p-10 transition hover:border-white/15 hover:bg-white/[0.06]" style="transition-delay:.05s">
+                    <div data-animate class="group relative overflow-hidden rounded-[1.75rem] border border-white/10 bg-white/[0.04] p-10 backdrop-blur-sm transition hover:border-white/20 hover:bg-white/[0.06]" style="transition-delay:.05s">
                         <p class="bg-gradient-to-br from-violet-400 to-purple-600 bg-clip-text text-8xl font-black leading-none text-transparent">01</p>
                         <h3 class="mt-5 text-xl font-bold text-white">Create your event</h3>
                         <p class="mt-3 text-sm leading-7 text-white/50">Sign up, choose your event type — wedding, birthday, proposal — and have a beautiful page live in minutes.</p>
-                        <div class="absolute right-7 top-7 text-4xl opacity-10 transition group-hover:opacity-25">🎉</div>
+                        <div class="gl-float absolute right-7 top-7 text-4xl opacity-10 transition group-hover:opacity-25">🎉</div>
                         <div class="absolute -bottom-10 -right-10 h-36 w-36 rounded-full bg-violet-600/10 transition-all duration-500 group-hover:scale-[2]"></div>
                     </div>
-                    <div data-animate class="group relative overflow-hidden rounded-[1.75rem] border border-white/8 bg-white/[0.04] p-10 transition hover:border-white/15 hover:bg-white/[0.06]" style="transition-delay:.1s">
+                    <div data-animate class="group relative overflow-hidden rounded-[1.75rem] border border-white/10 bg-white/[0.04] p-10 backdrop-blur-sm transition hover:border-white/20 hover:bg-white/[0.06]" style="transition-delay:.1s">
                         <p class="bg-gradient-to-br from-rose-400 to-pink-600 bg-clip-text text-8xl font-black leading-none text-transparent">02</p>
                         <h3 class="mt-5 text-xl font-bold text-white">Build your registry</h3>
                         <p class="mt-3 text-sm leading-7 text-white/50">Add gifts, experiences, and cash funds. Guests can browse and buy directly — no awkward conversations needed.</p>
-                        <div class="absolute right-7 top-7 text-4xl opacity-10 transition group-hover:opacity-25">🎁</div>
+                        <div class="gl-float absolute right-7 top-7 text-4xl opacity-10 transition group-hover:opacity-25" style="animation-delay:1.5s">🎁</div>
                         <div class="absolute -bottom-10 -right-10 h-36 w-36 rounded-full bg-rose-600/10 transition-all duration-500 group-hover:scale-[2]"></div>
                     </div>
-                    <div data-animate class="group relative overflow-hidden rounded-[1.75rem] border border-white/8 bg-white/[0.04] p-10 transition hover:border-white/15 hover:bg-white/[0.06]" style="transition-delay:.15s">
+                    <div data-animate class="group relative overflow-hidden rounded-[1.75rem] border border-white/10 bg-white/[0.04] p-10 backdrop-blur-sm transition hover:border-white/20 hover:bg-white/[0.06]" style="transition-delay:.15s">
                         <p class="bg-gradient-to-br from-amber-400 to-orange-500 bg-clip-text text-8xl font-black leading-none text-transparent">03</p>
                         <h3 class="mt-5 text-xl font-bold text-white">Share & celebrate</h3>
                         <p class="mt-3 text-sm leading-7 text-white/50">Share your link, track RSVPs and gifts in real-time, and focus on what matters most — your special day.</p>
-                        <div class="absolute right-7 top-7 text-4xl opacity-10 transition group-hover:opacity-25">✨</div>
+                        <div class="gl-float absolute right-7 top-7 text-4xl opacity-10 transition group-hover:opacity-25" style="animation-delay:3s">✨</div>
                         <div class="absolute -bottom-10 -right-10 h-36 w-36 rounded-full bg-amber-600/10 transition-all duration-500 group-hover:scale-[2]"></div>
                     </div>
                 </div>
@@ -411,17 +489,17 @@ onUnmounted(() => {
         <!-- ╔══════════════════════════════════════════╗ -->
         <!-- ║  TESTIMONIALS                            ║ -->
         <!-- ╚══════════════════════════════════════════╝ -->
-        <section class="bg-indigo-50 py-28">
+        <section class="bg-white py-28">
             <div class="mx-auto max-w-7xl px-6 sm:px-10 lg:px-12">
                 <div data-animate class="mx-auto max-w-xl text-center">
-                    <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-indigo-500">Loved by real people</p>
-                    <h2 class="mt-4 text-4xl font-extrabold tracking-tight text-neutral-950 sm:text-5xl">Real stories, real love.</h2>
+                    <p class="text-xs font-semibold uppercase tracking-[0.35em] text-indigo-500">Loved by real people</p>
+                    <h2 class="mt-4 text-4xl font-extrabold tracking-tight text-neutral-950 sm:text-6xl">Real stories,<br/>real <span class="font-serif font-medium italic text-indigo-600">love.</span></h2>
                 </div>
 
                 <div class="mt-14 grid gap-5 sm:grid-cols-3">
-                    <div data-animate class="rounded-[1.75rem] bg-white p-8 shadow-sm ring-1 ring-neutral-200/60 transition hover:-translate-y-1 hover:shadow-lg" style="transition-delay:.04s">
+                    <div data-animate class="rounded-[1.75rem] bg-neutral-50 p-8 ring-1 ring-neutral-200/60 transition hover:-translate-y-1 hover:bg-white hover:shadow-xl" style="transition-delay:.04s">
                         <div class="flex text-base text-amber-400">★★★★★</div>
-                        <p class="mt-5 text-sm leading-7 text-neutral-600">"Our guests couldn't stop complimenting our event page. The registry was so easy to share and everyone loved shopping from it!"</p>
+                        <p class="mt-5 font-serif text-lg italic leading-8 text-neutral-700">"Our guests couldn't stop complimenting our event page. The registry was so easy to share and everyone loved shopping from it!"</p>
                         <div class="mt-6 flex items-center gap-3">
                             <div class="h-10 w-10 rounded-full bg-gradient-to-br from-rose-400 to-pink-600 shadow-sm"></div>
                             <div>
@@ -430,9 +508,9 @@ onUnmounted(() => {
                             </div>
                         </div>
                     </div>
-                    <div data-animate class="rounded-[1.75rem] bg-white p-8 shadow-sm ring-1 ring-neutral-200/60 transition hover:-translate-y-1 hover:shadow-lg" style="transition-delay:.08s">
+                    <div data-animate class="rounded-[1.75rem] bg-neutral-50 p-8 ring-1 ring-neutral-200/60 transition hover:-translate-y-1 hover:bg-white hover:shadow-xl" style="transition-delay:.08s">
                         <div class="flex text-base text-amber-400">★★★★★</div>
-                        <p class="mt-5 text-sm leading-7 text-neutral-600">"Setting up our baby shower registry took 15 minutes. The design looked so professional and our family found it super easy to use."</p>
+                        <p class="mt-5 font-serif text-lg italic leading-8 text-neutral-700">"Setting up our baby shower registry took 15 minutes. The design looked so professional and our family found it super easy to use."</p>
                         <div class="mt-6 flex items-center gap-3">
                             <div class="h-10 w-10 rounded-full bg-gradient-to-br from-sky-400 to-blue-600 shadow-sm"></div>
                             <div>
@@ -441,9 +519,9 @@ onUnmounted(() => {
                             </div>
                         </div>
                     </div>
-                    <div data-animate class="rounded-[1.75rem] bg-white p-8 shadow-sm ring-1 ring-neutral-200/60 transition hover:-translate-y-1 hover:shadow-lg" style="transition-delay:.12s">
+                    <div data-animate class="rounded-[1.75rem] bg-neutral-50 p-8 ring-1 ring-neutral-200/60 transition hover:-translate-y-1 hover:bg-white hover:shadow-xl" style="transition-delay:.12s">
                         <div class="flex text-base text-amber-400">★★★★★</div>
-                        <p class="mt-5 text-sm leading-7 text-neutral-600">"The proposal page I built on Gift Loft was stunning. She said yes and immediately wanted to show everyone the site!"</p>
+                        <p class="mt-5 font-serif text-lg italic leading-8 text-neutral-700">"The proposal page I built on Gift Loft was stunning. She said yes and immediately wanted to show everyone the site!"</p>
                         <div class="mt-6 flex items-center gap-3">
                             <div class="h-10 w-10 rounded-full bg-gradient-to-br from-violet-400 to-purple-600 shadow-sm"></div>
                             <div>
@@ -454,34 +532,33 @@ onUnmounted(() => {
                     </div>
                 </div>
             </div>
-
         </section>
 
         <!-- ╔══════════════════════════════════════════╗ -->
-        <!-- ║  FINAL CTA                               ║ -->
+        <!-- ║  FINAL CTA — luxe mesh container         ║ -->
         <!-- ╚══════════════════════════════════════════╝ -->
-        <section class="relative overflow-hidden bg-indigo-800 py-28">
-            <div class="pointer-events-none absolute inset-0 overflow-hidden">
-                <div class="blob absolute -left-40 top-0 h-80 w-80 rounded-full bg-violet-600/30 blur-3xl"></div>
-                <div class="blob blob-b absolute -right-40 bottom-0 h-80 w-80 rounded-full bg-rose-600/20 blur-3xl"></div>
-                <!-- dot grid -->
-                <div class="absolute inset-0 opacity-[0.06]" style="background-image:radial-gradient(white 1px,transparent 1px);background-size:28px 28px"></div>
-            </div>
+        <section class="bg-white px-6 pb-28 pt-4 sm:px-10">
+            <div data-animate class="gl-grain relative mx-auto max-w-6xl overflow-hidden rounded-[3rem] shadow-2xl">
+                <div class="gl-mesh-dark gl-mesh-anim absolute inset-0"></div>
+                <div class="pointer-events-none absolute inset-0 opacity-[0.06]" style="background-image:radial-gradient(white 1px,transparent 1px);background-size:28px 28px"></div>
+                <span v-for="i in 8" :key="i" class="gl-twinkle absolute h-1 w-1 rounded-full bg-white"
+                    :style="`top:${[15,25,70,45,80,20,60,35][i-1]}%;left:${[10,85,20,60,75,40,90,30][i-1]}%;animation-delay:${i*0.3}s`"></span>
 
-            <div data-animate class="relative mx-auto max-w-2xl px-6 py-20 text-center sm:px-10">
-                <div class="mb-5 text-6xl">🎊</div>
-                <h2 class="text-4xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl">Your celebration<br/>starts here.</h2>
-                <p class="mt-6 text-lg leading-8 text-indigo-200">Join thousands of couples and families who've made their special moments unforgettable with Gift Loft.</p>
-                <div class="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-                    <Link href="/register" class="inline-flex items-center justify-center gap-2 rounded-full bg-white px-9 py-4 text-sm font-bold text-indigo-800 shadow-2xl shadow-black/30 transition hover:bg-indigo-50">
-                        Get Started — It's Free
-                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                        </svg>
-                    </Link>
-                    <Link href="/shop" class="inline-flex items-center justify-center rounded-full border border-white/25 px-9 py-4 text-sm font-semibold text-white/80 backdrop-blur-sm transition hover:border-white/50 hover:text-white">
-                        Browse the Shop
-                    </Link>
+                <div class="relative px-8 py-24 text-center sm:py-28">
+                    <div class="gl-float-soft mb-6 inline-block text-6xl">🎊</div>
+                    <h2 class="gl-display-sm font-extrabold text-white">Your celebration<br/>starts here.</h2>
+                    <p class="mx-auto mt-6 max-w-lg text-lg leading-8 text-white/60">Join thousands of couples and families who've made their special moments unforgettable with Gift Loft.</p>
+                    <div class="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+                        <Link href="/register" class="gl-btn inline-flex items-center justify-center gap-2 rounded-full bg-white px-9 py-4 text-sm font-bold text-neutral-900 shadow-2xl shadow-black/30 transition hover:scale-105">
+                            Get Started — It's Free
+                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                            </svg>
+                        </Link>
+                        <Link href="/shop" class="inline-flex items-center justify-center rounded-full border border-white/25 px-9 py-4 text-sm font-semibold text-white/80 backdrop-blur-sm transition hover:border-white/50 hover:text-white">
+                            Browse the Shop
+                        </Link>
+                    </div>
                 </div>
             </div>
         </section>
@@ -498,32 +575,6 @@ onUnmounted(() => {
 }
 [data-animate].is-visible { opacity: 1; transform: none; }
 
-/* ── Scramble entrance variants (bento feature cards) ── */
-.fx {
-    opacity: 0;
-    will-change: transform, opacity;
-    transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
-                transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.fx-up    { transform: translateY(64px); }
-.fx-down  { transform: translateY(-44px); }
-.fx-left  { transform: translateX(-72px); }
-.fx-right { transform: translateX(72px); }
-.fx-scale { transform: scale(0.85); }
-/* reset on reveal — !important beats every initial variant regardless of order */
-.fx.is-visible { opacity: 1 !important; transform: none !important; }
-
-/* ── Card lift + glow on hover ── */
-.card {
-    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
-                box-shadow 0.4s ease,
-                opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.card:hover {
-    transform: translateY(-8px) !important;
-    box-shadow: 0 30px 60px -25px rgba(15, 23, 42, 0.30);
-}
-
 /* ── Parallax collage cards — soft reveal on the wrapper (keeps inner tilt) ── */
 .pcard {
     opacity: 0;
@@ -534,35 +585,6 @@ onUnmounted(() => {
 .pcard-down { transform: translateY(-44px) scale(0.96); }
 .pcard.is-visible { opacity: 1 !important; transform: none !important; }
 
-/* Floating hero cards */
-@keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50%       { transform: translateY(-14px); }
-}
-@keyframes float-slow {
-    0%, 100% { transform: translateY(0) rotate(0deg); }
-    50%       { transform: translateY(-7px) rotate(1deg); }
-}
-.float       { animation: float      5.5s ease-in-out infinite; }
-.float-delay { animation: float      5.5s ease-in-out 2s infinite; }
-.float-slow  { animation: float-slow 8s   ease-in-out 1s infinite; }
-
-/* Background blobs */
-@keyframes blob {
-    0%, 100% { border-radius: 60% 40% 35% 65% / 55% 40% 65% 45%; }
-    50%       { border-radius: 35% 60% 65% 40% / 45% 60% 35% 60%; }
-}
-.blob   { animation: blob 14s ease-in-out infinite; }
-.blob-b { animation: blob 14s ease-in-out 5s  infinite; }
-.blob-c { animation: blob 18s ease-in-out 9s  infinite; }
-
-/* Scroll indicator */
-@keyframes bounce-y {
-    0%, 100% { transform: translateY(0); }
-    50%       { transform: translateY(8px); }
-}
-.bounce-y { animation: bounce-y 1.8s ease-in-out infinite; }
-
 /* Category emoji idle float (paused on hover so the hover pop reads cleanly) */
 @keyframes cat-float {
     0%, 100% { transform: translateY(0) rotate(0deg); }
@@ -570,4 +592,10 @@ onUnmounted(() => {
 }
 .cat-emoji { animation: cat-float 4s ease-in-out infinite; }
 .cat-card:hover .cat-emoji { animation-play-state: paused; }
+
+/* Respect reduced motion for local animations */
+@media (prefers-reduced-motion: reduce) {
+    [data-animate], .pcard { opacity: 1 !important; transform: none !important; transition: none; }
+    .cat-emoji { animation: none; }
+}
 </style>

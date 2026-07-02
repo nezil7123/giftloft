@@ -3,19 +3,84 @@ import { Link } from '@inertiajs/vue3';
 </script>
 
 <template>
-    <div class="flex min-h-screen flex-col items-center justify-center bg-slate-50 px-6 py-12">
-        <div class="mb-8">
-            <Link href="/" class="flex items-center gap-2.5">
-                <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-600 text-base font-bold text-white shadow-sm">G</div>
-                <div>
-                    <p class="text-base font-semibold tracking-tight text-slate-950">Gift Loft</p>
-                    <p class="text-xs uppercase tracking-[0.3em] text-slate-400">Event gifting</p>
-                </div>
+    <div class="grid min-h-screen bg-white lg:grid-cols-[1fr_1.05fr]">
+        <!-- ── Left: form column ── -->
+        <div class="flex flex-col px-6 py-8 sm:px-12">
+            <Link href="/" class="gl-enter flex w-fit items-center gap-2.5">
+                <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-600 text-sm font-bold text-white shadow-sm">G</div>
+                <span class="text-base font-semibold tracking-tight text-neutral-950">Gift Loft</span>
             </Link>
+
+            <div class="flex flex-1 items-center justify-center py-10">
+                <div class="w-full max-w-[26rem]">
+                    <slot />
+                </div>
+            </div>
+
+            <p class="gl-fade text-center text-xs text-neutral-400">© 2026 Gift Loft · Made with love in India 🇮🇳</p>
         </div>
 
-        <div class="w-full max-w-md rounded-[1.75rem] bg-white px-8 py-8 shadow-sm shadow-slate-200 ring-1 ring-slate-200/60">
-            <slot />
+        <!-- ── Right: brand panel (lg+) ── -->
+        <div class="gl-grain relative hidden overflow-hidden bg-[#0d0b14] lg:block">
+            <div class="gl-mesh-dark gl-mesh-anim absolute inset-0 opacity-80"></div>
+            <div class="gl-aurora opacity-40"></div>
+            <!-- twinkles -->
+            <div class="pointer-events-none absolute inset-0">
+                <span v-for="i in 12" :key="i" class="gl-twinkle absolute h-1 w-1 rounded-full bg-white"
+                    :style="`top:${[12,26,18,60,34,74,48,8,66,84,40,90][i-1]}%;left:${[14,80,46,20,66,88,36,58,10,50,74,28][i-1]}%;animation-delay:${i*0.3}s`"></span>
+            </div>
+
+            <div class="relative flex h-full flex-col justify-between p-12 xl:p-16">
+                <div class="gl-enter">
+                    <p class="text-xs font-semibold uppercase tracking-[0.4em] text-white/50">Plan · Invite · Gift</p>
+                    <h2 class="mt-5 max-w-md text-4xl font-extrabold leading-[1.05] tracking-tight text-white xl:text-5xl">
+                        Every celebration,<br/>
+                        <span class="gl-pan bg-gradient-to-r from-indigo-300 via-violet-300 to-rose-300 bg-clip-text text-transparent">beautifully done.</span>
+                    </h2>
+                    <p class="mt-5 max-w-sm text-sm leading-7 text-white/50">Event websites, invitations and gift registries your guests will adore — live in minutes.</p>
+                </div>
+
+                <!-- floating product cards -->
+                <div class="relative h-72">
+                    <div class="gl-float-soft gl-pop absolute left-0 top-0 w-64 rounded-3xl border border-white/15 bg-white/5 p-5 shadow-2xl backdrop-blur-xl">
+                        <div class="flex items-center gap-3">
+                            <span class="text-2xl">💍</span>
+                            <div>
+                                <p class="text-[10px] uppercase tracking-widest text-white/50">Wedding</p>
+                                <p class="text-sm font-semibold text-white">Sarah & James</p>
+                            </div>
+                            <span class="gl-pulse ml-auto rounded-full bg-emerald-500/30 px-2.5 py-1 text-[10px] font-semibold text-emerald-300">Live</span>
+                        </div>
+                        <div class="mt-4 h-1.5 w-full rounded-full bg-white/10">
+                            <div class="h-1.5 rounded-full bg-gradient-to-r from-emerald-400 to-teal-400" style="width:66%"></div>
+                        </div>
+                        <p class="mt-2 text-[10px] text-white/40">82 of 124 guests RSVP'd</p>
+                    </div>
+
+                    <div class="gl-float-soft gl-pop gl-d2 absolute right-0 top-24 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 px-5 py-3.5 shadow-xl shadow-emerald-900/40" style="animation-delay:1.6s,.3s">
+                        <div class="flex items-center gap-2.5">
+                            <span class="text-xl">🎁</span>
+                            <div>
+                                <p class="text-sm font-semibold text-white">Gift received!</p>
+                                <p class="text-xs text-emerald-200">Priya sent ₹1,200</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="gl-float gl-pop gl-d3 absolute bottom-0 left-16 rounded-2xl border border-violet-400/20 bg-violet-600/20 px-4 py-2.5 backdrop-blur-md" style="animation-delay:1s,.45s">
+                        <p class="text-xs text-violet-200">✉️ Invitations sent to 24 guests</p>
+                    </div>
+                </div>
+
+                <div class="gl-enter gl-d3 flex items-center gap-4">
+                    <div class="flex -space-x-2">
+                        <div class="h-8 w-8 rounded-full bg-gradient-to-br from-rose-400 to-pink-600 ring-2 ring-[#0d0b14]"></div>
+                        <div class="h-8 w-8 rounded-full bg-gradient-to-br from-violet-400 to-purple-600 ring-2 ring-[#0d0b14]"></div>
+                        <div class="h-8 w-8 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 ring-2 ring-[#0d0b14]"></div>
+                    </div>
+                    <p class="text-xs text-white/45"><span class="font-semibold text-white/80">10,000+</span> celebrations and counting</p>
+                </div>
+            </div>
         </div>
     </div>
 </template>

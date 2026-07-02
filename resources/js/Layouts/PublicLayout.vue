@@ -2,22 +2,31 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { Link, usePage } from '@inertiajs/vue3';
 
+// theme: 'dark' for pages that open on a dark hero (white nav text),
+// 'light' for pages that open on a light background (dark nav text).
+const props = defineProps({ theme: { type: String, default: 'dark' } });
+
 const page = usePage();
 const user = computed(() => page.props.auth?.user ?? null);
 
 const mobileOpen     = ref(false);
 const activeDropdown = ref(null);
 const hidden         = ref(false);
+const scrolled       = ref(false);
 
 let ticking = false;
+let lastY = 0;
 function onScroll() {
     if (ticking) return;
     ticking = true;
     requestAnimationFrame(() => {
-        // hide once the hero (≈ one viewport) has scrolled off the top
-        const past = window.scrollY > window.innerHeight - 80;
-        hidden.value = past;
-        if (past) { activeDropdown.value = null; mobileOpen.value = false; }
+        const y = window.scrollY;
+        scrolled.value = y > 24;
+        // hide while scrolling down past the fold; reappear the moment you scroll up
+        if (y > lastY + 2 && y > 320) hidden.value = true;
+        else if (y < lastY - 2 || y <= 320) hidden.value = false;
+        if (hidden.value) { activeDropdown.value = null; mobileOpen.value = false; }
+        lastY = y;
         ticking = false;
     });
 }
@@ -67,12 +76,13 @@ const navGroups = [
 </script>
 
 <template>
-    <div class="flex min-h-screen flex-col bg-white text-neutral-950" @click="closeDropdowns">
+    <!-- --nav-offset lets sticky elements on the page tuck under the nav and follow it when it hides -->
+    <div class="flex min-h-screen flex-col bg-white text-neutral-950" :style="{ '--nav-offset': hidden ? '0px' : '62px' }" @click="closeDropdowns">
 
         <!-- ── Liquid Glass Nav ── -->
         <nav
-            class="nav-glass fixed inset-x-0 top-0 z-50 transition-transform duration-500 ease-in-out"
-            :class="hidden ? '-translate-y-full' : 'translate-y-0'"
+            class="nav-glass fixed inset-x-0 top-0 z-50 transition-all duration-500 ease-in-out"
+            :class="[hidden ? '-translate-y-full' : 'translate-y-0', theme === 'light' ? 'nav-light' : 'nav-dark', { 'nav-scrolled': scrolled }]"
             @click.stop
         >
             <div class="mx-auto max-w-7xl px-6 sm:px-10 lg:px-12">
@@ -81,7 +91,7 @@ const navGroups = [
                     <!-- Logo -->
                     <Link href="/" class="flex shrink-0 items-center gap-2.5">
                         <div class="flex h-8 w-8 items-center justify-center rounded-[10px] bg-indigo-500 text-sm font-bold text-white shadow-sm">G</div>
-                        <span class="nav-text text-base font-semibold tracking-tight">Gift Loft</span>
+                        <span class="nav-strong text-base font-semibold tracking-tight">Gift Loft</span>
                     </Link>
 
                     <!-- Desktop nav groups -->
@@ -89,8 +99,8 @@ const navGroups = [
                         <div v-for="group in navGroups" :key="group.key" class="relative">
                             <button
                                 @click="toggleDropdown(group.key)"
-                                class="flex items-center gap-1.5 rounded-xl px-3.5 py-2 text-sm font-medium text-white/80 transition-all duration-200 hover:bg-white/12 hover:text-white [text-shadow:0_1px_4px_rgba(0,0,0,0.30)]"
-                                :class="{ 'bg-white/15 text-white': activeDropdown === group.key }"
+                                class="nav-item nav-chip flex items-center gap-1.5 rounded-xl px-3.5 py-2 text-sm font-medium transition-all duration-200"
+                                :class="{ 'nav-chip-active': activeDropdown === group.key }"
                             >
                                 {{ group.label }}
                                 <svg
@@ -132,7 +142,7 @@ const navGroups = [
 
                         <Link
                             href="/templates"
-                            class="rounded-xl px-3.5 py-2 text-sm font-medium text-white/80 transition-all duration-200 hover:bg-white/12 hover:text-white [text-shadow:0_1px_4px_rgba(0,0,0,0.30)]"
+                            class="nav-item nav-chip rounded-xl px-3.5 py-2 text-sm font-medium transition-all duration-200"
                         >Templates</Link>
                     </div>
 
@@ -141,17 +151,18 @@ const navGroups = [
                         <template v-if="user">
                             <Link
                                 :href="route('dashboard')"
-                                class="nav-text text-sm font-medium hover:text-white transition-colors"
+                                class="nav-item text-sm font-medium transition-colors"
                             >Dashboard</Link>
                         </template>
                         <template v-else>
                             <Link
                                 href="/login"
-                                class="nav-text text-sm font-medium hover:text-white transition-colors"
+                                class="nav-item text-sm font-medium transition-colors"
                             >Log in</Link>
                             <Link
                                 href="/register"
-                                class="rounded-full bg-white px-5 py-2 text-sm font-semibold text-neutral-900 transition hover:bg-white/90"
+                                class="rounded-full px-5 py-2 text-sm font-semibold transition"
+                                :class="theme === 'light' ? 'bg-neutral-950 text-white hover:bg-neutral-800' : 'bg-white text-neutral-900 hover:bg-white/90'"
                             >Get Started</Link>
                         </template>
                     </div>
@@ -159,7 +170,7 @@ const navGroups = [
                     <!-- Mobile hamburger -->
                     <button
                         @click="mobileOpen = !mobileOpen"
-                        class="rounded-xl p-2 text-white/70 transition hover:bg-white/12 hover:text-white sm:hidden"
+                        class="nav-item nav-chip rounded-xl p-2 transition sm:hidden"
                     >
                         <svg v-if="!mobileOpen" class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -182,12 +193,12 @@ const navGroups = [
             >
                 <div
                     v-if="mobileOpen"
-                    class="mobile-glass border-t border-white/[0.1] sm:hidden"
+                    class="mobile-glass nav-border-t sm:hidden"
                 >
                     <div class="mx-auto max-w-7xl px-6 py-5">
                         <div v-for="group in navGroups" :key="group.key" class="mb-5">
                             <p
-                                class="mb-2 px-1 text-[10px] font-semibold uppercase tracking-widest text-white/40"
+                                class="nav-dim mb-2 px-1 text-[10px] font-semibold uppercase tracking-widest"
                             >{{ group.label }}</p>
                             <div class="flex flex-col gap-0.5">
                                 <Link
@@ -195,18 +206,19 @@ const navGroups = [
                                     :key="item.label"
                                     :href="item.href"
                                     @click="mobileOpen = false"
-                                    class="rounded-xl px-3 py-2.5 text-sm text-white/75 transition hover:bg-white/10 hover:text-white"
+                                    class="nav-item nav-chip rounded-xl px-3 py-2.5 text-sm transition"
                                 >{{ item.label }}</Link>
                             </div>
                         </div>
-                        <Link href="/templates" @click="mobileOpen = false" class="block rounded-xl px-3 py-2.5 text-sm font-medium text-white/80 transition hover:bg-white/10 hover:text-white">Templates</Link>
-                        <div class="mt-5 flex flex-col gap-3 border-t border-white/[0.1] pt-5">
+                        <Link href="/templates" @click="mobileOpen = false" class="nav-item nav-chip block rounded-xl px-3 py-2.5 text-sm font-medium transition">Templates</Link>
+                        <div class="nav-border-t mt-5 flex flex-col gap-3 pt-5">
                             <template v-if="user">
-                                <Link :href="route('dashboard')" class="text-sm font-medium text-white/75">Dashboard</Link>
+                                <Link :href="route('dashboard')" class="nav-item text-sm font-medium">Dashboard</Link>
                             </template>
                             <template v-else>
-                                <Link href="/login" class="text-sm font-medium text-white/75">Log in</Link>
-                                <Link href="/register" class="inline-flex items-center justify-center rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-neutral-900">Get Started</Link>
+                                <Link href="/login" class="nav-item text-sm font-medium">Log in</Link>
+                                <Link href="/register" class="inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm font-semibold"
+                                    :class="theme === 'light' ? 'bg-neutral-950 text-white' : 'bg-white text-neutral-900'">Get Started</Link>
                             </template>
                         </div>
                     </div>
@@ -266,25 +278,58 @@ const navGroups = [
 </template>
 
 <style scoped>
-/* ── Pure liquid glass — floats over whatever is below ── */
-.nav-glass {
-    background: rgba(255, 255, 255, 0.04);   /* nearly invisible */
-    backdrop-filter: blur(32px) saturate(1.8);
-    -webkit-backdrop-filter: blur(32px) saturate(1.8);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+/* ── Theme tokens — the nav adapts to the page behind it ── */
+.nav-dark {
+    --nav-fg: rgba(255, 255, 255, 0.82);
+    --nav-fg-strong: #ffffff;
+    --nav-fg-dim: rgba(255, 255, 255, 0.45);
+    --nav-hover-bg: rgba(255, 255, 255, 0.12);
+    --nav-active-bg: rgba(255, 255, 255, 0.15);
+    --nav-border: rgba(255, 255, 255, 0.12);
+    --nav-shadow: 0 1px 4px rgba(0, 0, 0, 0.30);
+    background: rgba(255, 255, 255, 0.04); /* nearly invisible over a dark hero */
     box-shadow: inset 0 0.5px 0 rgba(255, 255, 255, 0.24); /* specular catch-light */
 }
+.nav-dark.nav-scrolled {
+    background: rgba(10, 10, 18, 0.62); /* readable over any section once scrolled */
+}
+.nav-light {
+    --nav-fg: rgba(23, 23, 23, 0.72);
+    --nav-fg-strong: #0a0a0a;
+    --nav-fg-dim: rgba(23, 23, 23, 0.45);
+    --nav-hover-bg: rgba(0, 0, 0, 0.06);
+    --nav-active-bg: rgba(0, 0, 0, 0.08);
+    --nav-border: rgba(0, 0, 0, 0.08);
+    --nav-shadow: none;
+    background: rgba(255, 255, 255, 0.55);
+    box-shadow: inset 0 0.5px 0 rgba(255, 255, 255, 0.6);
+}
+.nav-light.nav-scrolled {
+    background: rgba(255, 255, 255, 0.85);
+    box-shadow: 0 8px 30px -18px rgba(0, 0, 0, 0.25);
+}
+
+/* ── Pure liquid glass — floats over whatever is below ── */
+.nav-glass {
+    backdrop-filter: blur(32px) saturate(1.8);
+    -webkit-backdrop-filter: blur(32px) saturate(1.8);
+    border-bottom: 1px solid var(--nav-border);
+}
+
+/* ── Var-driven nav items ── */
+.nav-item { color: var(--nav-fg); text-shadow: var(--nav-shadow); }
+.nav-item:hover { color: var(--nav-fg-strong); }
+.nav-chip:hover { background: var(--nav-hover-bg); }
+.nav-chip-active { background: var(--nav-active-bg); color: var(--nav-fg-strong); }
+.nav-strong { color: var(--nav-fg-strong); text-shadow: var(--nav-shadow); }
+.nav-dim { color: var(--nav-fg-dim); }
+.nav-border-t { border-top: 1px solid var(--nav-border); }
 
 /* Mobile dropdown — denser so items stay readable */
 .mobile-glass {
-    background: rgba(10, 10, 20, 0.55);
     backdrop-filter: blur(40px) saturate(1.8);
     -webkit-backdrop-filter: blur(40px) saturate(1.8);
 }
-
-/* Nav text with soft shadow so it reads over any section */
-.nav-text {
-    color: rgba(255, 255, 255, 0.82);
-    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.30);
-}
+.nav-dark .mobile-glass { background: rgba(10, 10, 20, 0.72); }
+.nav-light .mobile-glass { background: rgba(255, 255, 255, 0.92); }
 </style>
