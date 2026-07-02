@@ -9,7 +9,7 @@ class TemplateGalleryTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_gallery_is_public_and_lists_templates_with_sample(): void
+    public function test_gallery_is_public_and_lists_templates_with_per_type_samples(): void
     {
         $this->get('/templates')
             ->assertOk()
@@ -17,7 +17,26 @@ class TemplateGalleryTest extends TestCase
                 ->component('Public/Templates/Index')
                 ->has('websiteTemplates', 6)
                 ->has('invitationTemplates', 6)
-                ->where('sample.title', 'Sarah & James'));
+                ->has('eventTypes', 8)
+                ->where('samples.wedding.title', 'Sarah & James')
+                ->where('samples.birthday.type', 'birthday')
+                ->where('samples.baby_shower.type', 'baby_shower'));
+    }
+
+    public function test_website_preview_themes_to_event_type(): void
+    {
+        $this->get('/templates/website/festive?type=birthday')
+            ->assertOk()
+            ->assertInertia(fn ($page) => $page
+                ->where('eventType', 'birthday')
+                ->where('event.type', 'birthday'));
+    }
+
+    public function test_website_preview_falls_back_for_unknown_type(): void
+    {
+        $this->get('/templates/website/festive?type=bogus')
+            ->assertOk()
+            ->assertInertia(fn ($page) => $page->where('eventType', 'wedding'));
     }
 
     public function test_website_preview_renders_with_dummy_data(): void

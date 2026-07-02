@@ -23,6 +23,19 @@ export function useEventDisplay(getEvent) {
     const faqs = computed(() => (data.value.faqs ?? []).filter((f) => f && f.question));
     const location = computed(() => [event.value.venue, event.value.location].filter(Boolean).join(' · '));
 
+    // Venue enrichment
+    const venueNote = computed(() => data.value.venue_note || '');
+    const travel = computed(() => data.value.travel || '');
+    const stay = computed(() => data.value.stay || '');
+    const mapUrl = computed(() => {
+        const q = [event.value.venue, event.value.location].filter(Boolean).join(', ');
+        return q ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}` : '';
+    });
+
+    // Gallery photos + cover (falls back to the first gallery photo).
+    const gallery = computed(() => (event.value.photos ?? []).filter(Boolean));
+    const coverPhoto = computed(() => event.value.cover_photo_url || gallery.value[0] || '');
+
     const registryUrl = computed(() => {
         const w = (event.value.wishlists ?? [])[0];
         return w?.slug ? `/r/${w.slug}` : '/shop';
@@ -51,5 +64,5 @@ export function useEventDisplay(getEvent) {
         };
     });
 
-    return { event, data, typeLabel, hosts, tagline, dressCode, rsvpNote, schedule, faqs, location, registryUrl, countdown, fmtFull, fmtDate };
+    return { event, data, typeLabel, hosts, tagline, dressCode, rsvpNote, schedule, faqs, location, venueNote, travel, stay, mapUrl, gallery, coverPhoto, registryUrl, countdown, fmtFull, fmtDate };
 }

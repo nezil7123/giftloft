@@ -10,10 +10,14 @@ const props = defineProps({
 });
 
 const template = computed(() => resolveWebsiteTemplate(props.event.template));
+
+// Light-canvas templates need dark nav text; dark ones keep the white glass.
+const LIGHT_TEMPLATES = ['modern', 'botanical', 'storybook'];
+const navTheme = computed(() => (LIGHT_TEMPLATES.includes(props.event.template) ? 'light' : 'dark'));
 </script>
 
 <template>
-    <PublicLayout>
+    <PublicLayout :theme="navTheme">
         <Head :title="event.title" />
         <component :is="template" :event="event" />
     </PublicLayout>

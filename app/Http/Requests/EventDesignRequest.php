@@ -27,6 +27,9 @@ class EventDesignRequest extends FormRequest
             'template_data.tagline' => ['nullable', 'string', 'max:255'],
             'template_data.dress_code' => ['nullable', 'string', 'max:255'],
             'template_data.rsvp_note' => ['nullable', 'string', 'max:1000'],
+            'template_data.venue_note' => ['nullable', 'string', 'max:600'],
+            'template_data.travel' => ['nullable', 'string', 'max:600'],
+            'template_data.stay' => ['nullable', 'string', 'max:600'],
 
             'template_data.schedule' => ['nullable', 'array', 'max:20'],
             'template_data.schedule.*.time' => ['nullable', 'string', 'max:100'],

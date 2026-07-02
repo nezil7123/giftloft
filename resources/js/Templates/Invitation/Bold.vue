@@ -6,11 +6,12 @@ const { typeLabel, hosts, tagline, location, fmtFull } = useEventDisplay(() => p
 </script>
 
 <template>
-    <div class="w-full max-w-md overflow-hidden rounded-[2rem] shadow-2xl">
-        <div class="bg-gradient-to-br from-violet-600 via-fuchsia-600 to-rose-500 p-10 text-white">
+    <div class="gl-pop w-full max-w-md overflow-hidden rounded-[2rem] shadow-2xl">
+        <div class="gl-pan gl-grain relative overflow-hidden bg-gradient-to-br from-violet-600 via-fuchsia-600 to-rose-500 p-10 text-white">
+            <span class="gl-twinkle absolute right-6 top-6 text-xl">✦</span>
             <p class="text-xs font-black uppercase tracking-[0.4em] text-white/70">You're invited</p>
             <p class="mt-8 text-sm font-bold uppercase tracking-[0.3em] text-white/60">{{ typeLabel }}</p>
-            <h1 class="mt-2 text-5xl font-black leading-[0.95] tracking-tight">{{ hosts || event.title }}</h1>
+            <h1 class="gl-display-sm mt-2 font-black leading-[0.9] tracking-tight">{{ hosts || event.title }}</h1>
             <p v-if="tagline" class="mt-4 text-lg font-semibold text-white/85">{{ tagline }}</p>
         </div>
         <div class="bg-neutral-950 p-8 text-white">

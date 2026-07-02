@@ -1,3 +1,284 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* ════════════════════════════════════════════════════════════
+   Shared template animations (used across all event templates)
+   ════════════════════════════════════════════════════════════ */
+
+/* ── Scroll reveal (toggled by useReveal via .is-in) ── */
+[data-reveal] {
+    opacity: 0;
+    transform: translateY(36px);
+    transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: opacity, transform;
+}
+[data-reveal].is-in { opacity: 1; transform: none; }
+[data-reveal][data-reveal='left']  { transform: translateX(-40px); }
+[data-reveal][data-reveal='right'] { transform: translateX(40px); }
+[data-reveal][data-reveal='zoom']  { transform: scale(0.92); }
+[data-reveal].is-in { transform: none; }
+
+/* ── Entrance animations (play on mount) ── */
+@keyframes gl-fade-up {
+    from { opacity: 0; transform: translateY(28px); }
+    to   { opacity: 1; transform: none; }
+}
+@keyframes gl-fade-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+@keyframes gl-scale-in {
+    from { opacity: 0; transform: scale(0.9); }
+    to   { opacity: 1; transform: scale(1); }
+}
+.gl-enter      { animation: gl-fade-up 0.9s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.gl-enter-slow { animation: gl-fade-up 1.2s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.gl-fade       { animation: gl-fade-in 1.4s ease both; }
+.gl-pop        { animation: gl-scale-in 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+.gl-d1 { animation-delay: 0.15s; }
+.gl-d2 { animation-delay: 0.3s; }
+.gl-d3 { animation-delay: 0.45s; }
+.gl-d4 { animation-delay: 0.6s; }
+
+/* ── Ambient float (decorative shapes / icons) ── */
+@keyframes gl-float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50%      { transform: translateY(-18px) rotate(6deg); }
+}
+@keyframes gl-float-soft {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-10px); }
+}
+.gl-float      { animation: gl-float 7s ease-in-out infinite; }
+.gl-float-soft { animation: gl-float-soft 5s ease-in-out infinite; }
+
+/* ── Morphing gradient blobs ── */
+@keyframes gl-blob {
+    0%, 100% { border-radius: 60% 40% 35% 65% / 55% 40% 65% 45%; transform: translate(0,0) rotate(0deg); }
+    50%      { border-radius: 35% 60% 65% 40% / 45% 60% 35% 60%; transform: translate(12px,-12px) rotate(8deg); }
+}
+.gl-blob { animation: gl-blob 16s ease-in-out infinite; }
+
+/* ── Falling petals / confetti ── */
+@keyframes gl-fall {
+    0%   { transform: translateY(-10vh) rotate(0deg); opacity: 0; }
+    10%  { opacity: 1; }
+    100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+}
+.gl-fall { animation: gl-fall linear infinite; }
+
+/* ── Twinkle / sparkle ── */
+@keyframes gl-twinkle {
+    0%, 100% { opacity: 0.2; transform: scale(0.8); }
+    50%      { opacity: 1; transform: scale(1.2); }
+}
+.gl-twinkle { animation: gl-twinkle 2.4s ease-in-out infinite; }
+
+/* ── Shimmer sweep across text/elements ── */
+@keyframes gl-shimmer {
+    0%   { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+.gl-shimmer {
+    background: linear-gradient(110deg, currentColor 35%, rgba(255,255,255,0.85) 50%, currentColor 65%);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: gl-shimmer 4s linear infinite;
+}
+
+/* ── Slow panning gradient (animated hero backgrounds) ── */
+@keyframes gl-pan {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+.gl-pan {
+    background-size: 200% 200%;
+    animation: gl-pan 14s ease infinite;
+}
+
+/* ── Soft pulse (countdown / badges) ── */
+@keyframes gl-pulse {
+    0%, 100% { transform: scale(1); }
+    50%      { transform: scale(1.06); }
+}
+.gl-pulse { animation: gl-pulse 2s ease-in-out infinite; }
+
+/* ── Underline / divider grow ── */
+@keyframes gl-grow-x {
+    from { transform: scaleX(0); }
+    to   { transform: scaleX(1); }
+}
+.gl-grow { transform-origin: center; animation: gl-grow-x 1s ease 0.3s both; }
+
+/* ════════════════════════════════════════════════════════════
+   Premium / "awwwards" toolkit
+   ════════════════════════════════════════════════════════════ */
+
+/* ── Film grain overlay (add .gl-grain to a relative container) ── */
+.gl-grain::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.07;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 160px 160px;
+}
+
+/* ── Animated gradient mesh backgrounds ── */
+.gl-mesh-dark {
+    background-color: #140a2e;
+    background-image:
+        radial-gradient(at 18% 22%, rgba(244, 63, 94, 0.55), transparent 50%),
+        radial-gradient(at 82% 8%, rgba(99, 102, 241, 0.55), transparent 50%),
+        radial-gradient(at 62% 82%, rgba(236, 72, 153, 0.50), transparent 50%),
+        radial-gradient(at 4% 72%, rgba(168, 85, 247, 0.50), transparent 50%);
+}
+.gl-mesh-warm {
+    background-color: #fff7f3;
+    background-image:
+        radial-gradient(at 12% 18%, rgba(251, 113, 133, 0.40), transparent 50%),
+        radial-gradient(at 88% 12%, rgba(251, 191, 36, 0.40), transparent 50%),
+        radial-gradient(at 70% 88%, rgba(236, 72, 153, 0.32), transparent 50%),
+        radial-gradient(at 0% 80%, rgba(167, 139, 250, 0.30), transparent 50%);
+}
+@keyframes gl-mesh-shift {
+    0%, 100% { background-position: 0% 0%, 100% 0%, 100% 100%, 0% 100%; }
+    50%      { background-position: 10% 10%, 90% 5%, 80% 90%, 5% 80%; }
+}
+.gl-mesh-anim { background-size: 160% 160%, 160% 160%, 160% 160%, 160% 160%; animation: gl-mesh-shift 18s ease-in-out infinite; }
+
+/* ── Marquee / ticker band ── */
+@keyframes gl-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.gl-marquee { display: inline-flex; white-space: nowrap; width: max-content; animation: gl-marquee 26s linear infinite; }
+.gl-marquee-fast { animation-duration: 16s; }
+.gl-marquee-rev { animation-direction: reverse; }
+
+/* ── Clip-path heading reveal — animates on load, always ends visible ── */
+@keyframes gl-clip-up {
+    from { clip-path: inset(0 0 108% 0); }
+    to   { clip-path: inset(0 0 -12% 0); }
+}
+.gl-clip { animation: gl-clip-up 1.1s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+/* ── Oversized display type ── */
+.gl-display { font-size: clamp(2.75rem, 11vw, 9rem); line-height: 0.92; letter-spacing: -0.03em; }
+.gl-display-sm { font-size: clamp(2.25rem, 7vw, 5rem); line-height: 0.95; letter-spacing: -0.02em; }
+
+/* ── Outline (stroked) text ── */
+.gl-outline {
+    color: transparent;
+    -webkit-text-stroke: 1.5px currentColor;
+    text-stroke: 1.5px currentColor;
+}
+
+/* ── Magnetic / premium button sheen ── */
+.gl-btn { position: relative; overflow: hidden; }
+.gl-btn::after {
+    content: '';
+    position: absolute;
+    top: 0; left: -120%;
+    height: 100%; width: 60%;
+    background: linear-gradient(110deg, transparent, rgba(255,255,255,0.5), transparent);
+    transition: left 0.6s ease;
+}
+.gl-btn:hover::after { left: 130%; }
+
+/* ── Conic spinning halo ── */
+@keyframes gl-spin { to { transform: rotate(360deg); } }
+.gl-spin-slow { animation: gl-spin 24s linear infinite; }
+
+/* ════════════════════════════════════════════════════════════
+   Futuristic toolkit
+   ════════════════════════════════════════════════════════════ */
+
+/* ── Aurora — drifting blurred color field (inside relative overflow-hidden parent) ── */
+@keyframes gl-aurora-shift {
+    0%, 100% { transform: translate(-8%, -6%) rotate(0deg) scale(1.15); }
+    33%      { transform: translate(7%, -3%) rotate(35deg) scale(1.3); }
+    66%      { transform: translate(-5%, 7%) rotate(-25deg) scale(1.2); }
+}
+.gl-aurora {
+    position: absolute;
+    inset: -20%;
+    pointer-events: none;
+    filter: blur(60px);
+    opacity: 0.55;
+    background:
+        radial-gradient(35% 45% at 30% 30%, rgba(99, 102, 241, 0.65), transparent 60%),
+        radial-gradient(30% 40% at 72% 24%, rgba(236, 72, 153, 0.55), transparent 60%),
+        radial-gradient(40% 45% at 55% 78%, rgba(45, 212, 191, 0.40), transparent 60%),
+        radial-gradient(30% 35% at 18% 80%, rgba(168, 85, 247, 0.50), transparent 60%);
+    animation: gl-aurora-shift 24s ease-in-out infinite;
+    will-change: transform;
+}
+
+/* ── Ken Burns — slow cinematic drift for hero photos ── */
+@keyframes gl-kenburns {
+    from { transform: scale(1.08) translateY(0); }
+    to   { transform: scale(1.22) translateY(-2.5%); }
+}
+.gl-ken { animation: gl-kenburns 20s ease-in-out infinite alternate; will-change: transform; }
+
+/* ── Animated conic gradient border (futuristic card edge) ── */
+@property --gl-angle { syntax: '<angle>'; initial-value: 0deg; inherits: false; }
+@keyframes gl-angle-spin { to { --gl-angle: 360deg; } }
+.gl-border-glow {
+    border: 1px solid transparent;
+    background:
+        linear-gradient(var(--gl-bg, #12101c), var(--gl-bg, #12101c)) padding-box,
+        conic-gradient(from var(--gl-angle),
+            rgba(255,255,255,0.06), rgba(129,140,248,0.9) 20%,
+            rgba(244,114,182,0.9) 45%, rgba(255,255,255,0.06) 70%,
+            rgba(45,212,191,0.7) 88%, rgba(255,255,255,0.06)) border-box;
+    animation: gl-angle-spin 6s linear infinite;
+}
+
+/* ── Neon glow pulse ── */
+@keyframes gl-glow-pulse {
+    0%, 100% { box-shadow: 0 0 28px -8px var(--gl-glow, rgba(139, 92, 246, 0.55)); }
+    50%      { box-shadow: 0 0 52px -6px var(--gl-glow, rgba(139, 92, 246, 0.85)); }
+}
+.gl-glow { animation: gl-glow-pulse 3.6s ease-in-out infinite; }
+
+/* ── 3D hover tilt ── */
+.gl-tilt { transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1); transform-style: preserve-3d; }
+.gl-tilt:hover { transform: perspective(900px) rotateX(4deg) rotateY(-6deg) translateY(-6px); }
+
+/* ── Futurist gridlines overlay (fades at edges) ── */
+.gl-gridlines::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+        linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+    background-size: 72px 72px;
+    -webkit-mask-image: radial-gradient(ellipse at center, black 25%, transparent 78%);
+    mask-image: radial-gradient(ellipse at center, black 25%, transparent 78%);
+}
+
+/* ── Photo frame — slow zoom on hover ── */
+.gl-photo { overflow: hidden; }
+.gl-photo img { transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1), filter 0.9s ease; }
+.gl-photo:hover img { transform: scale(1.07); }
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    [data-reveal] { opacity: 1 !important; transform: none !important; clip-path: none !important; transition: none; }
+    .gl-enter, .gl-enter-slow, .gl-fade, .gl-pop, .gl-float, .gl-float-soft,
+    .gl-blob, .gl-fall, .gl-twinkle, .gl-shimmer, .gl-pan, .gl-pulse, .gl-grow,
+    .gl-mesh-anim, .gl-marquee, .gl-spin-slow, .gl-clip,
+    .gl-aurora, .gl-ken, .gl-border-glow, .gl-glow {
+        animation: none !important;
+    }
+    .gl-clip { clip-path: none !important; }
+    .gl-tilt, .gl-photo img { transition: none; }
+}
