@@ -25,9 +25,13 @@ export function useEventDisplay(getEvent) {
 
     // Venue enrichment
     const venueNote = computed(() => data.value.venue_note || '');
+    const venuePhoto = computed(() => data.value.venue_photo_url || '');
     const travel = computed(() => data.value.travel || '');
     const stay = computed(() => data.value.stay || '');
+    // Prefer an explicit Google Maps link; otherwise auto-generate a search
+    // link from the venue name + location so "Open in Maps" always works.
     const mapUrl = computed(() => {
+        if (data.value.venue_map_url) return data.value.venue_map_url;
         const q = [event.value.venue, event.value.location].filter(Boolean).join(', ');
         return q ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}` : '';
     });
@@ -64,5 +68,5 @@ export function useEventDisplay(getEvent) {
         };
     });
 
-    return { event, data, typeLabel, hosts, tagline, dressCode, rsvpNote, schedule, faqs, location, venueNote, travel, stay, mapUrl, gallery, coverPhoto, registryUrl, countdown, fmtFull, fmtDate };
+    return { event, data, typeLabel, hosts, tagline, dressCode, rsvpNote, schedule, faqs, location, venueNote, venuePhoto, travel, stay, mapUrl, gallery, coverPhoto, registryUrl, countdown, fmtFull, fmtDate };
 }

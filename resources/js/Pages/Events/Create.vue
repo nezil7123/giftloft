@@ -2,7 +2,7 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import InputError from '@/Components/InputError.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 
 const props = defineProps({
     eventTypes: { type: Object, required: true },
@@ -16,12 +16,43 @@ const form = useForm({
     ends_at: '',
     location: '',
     venue: '',
-    cover_photo_url: '',
+    cover_photo: null,
+    venue_photo: null,
+    venue_note: '',
+    venue_map_url: '',
+    travel: '',
+    stay: '',
     is_public: true,
     status: 'draft',
 });
 
 const submit = () => form.post(route('events.store'));
+
+// ── Cover photo upload ────────────────────────────────────
+const coverPreview = ref(null);
+const onCoverChange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    form.cover_photo = file;
+    coverPreview.value = URL.createObjectURL(file);
+};
+const removeCover = () => {
+    form.cover_photo = null;
+    coverPreview.value = null;
+};
+
+// ── Venue photo upload ────────────────────────────────────
+const venuePhotoPreview = ref(null);
+const onVenuePhotoChange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    form.venue_photo = file;
+    venuePhotoPreview.value = URL.createObjectURL(file);
+};
+const removeVenuePhoto = () => {
+    form.venue_photo = null;
+    venuePhotoPreview.value = null;
+};
 
 // Emoji + gradient per event type (full class strings so Tailwind JIT keeps them)
 const typeMeta = {
@@ -120,6 +151,49 @@ const labelClass = 'mb-1.5 block text-sm font-medium text-neutral-700';
                                 <InputError class="mt-1.5" :message="form.errors.location" />
                             </div>
                         </div>
+
+                        <!-- Venue details -->
+                        <div class="mt-6 border-t border-neutral-100 pt-6">
+                            <label :class="labelClass">Venue photo</label>
+                            <div class="mt-1.5 flex items-center gap-4">
+                                <div class="h-16 w-24 shrink-0 overflow-hidden rounded-xl bg-neutral-100 ring-1 ring-neutral-200">
+                                    <img v-if="venuePhotoPreview" :src="venuePhotoPreview" class="h-full w-full object-cover" alt="" />
+                                    <div v-else class="flex h-full w-full items-center justify-center text-xl text-neutral-300">🖼️</div>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <label class="inline-flex w-fit cursor-pointer items-center gap-2 rounded-full bg-neutral-900 px-4 py-2 text-xs font-semibold text-white transition hover:bg-neutral-800">
+                                        <input type="file" accept="image/*" class="hidden" @change="onVenuePhotoChange" />
+                                        {{ venuePhotoPreview ? 'Change photo' : 'Upload photo' }}
+                                    </label>
+                                    <button v-if="venuePhotoPreview" type="button" @click="removeVenuePhoto" class="text-xs font-semibold text-rose-600 hover:text-rose-700">Remove</button>
+                                </div>
+                            </div>
+                            <InputError class="mt-1.5" :message="form.errors.venue_photo" />
+
+                            <div class="mt-5 grid gap-5 sm:grid-cols-2">
+                                <div class="sm:col-span-2">
+                                    <label for="venue_note" :class="labelClass">About the venue</label>
+                                    <textarea id="venue_note" v-model="form.venue_note" rows="2" :class="inputClass" placeholder="e.g. A sea-facing heritage ballroom in the heart of Colaba…"></textarea>
+                                    <InputError class="mt-1.5" :message="form.errors.venue_note" />
+                                </div>
+                                <div class="sm:col-span-2">
+                                    <label for="venue_map_url" :class="labelClass">Google Maps link</label>
+                                    <input id="venue_map_url" v-model="form.venue_map_url" type="url" :class="inputClass" placeholder="https://maps.google.com/…" />
+                                    <p class="mt-1.5 text-xs text-neutral-400">Optional — leave blank and we'll build a directions link from the venue &amp; location above.</p>
+                                    <InputError class="mt-1.5" :message="form.errors.venue_map_url" />
+                                </div>
+                                <div>
+                                    <label for="travel" :class="labelClass">How to reach</label>
+                                    <textarea id="travel" v-model="form.travel" rows="2" :class="inputClass" placeholder="Parking, transit, directions…"></textarea>
+                                    <InputError class="mt-1.5" :message="form.errors.travel" />
+                                </div>
+                                <div>
+                                    <label for="stay" :class="labelClass">Where to stay</label>
+                                    <textarea id="stay" v-model="form.stay" rows="2" :class="inputClass" placeholder="Nearby hotels, room blocks…"></textarea>
+                                    <InputError class="mt-1.5" :message="form.errors.stay" />
+                                </div>
+                            </div>
+                        </div>
                     </section>
 
                     <!-- 3 · Tell the story -->
@@ -135,9 +209,21 @@ const labelClass = 'mb-1.5 block text-sm font-medium text-neutral-700';
                                 <InputError class="mt-1.5" :message="form.errors.description" />
                             </div>
                             <div>
-                                <label for="cover" :class="labelClass">Cover photo URL <span class="font-normal text-neutral-400">(you can upload more photos later)</span></label>
-                                <input id="cover" v-model="form.cover_photo_url" type="url" :class="inputClass" placeholder="https://…" />
-                                <InputError class="mt-1.5" :message="form.errors.cover_photo_url" />
+                                <label :class="labelClass">Cover photo <span class="font-normal text-neutral-400">(you can upload more photos later)</span></label>
+                                <div class="mt-1.5 flex items-center gap-4">
+                                    <div class="h-16 w-24 shrink-0 overflow-hidden rounded-xl bg-neutral-100 ring-1 ring-neutral-200">
+                                        <img v-if="coverPreview" :src="coverPreview" class="h-full w-full object-cover" alt="" />
+                                        <div v-else class="flex h-full w-full items-center justify-center text-xl text-neutral-300">🖼️</div>
+                                    </div>
+                                    <div class="flex items-center gap-3">
+                                        <label class="inline-flex w-fit cursor-pointer items-center gap-2 rounded-full bg-neutral-900 px-4 py-2 text-xs font-semibold text-white transition hover:bg-neutral-800">
+                                            <input type="file" accept="image/*" class="hidden" @change="onCoverChange" />
+                                            {{ coverPreview ? 'Change photo' : 'Upload photo' }}
+                                        </label>
+                                        <button v-if="coverPreview" type="button" @click="removeCover" class="text-xs font-semibold text-rose-600 hover:text-rose-700">Remove</button>
+                                    </div>
+                                </div>
+                                <InputError class="mt-1.5" :message="form.errors.cover_photo" />
                             </div>
                         </div>
                     </section>
@@ -200,7 +286,7 @@ const labelClass = 'mb-1.5 block text-sm font-medium text-neutral-700';
                     <div class="overflow-hidden rounded-3xl bg-white shadow-lg ring-1 ring-neutral-200/70">
                         <!-- Cover -->
                         <div class="relative flex aspect-[16/10] items-center justify-center overflow-hidden bg-gradient-to-br" :class="meta.grad">
-                            <img v-if="form.cover_photo_url" :src="form.cover_photo_url" alt="" class="absolute inset-0 h-full w-full object-cover" />
+                            <img v-if="coverPreview" :src="coverPreview" alt="" class="absolute inset-0 h-full w-full object-cover" />
                             <span v-else class="gl-float-soft text-6xl drop-shadow-lg">{{ meta.emoji }}</span>
                             <span class="absolute left-3 top-3 rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide backdrop-blur"
                                 :class="form.status === 'published' ? 'bg-emerald-500/90 text-white' : 'bg-white/85 text-neutral-700'">
@@ -220,7 +306,7 @@ const labelClass = 'mb-1.5 block text-sm font-medium text-neutral-700';
                             </div>
                         </div>
                     </div>
-                    <p class="mt-4 text-xs leading-5 text-neutral-400">✨ After creating, you'll pick a website & invitation template, upload photos, and build your registry.</p>
+                    <p class="mt-4 text-xs leading-5 text-neutral-400">✨ After creating, you'll pick a website & invitation template, upload photos, and build your wishlist.</p>
                 </aside>
             </form>
         </div>

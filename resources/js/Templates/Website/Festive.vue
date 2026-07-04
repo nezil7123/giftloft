@@ -6,7 +6,7 @@ import { useReveal } from '../useReveal.js';
 import { useScrollFx } from '../useScrollFx.js';
 
 const props = defineProps({ event: { type: Object, required: true } });
-const { typeLabel, hosts, tagline, dressCode, rsvpNote, schedule, faqs, location, venueNote, travel, stay, mapUrl, gallery, coverPhoto, registryUrl, countdown, fmtFull, fmtDate } = useEventDisplay(() => props.event);
+const { typeLabel, hosts, tagline, dressCode, rsvpNote, schedule, faqs, location, venueNote, venuePhoto, travel, stay, mapUrl, gallery, coverPhoto, registryUrl, countdown, fmtFull, fmtDate } = useEventDisplay(() => props.event);
 useReveal();
 const root = ref(null);
 useScrollFx(root);
@@ -116,10 +116,13 @@ const photoStrip = computed(() => {
                     </div>
                 </div>
 
-                <div v-if="event.venue || venueNote || travel || stay" data-reveal class="rounded-[2rem] border border-white/10 bg-white/[0.04] p-8 backdrop-blur-sm sm:p-10">
+                <div v-if="event.venue || venueNote || venuePhoto || travel || stay" data-reveal class="rounded-[2rem] border border-white/10 bg-white/[0.04] p-8 backdrop-blur-sm sm:p-10">
                     <h2 class="text-2xl font-black">The venue 📍</h2>
                     <p class="mt-1 text-sm font-semibold text-white/40">{{ event.venue }}<span v-if="event.venue && event.location"> · </span>{{ event.location }}</p>
                     <p v-if="venueNote" class="mt-4 text-lg leading-8 text-white/75">{{ venueNote }}</p>
+                    <div v-if="venuePhoto" class="mt-6 overflow-hidden rounded-[1.5rem]">
+                        <img :src="venuePhoto" alt="" loading="lazy" class="aspect-[16/9] w-full object-cover" />
+                    </div>
                     <div data-fx="batch" class="mt-6 grid gap-4 sm:grid-cols-2">
                         <div v-if="travel" class="rounded-2xl bg-white/5 p-5">
                             <p class="text-xs font-bold uppercase tracking-widest text-rose-300">🚕 Getting there</p>
@@ -140,8 +143,8 @@ const photoStrip = computed(() => {
                     </div>
                     <div data-reveal="right" class="gl-pan rounded-[2rem] bg-gradient-to-br from-rose-500 to-amber-500 p-8 shadow-xl shadow-rose-900/40">
                         <h3 class="text-sm font-bold uppercase tracking-widest text-white/70">Gifts 🎁</h3>
-                        <p class="mt-2 text-sm text-white/90">{{ rsvpNote || 'Find the perfect gift on our registry.' }}</p>
-                        <Link :href="registryUrl" class="gl-btn mt-4 inline-flex rounded-full bg-white px-6 py-2.5 text-sm font-bold text-rose-600 transition hover:scale-105">Open registry</Link>
+                        <p class="mt-2 text-sm text-white/90">{{ rsvpNote || 'Find the perfect gift on our wishlist.' }}</p>
+                        <Link :href="registryUrl" class="gl-btn mt-4 inline-flex rounded-full bg-white px-6 py-2.5 text-sm font-bold text-rose-600 transition hover:scale-105">Open wishlist</Link>
                     </div>
                 </div>
 

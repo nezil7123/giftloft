@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Event;
 use App\Models\Gift;
 use App\Models\Message;
+use App\Models\Order;
 use App\Models\Puzzle;
 use App\Models\Wishlist;
 use Illuminate\Http\Request;
@@ -24,9 +25,14 @@ class DashboardController extends Controller
                 'gifts' => Gift::where('buyer_id', $user->id)
                     ->orWhere('recipient_id', $user->id)
                     ->count(),
+                'orders' => Order::where('user_id', $user->id)->count(),
                 'messages' => Message::where('sender_id', $user->id)->orWhere('recipient_id', $user->id)->count(),
                 'puzzles' => Puzzle::where('sender_id', $user->id)->orWhere('recipient_id', $user->id)->count(),
             ],
+            'recentEvents' => Event::where('user_id', $user->id)
+                ->latest()
+                ->take(3)
+                ->get(['id', 'title', 'type', 'status', 'starts_at', 'share_code']),
         ]);
     }
 }

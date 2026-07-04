@@ -68,7 +68,7 @@ const invitationSample = (key) => ({ ...props.samples[selectedType.value], invit
                 <div class="mb-8 flex items-end justify-between">
                     <div>
                         <h2 class="text-2xl font-extrabold tracking-tight text-neutral-950 sm:text-3xl">{{ eventTypes[selectedType] }} website templates</h2>
-                        <p class="mt-1 text-sm text-neutral-500">A full celebration page with countdown, schedule and registry.</p>
+                        <p class="mt-1 text-sm text-neutral-500">A full celebration page with countdown, schedule and wishlist.</p>
                     </div>
                     <span class="hidden rounded-full bg-indigo-50 px-3 py-1 text-xs font-bold text-indigo-600 sm:inline">{{ websiteTemplates.length }} designs</span>
                 </div>

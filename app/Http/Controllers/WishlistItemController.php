@@ -12,7 +12,7 @@ use Illuminate\Support\Str;
 class WishlistItemController extends Controller
 {
     /**
-     * Add a catalog product to one of the user's registries.
+     * Add a catalog product to one of the user's wishlists.
      */
     public function addProduct(Request $request, Product $product)
     {
@@ -53,7 +53,7 @@ class WishlistItemController extends Controller
             'status' => 'available',
         ]);
 
-        return back()->with('success', 'Item added to your registry.');
+        return back()->with('success', 'Item added to your wishlist.');
     }
 
     /**

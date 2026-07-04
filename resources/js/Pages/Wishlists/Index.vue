@@ -24,7 +24,7 @@ const visBadge = {
             <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                     <h2 class="text-xl font-bold text-neutral-900">My Wishlists</h2>
-                    <p class="text-sm text-neutral-500">Build registries your guests can shop from.</p>
+                    <p class="text-sm text-neutral-500">Build wishlists your guests can shop from.</p>
                 </div>
                 <Link :href="route('wishlists.create')" class="inline-flex items-center gap-2 rounded-full bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-indigo-500">
                     <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
@@ -60,7 +60,7 @@ const visBadge = {
                         <svg class="h-7 w-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg>
                     </div>
                     <p class="mt-5 text-lg font-bold text-neutral-900">No wishlists yet</p>
-                    <p class="mx-auto mt-2 max-w-sm text-sm text-neutral-500">Create a registry, add the gifts you'd love, and share it with your guests.</p>
+                    <p class="mx-auto mt-2 max-w-sm text-sm text-neutral-500">Create a wishlist, add the gifts you'd love, and share it with your guests.</p>
                     <Link :href="route('wishlists.create')" class="mt-6 inline-flex items-center gap-2 rounded-full bg-indigo-600 px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-indigo-500">Create a Wishlist</Link>
                 </div>
             </div>

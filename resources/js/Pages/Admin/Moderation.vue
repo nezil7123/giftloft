@@ -28,7 +28,7 @@ const isLive = (e) => e.status === 'published' && e.is_public;
         <template #header>
             <div>
                 <h2 class="text-xl font-bold text-neutral-900">Moderation</h2>
-                <p class="text-sm text-neutral-500">Review every event page and registry — take down anything that breaks the rules.</p>
+                <p class="text-sm text-neutral-500">Review every event page and wishlist — take down anything that breaks the rules.</p>
             </div>
         </template>
 
@@ -37,7 +37,7 @@ const isLive = (e) => e.status === 'published' && e.is_public;
                 <AdminNav />
 
                 <form @submit.prevent="search" class="mb-5 w-full sm:max-w-xs">
-                    <input v-model="q" type="search" placeholder="Search events & registries…" @change="search"
+                    <input v-model="q" type="search" placeholder="Search events & wishlists…" @change="search"
                         class="block w-full rounded-xl border-neutral-200 bg-neutral-50 px-4 py-2.5 text-sm transition focus:border-indigo-500 focus:bg-white focus:ring-indigo-500" />
                 </form>
 
@@ -49,7 +49,7 @@ const isLive = (e) => e.status === 'published' && e.is_public;
                             <tr class="border-b border-neutral-100 text-xs uppercase tracking-wider text-neutral-400">
                                 <th class="px-6 py-4 font-semibold">Event</th>
                                 <th class="px-4 py-4 font-semibold">Owner</th>
-                                <th class="px-4 py-4 text-center font-semibold">Registries</th>
+                                <th class="px-4 py-4 text-center font-semibold">Wishlists</th>
                                 <th class="px-4 py-4 text-center font-semibold">Gifts</th>
                                 <th class="px-4 py-4 font-semibold">Status</th>
                                 <th class="px-6 py-4 text-right font-semibold">Actions</th>
@@ -86,13 +86,13 @@ const isLive = (e) => e.status === 'published' && e.is_public;
                 </div>
                 <Pager :paginator="events" />
 
-                <!-- Registries -->
-                <h3 class="mb-3 mt-10 text-sm font-bold uppercase tracking-widest text-neutral-400">Registries</h3>
+                <!-- Wishlists -->
+                <h3 class="mb-3 mt-10 text-sm font-bold uppercase tracking-widest text-neutral-400">Wishlists</h3>
                 <div class="overflow-x-auto rounded-3xl bg-white shadow-sm ring-1 ring-neutral-200/70">
                     <table class="w-full min-w-[680px] text-left text-sm">
                         <thead>
                             <tr class="border-b border-neutral-100 text-xs uppercase tracking-wider text-neutral-400">
-                                <th class="px-6 py-4 font-semibold">Registry</th>
+                                <th class="px-6 py-4 font-semibold">Wishlist</th>
                                 <th class="px-4 py-4 font-semibold">Owner</th>
                                 <th class="px-4 py-4 font-semibold">Event</th>
                                 <th class="px-4 py-4 text-center font-semibold">Items</th>
@@ -122,7 +122,7 @@ const isLive = (e) => e.status === 'published' && e.is_public;
                                 </td>
                             </tr>
                             <tr v-if="!wishlists.data.length">
-                                <td colspan="6" class="px-6 py-12 text-center text-neutral-400">No registries found.</td>
+                                <td colspan="6" class="px-6 py-12 text-center text-neutral-400">No wishlists found.</td>
                             </tr>
                         </tbody>
                     </table>

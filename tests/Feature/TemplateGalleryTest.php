@@ -15,8 +15,8 @@ class TemplateGalleryTest extends TestCase
             ->assertOk()
             ->assertInertia(fn ($page) => $page
                 ->component('Public/Templates/Index')
-                ->has('websiteTemplates', 6)
-                ->has('invitationTemplates', 6)
+                ->has('websiteTemplates', 11)
+                ->has('invitationTemplates', 11)
                 ->has('eventTypes', 8)
                 ->where('samples.wedding.title', 'Sarah & James')
                 ->where('samples.birthday.type', 'birthday')
@@ -55,6 +55,15 @@ class TemplateGalleryTest extends TestCase
         $this->get('/templates/website/festive?embed=1')
             ->assertOk()
             ->assertInertia(fn ($page) => $page->where('embed', true));
+    }
+
+    public function test_new_premium_website_templates_are_previewable(): void
+    {
+        foreach (['aurora', 'cinema', 'royal', 'prism', 'ember'] as $key) {
+            $this->get("/templates/website/{$key}")
+                ->assertOk()
+                ->assertInertia(fn ($page) => $page->where('templateKey', $key));
+        }
     }
 
     public function test_unknown_template_key_404s(): void

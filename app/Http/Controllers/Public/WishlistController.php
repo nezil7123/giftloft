@@ -9,7 +9,7 @@ use Inertia\Inertia;
 class WishlistController extends Controller
 {
     /**
-     * Display a public registry by slug. Only public, active wishlists are shown.
+     * Display a public wishlist by slug. Only public, active wishlists are shown.
      */
     public function show(string $slug)
     {

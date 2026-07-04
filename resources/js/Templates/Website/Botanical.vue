@@ -6,7 +6,7 @@ import { useReveal } from '../useReveal.js';
 import { useScrollFx } from '../useScrollFx.js';
 
 const props = defineProps({ event: { type: Object, required: true } });
-const { typeLabel, hosts, tagline, dressCode, rsvpNote, schedule, faqs, location, venueNote, travel, stay, mapUrl, gallery, coverPhoto, registryUrl, countdown, fmtFull, fmtDate } = useEventDisplay(() => props.event);
+const { typeLabel, hosts, tagline, dressCode, rsvpNote, schedule, faqs, location, venueNote, venuePhoto, travel, stay, mapUrl, gallery, coverPhoto, registryUrl, countdown, fmtFull, fmtDate } = useEventDisplay(() => props.event);
 useReveal();
 const root = ref(null);
 useScrollFx(root);
@@ -118,7 +118,7 @@ const marquee = computed(() => [hosts.value || props.event.title, '❧', fmtDate
         </section>
 
         <!-- VENUE — the garden gate -->
-        <section v-if="event.venue || venueNote || travel || stay" class="relative px-6 py-24 sm:px-10">
+        <section v-if="event.venue || venueNote || venuePhoto || travel || stay" class="relative px-6 py-24 sm:px-10">
             <span data-fx="parallax" data-speed="0.35" class="pointer-events-none absolute left-4 top-10 text-7xl opacity-15">🌿</span>
             <span data-fx="parallax" data-speed="0.5" class="pointer-events-none absolute bottom-10 right-6 text-7xl opacity-15">🍃</span>
             <div class="mx-auto max-w-4xl">
@@ -129,6 +129,9 @@ const marquee = computed(() => [hosts.value || props.event.title, '❧', fmtDate
                 <p data-reveal class="text-center font-serif text-sm uppercase tracking-[0.4em] text-emerald-600">The garden gate</p>
                 <h2 data-fx="chars" class="mt-4 text-center font-serif text-4xl text-emerald-950 sm:text-5xl">{{ event.venue || location }}</h2>
                 <p v-if="venueNote" data-reveal class="mx-auto mt-6 max-w-2xl text-center font-serif text-xl italic leading-8 text-emerald-800/75">{{ venueNote }}</p>
+                <div v-if="venuePhoto" data-reveal class="mx-auto mt-10 max-w-xl overflow-hidden rounded-[2.5rem] border border-emerald-900/10">
+                    <img :src="venuePhoto" alt="" loading="lazy" class="aspect-[16/10] w-full object-cover" />
+                </div>
                 <div data-fx="batch" class="mt-10 grid gap-5 sm:grid-cols-2">
                     <div v-if="travel" class="rounded-[2rem] border border-emerald-900/10 bg-white/70 p-7 backdrop-blur-sm">
                         <p class="font-serif text-xs uppercase tracking-[0.3em] text-emerald-600">Getting there</p>
@@ -167,7 +170,7 @@ const marquee = computed(() => [hosts.value || props.event.title, '❧', fmtDate
                 <div class="gl-aurora opacity-25"></div>
                 <div class="gl-float pointer-events-none absolute -left-6 -top-6 text-8xl opacity-20">🌿</div>
                 <div class="gl-float pointer-events-none absolute -bottom-8 -right-6 text-8xl opacity-20" style="animation-delay:3s">🍃</div>
-                <h3 class="relative font-serif text-4xl sm:text-5xl">Gift Registry</h3>
+                <h3 class="relative font-serif text-4xl sm:text-5xl">Wishlist</h3>
                 <p class="relative mx-auto mt-4 max-w-md text-emerald-100/80">{{ rsvpNote || 'Browse our wishlist and send a little something.' }}</p>
                 <Link :href="registryUrl" class="gl-btn relative mt-9 inline-flex items-center justify-center rounded-full bg-white px-9 py-4 text-sm font-semibold text-emerald-800 transition hover:scale-105">View the registry</Link>
             </div>

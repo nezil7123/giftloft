@@ -18,12 +18,12 @@ const itemsLeft = computed(() => props.wishlist.items.filter((i) => !isClaimed(i
 
 <template>
     <PublicLayout>
-        <Head :title="`${wishlist.name} — Registry`" />
+        <Head :title="`${wishlist.name} — Wishlist`" />
 
         <!-- Header -->
         <section class="bg-gradient-to-br from-indigo-700 via-violet-700 to-purple-800 pb-16 pt-32">
             <div class="mx-auto max-w-4xl px-6 text-center sm:px-10">
-                <p class="text-xs font-semibold uppercase tracking-[0.35em] text-white/70">Gift Registry</p>
+                <p class="text-xs font-semibold uppercase tracking-[0.35em] text-white/70">Wishlist</p>
                 <h1 class="mt-4 font-serif text-4xl font-bold text-white sm:text-6xl">{{ wishlist.name }}</h1>
                 <p v-if="wishlist.description" class="mx-auto mt-5 max-w-xl text-base leading-7 text-white/80">{{ wishlist.description }}</p>
                 <div class="mt-6 flex items-center justify-center gap-3 text-sm text-white/70">
@@ -69,7 +69,7 @@ const itemsLeft = computed(() => props.wishlist.items.filter((i) => !isClaimed(i
                 </div>
 
                 <div v-else class="rounded-2xl border border-dashed border-neutral-300 bg-white p-12 text-center">
-                    <p class="text-base font-bold text-neutral-900">This registry is still being prepared</p>
+                    <p class="text-base font-bold text-neutral-900">This wishlist is still being prepared</p>
                     <p class="mt-2 text-sm text-neutral-500">Check back soon — the gift list is on its way.</p>
                 </div>
 

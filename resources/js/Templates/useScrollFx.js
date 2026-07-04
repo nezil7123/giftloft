@@ -16,6 +16,8 @@ gsap.registerPlugin(ScrollTrigger);
  *   data-fx="hero-exit"                    — fades/lifts out as its <section> scrolls away
  *   data-fx="scale-in"                     — scrubbed scale 0.85→1 + fade as it enters
  *   data-fx="chars"                        — splits text into chars, staggered rise on enter
+ *   data-fx="words"                        — splits text into words, softer staggered rise
+ *   data-fx="img-reveal"                   — clip-path wipe reveal (put on the image's wrapper)
  *   data-fx="rotate"    data-turns="0.5"   — rotation scrubbed across the viewport pass
  *   data-fx="draw"                         — SVG path stroke draws itself on scrub (put on <svg>)
  *   data-fx="hscroll"                      — pinned section; child [data-fx-track] scrolls horizontally
@@ -67,6 +69,11 @@ export function useScrollFx(rootRef) {
 
                 // ── Character split reveal ──
                 root.querySelectorAll('[data-fx="chars"]').forEach((el) => {
+                    // Descend into a sole wrapping element (e.g. a gradient
+                    // bg-clip-text <span>) so its styling survives the split.
+                    while (el.childElementCount === 1 && el.firstElementChild.textContent.trim() === el.textContent.trim()) {
+                        el = el.firstElementChild;
+                    }
                     if (el.dataset.fxSplit) return;
                     el.dataset.fxSplit = '1';
                     const chars = [...el.textContent].map((c) => {
@@ -87,6 +94,59 @@ export function useScrollFx(rootRef) {
                         stagger: 0.028,
                         scrollTrigger: { trigger: el, start: 'top 88%', once: true },
                     });
+                });
+
+                // ── Word split reveal ──
+                root.querySelectorAll('[data-fx="words"]').forEach((el) => {
+                    if (el.dataset.fxSplit) return;
+                    el.dataset.fxSplit = '1';
+                    // Spaces must live OUTSIDE the inline-block spans (as plain
+                    // text nodes) or the browser collapses them and the words
+                    // run together. Line breaks are kept as <br>.
+                    const frag = document.createDocumentFragment();
+                    const words = [];
+                    el.textContent.trim().split(/\n+/).forEach((line, li) => {
+                        if (li) frag.append(document.createElement('br'));
+                        line.trim().split(/\s+/).forEach((w) => {
+                            const s = document.createElement('span');
+                            s.textContent = w;
+                            s.style.display = 'inline-block';
+                            words.push(s);
+                            frag.append(s, document.createTextNode(' '));
+                        });
+                    });
+                    el.textContent = '';
+                    el.append(frag);
+                    gsap.from(words, {
+                        y: 34,
+                        opacity: 0,
+                        duration: 0.85,
+                        ease: 'power3.out',
+                        stagger: 0.035,
+                        scrollTrigger: { trigger: el, start: 'top 86%', once: true },
+                    });
+                });
+
+                // ── Clip-path image wipe ──
+                root.querySelectorAll('[data-fx="img-reveal"]').forEach((el) => {
+                    const img = el.querySelector('img');
+                    // Match the element's own corner radius so the final clip
+                    // lines up exactly with its rounded-* class.
+                    const radius = getComputedStyle(el).borderRadius || '0px';
+                    gsap.fromTo(el,
+                        { clipPath: `inset(12% 12% 12% 12% round ${radius})` },
+                        {
+                            clipPath: `inset(0% 0% 0% 0% round ${radius})`,
+                            ease: 'none',
+                            scrollTrigger: { trigger: el, start: 'top 92%', end: 'top 45%', scrub: true },
+                        });
+                    if (img) {
+                        gsap.fromTo(img, { scale: 1.25 }, {
+                            scale: 1,
+                            ease: 'none',
+                            scrollTrigger: { trigger: el, start: 'top 92%', end: 'top 35%', scrub: true },
+                        });
+                    }
                 });
 
                 // ── Scroll-scrubbed rotation ──

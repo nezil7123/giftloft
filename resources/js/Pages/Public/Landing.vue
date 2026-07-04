@@ -18,7 +18,7 @@ const categories = [
     { name: 'Wedding',     emoji: '💍', blurb: 'Celebrate your love story with a site your guests will adore.', grad: 'from-rose-500 to-pink-700',     glow: 'hover:shadow-rose-500/40',    tint: 'text-rose-100/80' },
     { name: 'Birthday',    emoji: '🎂', blurb: 'Make every birthday legendary with your own party page.',       grad: 'from-amber-400 to-orange-600',  glow: 'hover:shadow-amber-500/40',   tint: 'text-amber-100/80' },
     { name: 'Engagement',  emoji: '💞', blurb: 'Announce the big yes and let everyone share the joy.',           grad: 'from-fuchsia-500 to-purple-700', glow: 'hover:shadow-fuchsia-500/40', tint: 'text-fuchsia-100/80' },
-    { name: 'Baby Shower', emoji: '👶', blurb: 'Welcome your little one with a sweet registry and page.',        grad: 'from-sky-400 to-blue-700',      glow: 'hover:shadow-sky-500/40',     tint: 'text-sky-100/80' },
+    { name: 'Baby Shower', emoji: '👶', blurb: 'Welcome your little one with a sweet wishlist and page.',         grad: 'from-sky-400 to-blue-700',      glow: 'hover:shadow-sky-500/40',     tint: 'text-sky-100/80' },
     { name: 'Anniversary', emoji: '💕', blurb: 'Mark the years together with a page full of memories.',          grad: 'from-red-400 to-rose-600',      glow: 'hover:shadow-rose-500/40',    tint: 'text-rose-100/80' },
     { name: 'Proposal',    emoji: '💜', blurb: 'Plan the perfect moment and share it beautifully.',              grad: 'from-violet-500 to-purple-800', glow: 'hover:shadow-violet-500/40',  tint: 'text-violet-100/80' },
     { name: 'Graduation',  emoji: '🎓', blurb: 'Celebrate the milestone and gather everyone to cheer.',          grad: 'from-indigo-500 to-blue-700',   glow: 'hover:shadow-indigo-500/40',  tint: 'text-indigo-100/80' },
@@ -79,7 +79,7 @@ onUnmounted(() => {
         <!-- ╔══════════════════════════════════════════╗ -->
         <!-- ║  HERO — cinematic mesh + grain           ║ -->
         <!-- ╚══════════════════════════════════════════╝ -->
-        <section class="gl-grain relative flex min-h-[100svh] items-center overflow-hidden bg-[#0d0b14]">
+        <section class="gl-grain relative flex h-[100svh] items-center overflow-hidden bg-[#0d0b14] pt-[var(--nav-offset,62px)]">
             <!-- Animated mesh + blobs -->
             <div class="pointer-events-none absolute inset-0">
                 <div class="gl-mesh-dark gl-mesh-anim absolute inset-0 opacity-80"></div>
@@ -94,17 +94,17 @@ onUnmounted(() => {
                     :style="`top:${s.top}%;left:${s.left}%;height:${s.size}px;width:${s.size}px;animation-delay:${s.delay}s`"></span>
             </div>
 
-            <div class="relative mx-auto w-full max-w-7xl px-6 py-32 sm:px-10 lg:px-12">
-                <div class="grid gap-16 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+            <div class="relative mx-auto w-full max-w-7xl px-6 py-8 sm:px-10 sm:py-10 lg:px-12">
+                <div class="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-14">
 
                     <!-- Left: copy -->
-                    <div class="space-y-9">
+                    <div class="space-y-5 sm:space-y-6">
                         <div class="gl-enter inline-flex items-center gap-2.5 rounded-full border border-white/15 bg-white/5 px-4 py-2 backdrop-blur-sm">
                             <span class="gl-pulse h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_3px_rgba(52,211,153,0.5)]"></span>
                             <span class="text-[11px] font-semibold uppercase tracking-[0.28em] text-white/70">Celebrating love, life & every moment</span>
                         </div>
 
-                        <h1 class="text-[clamp(3.5rem,8vw,6.75rem)] font-extrabold leading-[0.95] tracking-[-0.03em] text-white">
+                        <h1 class="text-[clamp(2.5rem,5.5vw,4.75rem)] font-extrabold leading-[0.98] tracking-[-0.03em] text-white">
                             <span class="gl-clip block">Create a</span>
                             <span class="gl-clip block" style="animation-delay:.12s">
                                 <span class="gl-pan bg-gradient-to-r from-indigo-300 via-violet-300 to-rose-300 bg-clip-text text-transparent">celebration</span>
@@ -112,36 +112,36 @@ onUnmounted(() => {
                             <span class="gl-clip block" style="animation-delay:.24s">they'll never<br class="hidden sm:block"/> forget.</span>
                         </h1>
 
-                        <p class="gl-enter gl-d2 max-w-[480px] text-lg leading-8 text-white/55">
-                            Beautiful event websites, curated gift registries, and a guest-friendly shop — all in one elegant platform.
+                        <p class="gl-enter gl-d2 max-w-[440px] text-base leading-7 text-white/55 sm:text-lg sm:leading-8">
+                            Beautiful event websites, curated wishlists, and a guest-friendly shop — all in one elegant platform.
                         </p>
 
-                        <div class="gl-enter gl-d3 flex flex-col gap-4 sm:flex-row sm:items-center">
-                            <Link href="/register" class="gl-btn inline-flex items-center justify-center gap-2 rounded-full bg-white px-8 py-3.5 text-sm font-bold text-neutral-900 shadow-xl shadow-black/30 transition hover:scale-105">
+                        <div class="gl-enter gl-d3 flex flex-col gap-3 sm:flex-row sm:items-center">
+                            <Link href="/register" class="gl-btn inline-flex items-center justify-center gap-2 rounded-full bg-white px-7 py-3 text-sm font-bold text-neutral-900 shadow-xl shadow-black/30 transition hover:scale-105">
                                 Get Started Free
                                 <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7l5 5m0 0l-5 5m5-5H6" />
                                 </svg>
                             </Link>
-                            <Link href="/templates" class="inline-flex items-center justify-center rounded-full border border-white/25 px-8 py-3.5 text-sm font-semibold text-white/80 backdrop-blur-sm transition hover:border-white/50 hover:text-white">
+                            <Link href="/templates" class="inline-flex items-center justify-center rounded-full border border-white/25 px-7 py-3 text-sm font-semibold text-white/80 backdrop-blur-sm transition hover:border-white/50 hover:text-white">
                                 Explore the designs
                             </Link>
                         </div>
 
                         <!-- Social proof -->
-                        <div class="gl-enter gl-d4 flex items-center gap-4 pt-1">
+                        <div class="gl-enter gl-d4 hidden items-center gap-4 pt-1 sm:flex">
                             <div class="flex -space-x-2.5">
-                                <div class="h-9 w-9 rounded-full ring-2 ring-neutral-950 bg-gradient-to-br from-rose-400 to-pink-600"></div>
-                                <div class="h-9 w-9 rounded-full ring-2 ring-neutral-950 bg-gradient-to-br from-violet-400 to-purple-600"></div>
-                                <div class="h-9 w-9 rounded-full ring-2 ring-neutral-950 bg-gradient-to-br from-amber-400 to-orange-500"></div>
-                                <div class="h-9 w-9 rounded-full ring-2 ring-neutral-950 bg-gradient-to-br from-emerald-400 to-teal-500"></div>
+                                <div class="h-8 w-8 rounded-full ring-2 ring-neutral-950 bg-gradient-to-br from-rose-400 to-pink-600"></div>
+                                <div class="h-8 w-8 rounded-full ring-2 ring-neutral-950 bg-gradient-to-br from-violet-400 to-purple-600"></div>
+                                <div class="h-8 w-8 rounded-full ring-2 ring-neutral-950 bg-gradient-to-br from-amber-400 to-orange-500"></div>
+                                <div class="h-8 w-8 rounded-full ring-2 ring-neutral-950 bg-gradient-to-br from-emerald-400 to-teal-500"></div>
                             </div>
                             <p class="text-sm text-white/45"><span class="font-semibold text-white/75">10,000+</span> events celebrated</p>
                         </div>
                     </div>
 
                     <!-- Right: floating glass UI mockup -->
-                    <div class="relative hidden h-[580px] lg:block">
+                    <div class="relative hidden h-[400px] lg:block xl:h-[460px]">
                         <!-- Main event card -->
                         <div class="gl-float-soft gl-pop absolute right-0 top-4 w-[290px] overflow-hidden rounded-3xl border border-white/15 bg-white/5 shadow-2xl backdrop-blur-xl">
                             <div class="bg-gradient-to-r from-rose-600/40 to-pink-600/30 px-6 py-4">
@@ -175,9 +175,9 @@ onUnmounted(() => {
                             </div>
                         </div>
 
-                        <!-- Registry card -->
+                        <!-- Wishlist card -->
                         <div class="gl-float-soft gl-pop gl-d2 absolute left-0 top-56 w-[240px] rounded-3xl border border-white/15 bg-white/5 p-5 shadow-2xl backdrop-blur-xl" style="animation-delay:2s,.3s">
-                            <p class="text-[10px] uppercase tracking-widest text-white/45">Gift Registry</p>
+                            <p class="text-[10px] uppercase tracking-widest text-white/45">Wishlist</p>
                             <div class="mt-3 space-y-2.5">
                                 <div class="flex items-center justify-between text-sm">
                                     <span class="text-white/70">🍽 Dinner set</span>
@@ -192,7 +192,7 @@ onUnmounted(() => {
                                     <span class="font-semibold text-white">₹45,000</span>
                                 </div>
                             </div>
-                            <div class="mt-4 rounded-full bg-indigo-600/50 py-2 text-center text-xs font-semibold text-white">View registry →</div>
+                            <div class="mt-4 rounded-full bg-indigo-600/50 py-2 text-center text-xs font-semibold text-white">View wishlist →</div>
                         </div>
 
                         <!-- Gift purchased -->
@@ -253,7 +253,7 @@ onUnmounted(() => {
 
                         <div class="mt-8 flex flex-wrap gap-2.5">
                             <span class="rounded-full bg-rose-50 px-3.5 py-1.5 text-xs font-semibold text-rose-600 ring-1 ring-rose-100">Events</span>
-                            <span class="rounded-full bg-indigo-50 px-3.5 py-1.5 text-xs font-semibold text-indigo-600 ring-1 ring-indigo-100">Registry</span>
+                            <span class="rounded-full bg-indigo-50 px-3.5 py-1.5 text-xs font-semibold text-indigo-600 ring-1 ring-indigo-100">Wishlist</span>
                             <span class="rounded-full bg-amber-50 px-3.5 py-1.5 text-xs font-semibold text-amber-600 ring-1 ring-amber-100">Shopping</span>
                             <span class="rounded-full bg-violet-50 px-3.5 py-1.5 text-xs font-semibold text-violet-600 ring-1 ring-violet-100">Surprises</span>
                             <span class="rounded-full bg-fuchsia-50 px-3.5 py-1.5 text-xs font-semibold text-fuchsia-600 ring-1 ring-fuchsia-100">Secrets</span>
@@ -312,14 +312,14 @@ onUnmounted(() => {
                         <!-- Track B (drifts down, offset start) -->
                         <div ref="trackB" class="space-y-4 pt-10 will-change-transform sm:space-y-5 sm:pt-16">
 
-                            <!-- 2 · Gift Registry & Wishlist (indigo) -->
+                            <!-- 2 · Wishlist (indigo) -->
                             <div data-animate class="pcard pcard-down" style="transition-delay:.1s">
                                 <div class="group rotate-[2deg] overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-50 via-white to-white p-6 shadow-[0_24px_60px_-24px_rgba(99,102,241,0.35)] ring-1 ring-indigo-100/80 transition-all duration-500 hover:rotate-0 hover:-translate-y-1">
                                     <div class="absolute -right-8 -top-8 h-24 w-24 rounded-full bg-indigo-200/40 blur-2xl transition-transform duration-700 group-hover:scale-150"></div>
                                     <div class="relative flex h-12 w-12 items-center justify-center rounded-2xl bg-indigo-100 text-indigo-500 ring-1 ring-indigo-200/70 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6">
                                         <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 11.25v8.25a1.5 1.5 0 01-1.5 1.5H5.25a1.5 1.5 0 01-1.5-1.5v-8.25M12 4.875A2.625 2.625 0 109.375 7.5H12m0-2.625V7.5m0-2.625A2.625 2.625 0 1114.625 7.5H12M3.75 7.5h16.5a1.5 1.5 0 011.5 1.5v.75H2.25V9a1.5 1.5 0 011.5-1.5zM12 7.5v12" /></svg>
                                     </div>
-                                    <p class="relative mt-5 text-[10px] font-bold uppercase tracking-[0.16em] text-indigo-500">Gift Registry &amp; Wishlist</p>
+                                    <p class="relative mt-5 text-[10px] font-bold uppercase tracking-[0.16em] text-indigo-500">Wishlist</p>
                                     <h3 class="relative mt-1.5 text-lg font-bold tracking-tight text-neutral-900">Wish It. List It. Get It.</h3>
                                 </div>
                             </div>
@@ -470,7 +470,7 @@ onUnmounted(() => {
                     </div>
                     <div data-animate class="group relative overflow-hidden rounded-[1.75rem] border border-white/10 bg-white/[0.04] p-10 backdrop-blur-sm transition hover:border-white/20 hover:bg-white/[0.06]" style="transition-delay:.1s">
                         <p class="bg-gradient-to-br from-rose-400 to-pink-600 bg-clip-text text-8xl font-black leading-none text-transparent">02</p>
-                        <h3 class="mt-5 text-xl font-bold text-white">Build your registry</h3>
+                        <h3 class="mt-5 text-xl font-bold text-white">Build your wishlist</h3>
                         <p class="mt-3 text-sm leading-7 text-white/50">Add gifts, experiences, and cash funds. Guests can browse and buy directly — no awkward conversations needed.</p>
                         <div class="gl-float absolute right-7 top-7 text-4xl opacity-10 transition group-hover:opacity-25" style="animation-delay:1.5s">🎁</div>
                         <div class="absolute -bottom-10 -right-10 h-36 w-36 rounded-full bg-rose-600/10 transition-all duration-500 group-hover:scale-[2]"></div>
@@ -499,7 +499,7 @@ onUnmounted(() => {
                 <div class="mt-14 grid gap-5 sm:grid-cols-3">
                     <div data-animate class="rounded-[1.75rem] bg-neutral-50 p-8 ring-1 ring-neutral-200/60 transition hover:-translate-y-1 hover:bg-white hover:shadow-xl" style="transition-delay:.04s">
                         <div class="flex text-base text-amber-400">★★★★★</div>
-                        <p class="mt-5 font-serif text-lg italic leading-8 text-neutral-700">"Our guests couldn't stop complimenting our event page. The registry was so easy to share and everyone loved shopping from it!"</p>
+                        <p class="mt-5 font-serif text-lg italic leading-8 text-neutral-700">"Our guests couldn't stop complimenting our event page. The wishlist was so easy to share and everyone loved shopping from it!"</p>
                         <div class="mt-6 flex items-center gap-3">
                             <div class="h-10 w-10 rounded-full bg-gradient-to-br from-rose-400 to-pink-600 shadow-sm"></div>
                             <div>
@@ -510,7 +510,7 @@ onUnmounted(() => {
                     </div>
                     <div data-animate class="rounded-[1.75rem] bg-neutral-50 p-8 ring-1 ring-neutral-200/60 transition hover:-translate-y-1 hover:bg-white hover:shadow-xl" style="transition-delay:.08s">
                         <div class="flex text-base text-amber-400">★★★★★</div>
-                        <p class="mt-5 font-serif text-lg italic leading-8 text-neutral-700">"Setting up our baby shower registry took 15 minutes. The design looked so professional and our family found it super easy to use."</p>
+                        <p class="mt-5 font-serif text-lg italic leading-8 text-neutral-700">"Setting up our baby shower wishlist took 15 minutes. The design looked so professional and our family found it super easy to use."</p>
                         <div class="mt-6 flex items-center gap-3">
                             <div class="h-10 w-10 rounded-full bg-gradient-to-br from-sky-400 to-blue-600 shadow-sm"></div>
                             <div>

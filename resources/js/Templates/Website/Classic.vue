@@ -6,7 +6,7 @@ import { useReveal } from '../useReveal.js';
 import { useScrollFx } from '../useScrollFx.js';
 
 const props = defineProps({ event: { type: Object, required: true } });
-const { typeLabel, hosts, tagline, dressCode, rsvpNote, schedule, faqs, location, venueNote, travel, stay, mapUrl, gallery, coverPhoto, registryUrl, countdown, fmtFull, fmtDate } = useEventDisplay(() => props.event);
+const { typeLabel, hosts, tagline, dressCode, rsvpNote, schedule, faqs, location, venueNote, venuePhoto, travel, stay, mapUrl, gallery, coverPhoto, registryUrl, countdown, fmtFull, fmtDate } = useEventDisplay(() => props.event);
 useReveal();
 const root = ref(null);
 useScrollFx(root);
@@ -119,14 +119,14 @@ const marquee = computed(() => [hosts.value || props.event.title, '✦', typeLab
         </section>
 
         <!-- VENUE — the setting -->
-        <section v-if="event.venue || venueNote || travel || stay" class="px-6 py-24 sm:px-10">
+        <section v-if="event.venue || venueNote || venuePhoto || travel || stay" class="px-6 py-24 sm:px-10">
             <div class="mx-auto max-w-6xl">
                 <p data-reveal class="text-center text-[11px] font-semibold uppercase tracking-[0.4em] text-amber-300/80">The setting</p>
                 <h2 data-fx="chars" class="mt-4 text-center font-serif text-4xl text-white sm:text-6xl">{{ event.venue || location }}</h2>
                 <div class="mt-14 grid items-start gap-6 lg:grid-cols-[1.1fr_0.9fr]">
-                    <div v-if="gallery[1] || coverPhoto" class="relative">
+                    <div v-if="venuePhoto || gallery[1] || coverPhoto" class="relative">
                         <div class="overflow-hidden rounded-[2rem] border border-amber-300/15">
-                            <img :src="gallery[1] || coverPhoto" alt="" data-fx="parallax" data-speed="0.12" loading="lazy" class="aspect-[16/11] w-full scale-125 object-cover" />
+                            <img :src="venuePhoto || gallery[1] || coverPhoto" alt="" data-fx="parallax" data-speed="0.12" loading="lazy" class="aspect-[16/11] w-full scale-125 object-cover" />
                         </div>
                         <div data-fx="rotate" data-turns="0.6" class="pointer-events-none absolute -right-8 -top-8 h-28 w-28 rounded-full border border-dashed border-amber-300/40"></div>
                     </div>
@@ -166,13 +166,13 @@ const marquee = computed(() => [hosts.value || props.event.title, '✦', typeLab
             </div>
         </section>
 
-        <!-- REGISTRY CTA -->
+        <!-- WISHLIST CTA -->
         <section class="px-6 py-28 sm:px-10">
             <div data-reveal="zoom" class="gl-border-glow gl-grain relative mx-auto max-w-5xl overflow-hidden rounded-[2.5rem]" style="--gl-bg:#12101c">
                 <div class="gl-aurora opacity-30"></div>
                 <div class="relative px-8 py-20 text-center">
                     <p class="text-[11px] font-semibold uppercase tracking-[0.4em] text-white/70">With love</p>
-                    <h3 data-fx="chars" class="mt-4 font-serif text-4xl text-white sm:text-5xl">Gift Registry</h3>
+                    <h3 data-fx="chars" class="mt-4 font-serif text-4xl text-white sm:text-5xl">Wishlist</h3>
                     <p class="mx-auto mt-4 max-w-md text-white/70">{{ rsvpNote || 'Browse our wishlist and send a thoughtful gift.' }}</p>
                     <Link :href="registryUrl" class="gl-btn mt-9 inline-flex items-center justify-center rounded-full bg-white px-9 py-4 text-sm font-semibold text-neutral-900 transition hover:scale-105">View the registry</Link>
                 </div>

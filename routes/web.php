@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\EventController as AdminEventController;
+use App\Http\Controllers\Admin\GiftAddonController as AdminGiftAddonController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
@@ -11,7 +12,10 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\EventDesignController;
 use App\Http\Controllers\EventPhotoController;
 use App\Http\Controllers\GiftController;
+use App\Http\Controllers\HelpController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Public\CartController;
 use App\Http\Controllers\Public\EventController as PublicEventController;
 use App\Http\Controllers\Public\ShopController;
 use App\Http\Controllers\Public\TemplateController as PublicTemplateController;
@@ -33,6 +37,12 @@ Route::get('/', function () {
 Route::get('/shop', [ShopController::class, 'index'])->name('public.shop');
 Route::get('/shop/{product}', [ShopController::class, 'show'])->name('public.shop.show');
 
+// Cart works for guests too — checkout is where login is required.
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+Route::post('/cart/{product}', [CartController::class, 'add'])->name('cart.add');
+Route::put('/cart/{product}', [CartController::class, 'update'])->name('cart.update');
+Route::delete('/cart/{product}', [CartController::class, 'remove'])->name('cart.remove');
+
 Route::get('/templates', [PublicTemplateController::class, 'index'])->name('public.templates');
 Route::get('/templates/website/{key}', [PublicTemplateController::class, 'website'])->name('public.templates.website');
 
@@ -42,6 +52,9 @@ Route::get('/r/{slug}', [PublicWishlistController::class, 'show'])->name('public
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    Route::get('/help', [HelpController::class, 'index'])->name('help.index');
+    Route::get('/help/{guide}', [HelpController::class, 'show'])->name('help.show');
 
     Route::resource('events', EventController::class);
     Route::get('events/{event}/design', [EventDesignController::class, 'edit'])->name('events.design.edit');
@@ -60,7 +73,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/checkout/item/{item}', [CheckoutController::class, 'show'])->name('checkout.show');
     Route::post('/checkout/item/{item}', [CheckoutController::class, 'store'])->name('checkout.store');
 
+    // Cart checkout — buy for yourself or send everything as a personal gift.
+    Route::get('/checkout/cart', [CheckoutController::class, 'cart'])->name('checkout.cart');
+    Route::post('/checkout/cart', [CheckoutController::class, 'storeCart'])->name('checkout.cart.store');
+
     Route::resource('gifts', GiftController::class)->only(['index', 'show']);
+    Route::resource('orders', OrderController::class)->only(['index', 'show']);
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -84,6 +102,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::put('/wishlists/{wishlist}/toggle', [AdminEventController::class, 'toggleWishlist'])->name('wishlists.toggle');
 
         Route::get('/orders', [AdminOrderController::class, 'index'])->name('orders.index');
+
+        Route::get('/gift-addons', [AdminGiftAddonController::class, 'index'])->name('gift-addons.index');
+        Route::post('/gift-addons', [AdminGiftAddonController::class, 'store'])->name('gift-addons.store');
+        Route::put('/gift-addons/{giftAddon}', [AdminGiftAddonController::class, 'update'])->name('gift-addons.update');
+        Route::delete('/gift-addons/{giftAddon}', [AdminGiftAddonController::class, 'destroy'])->name('gift-addons.destroy');
     });
 });
 

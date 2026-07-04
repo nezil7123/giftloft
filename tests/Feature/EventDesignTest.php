@@ -5,6 +5,8 @@ namespace Tests\Feature;
 use App\Models\Event;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class EventDesignTest extends TestCase
@@ -36,8 +38,8 @@ class EventDesignTest extends TestCase
             ->assertOk()
             ->assertInertia(fn ($page) => $page
                 ->component('Events/Design')
-                ->has('websiteTemplates', 6)
-                ->has('invitationTemplates', 6));
+                ->has('websiteTemplates', 11)
+                ->has('invitationTemplates', 11));
     }
 
     public function test_non_owner_cannot_open_design_editor(): void
@@ -69,6 +71,98 @@ class EventDesignTest extends TestCase
         $this->assertSame('bold', $event->invitation_template);
         $this->assertSame('Sarah & James', $event->template_data['hosts']);
         $this->assertCount(1, $event->template_data['schedule']);
+    }
+
+    public function test_owner_can_upload_a_venue_photo(): void
+    {
+        Storage::fake('public');
+        $user = User::factory()->create();
+        $event = $this->event($user);
+
+        $this->actingAs($user)->put("/events/{$event->id}/design", [
+            'template' => 'classic',
+            'invitation_template' => 'elegant',
+            'template_data' => ['venue_note' => 'A rooftop garden'],
+            'venue_photo' => UploadedFile::fake()->image('venue.jpg'),
+        ])->assertRedirect("/events/{$event->id}");
+
+        $event->refresh();
+        $this->assertNotNull($event->template_data['venue_photo_url']);
+        $this->assertStringStartsWith("/storage/events/{$event->id}/", $event->template_data['venue_photo_url']);
+        Storage::disk('public')->assertExists(str_replace('/storage/', '', $event->template_data['venue_photo_url']));
+    }
+
+    public function test_venue_photo_persists_across_unrelated_saves(): void
+    {
+        Storage::fake('public');
+        $user = User::factory()->create();
+        $event = $this->event($user);
+
+        $this->actingAs($user)->put("/events/{$event->id}/design", [
+            'template' => 'classic', 'invitation_template' => 'elegant',
+            'venue_photo' => UploadedFile::fake()->image('venue.jpg'),
+        ]);
+        $storedUrl = $event->fresh()->template_data['venue_photo_url'];
+
+        // Saving again without touching the photo should keep it intact.
+        $this->actingAs($user)->put("/events/{$event->id}/design", [
+            'template' => 'classic', 'invitation_template' => 'elegant',
+            'template_data' => ['hosts' => 'Sarah & James'],
+        ]);
+
+        $this->assertSame($storedUrl, $event->fresh()->template_data['venue_photo_url']);
+        $this->assertSame('Sarah & James', $event->fresh()->template_data['hosts']);
+    }
+
+    public function test_owner_can_remove_venue_photo(): void
+    {
+        Storage::fake('public');
+        $user = User::factory()->create();
+        $event = $this->event($user);
+
+        $this->actingAs($user)->put("/events/{$event->id}/design", [
+            'template' => 'classic', 'invitation_template' => 'elegant',
+            'venue_photo' => UploadedFile::fake()->image('venue.jpg'),
+        ]);
+        $path = str_replace('/storage/', '', $event->fresh()->template_data['venue_photo_url']);
+        Storage::disk('public')->assertExists($path);
+
+        $this->actingAs($user)->put("/events/{$event->id}/design", [
+            'template' => 'classic', 'invitation_template' => 'elegant',
+            'remove_venue_photo' => true,
+        ]);
+
+        $this->assertNull($event->fresh()->template_data['venue_photo_url']);
+        Storage::disk('public')->assertMissing($path);
+    }
+
+    public function test_venue_photo_must_be_an_image(): void
+    {
+        $user = User::factory()->create();
+        $event = $this->event($user);
+
+        $this->actingAs($user)->put("/events/{$event->id}/design", [
+            'template' => 'classic', 'invitation_template' => 'elegant',
+            'venue_photo' => UploadedFile::fake()->create('notes.pdf', 100),
+        ])->assertSessionHasErrors('venue_photo');
+    }
+
+    public function test_venue_map_url_is_saved_and_validated(): void
+    {
+        $user = User::factory()->create();
+        $event = $this->event($user);
+
+        $this->actingAs($user)->put("/events/{$event->id}/design", [
+            'template' => 'classic', 'invitation_template' => 'elegant',
+            'template_data' => ['venue_map_url' => 'https://maps.google.com/?q=Taj+Mahal'],
+        ])->assertRedirect("/events/{$event->id}");
+
+        $this->assertSame('https://maps.google.com/?q=Taj+Mahal', $event->fresh()->template_data['venue_map_url']);
+
+        $this->actingAs($user)->put("/events/{$event->id}/design", [
+            'template' => 'classic', 'invitation_template' => 'elegant',
+            'template_data' => ['venue_map_url' => 'not-a-url'],
+        ])->assertSessionHasErrors('template_data.venue_map_url');
     }
 
     public function test_invalid_template_key_is_rejected(): void

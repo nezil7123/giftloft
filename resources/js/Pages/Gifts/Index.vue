@@ -77,7 +77,7 @@ const statusBadge = {
                     <div class="text-4xl">🎁</div>
                     <p class="mt-4 text-lg font-bold text-neutral-900">{{ tab === 'sent' ? 'No gifts sent yet' : 'No gifts received yet' }}</p>
                     <p class="mx-auto mt-2 max-w-sm text-sm text-neutral-500">
-                        {{ tab === 'sent' ? 'Browse a registry and send a thoughtful gift to someone you love.' : 'Gifts your guests send will appear here.' }}
+                        {{ tab === 'sent' ? 'Browse a wishlist and send a thoughtful gift to someone you love.' : 'Gifts your guests send will appear here.' }}
                     </p>
                     <Link v-if="tab === 'sent'" href="/shop" class="mt-6 inline-flex items-center gap-2 rounded-full bg-indigo-600 px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-indigo-500">Browse the shop</Link>
                 </div>

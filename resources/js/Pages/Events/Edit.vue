@@ -24,7 +24,8 @@ const form = useForm({
     ends_at: toLocal(props.event.ends_at),
     location: props.event.location ?? '',
     venue: props.event.venue ?? '',
-    cover_photo_url: props.event.cover_photo_url ?? '',
+    cover_photo: null,
+    remove_cover_photo: false,
     is_public: Boolean(props.event.is_public),
     status: props.event.status ?? 'draft',
 });
@@ -52,7 +53,7 @@ const destroy = () => {
         <div class="py-10">
             <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
                 <form @submit.prevent="submit" class="rounded-2xl bg-white p-8 shadow-sm ring-1 ring-neutral-200/70">
-                    <EventFields :form="form" :event-types="eventTypes" />
+                    <EventFields :form="form" :event-types="eventTypes" :initial-cover-url="event.cover_photo_url" />
 
                     <div class="mt-8 flex items-center justify-between gap-3 border-t border-neutral-200 pt-6">
                         <button

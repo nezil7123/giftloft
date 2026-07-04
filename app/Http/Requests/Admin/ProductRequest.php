@@ -24,6 +24,7 @@ class ProductRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:150'],
             'category' => ['required', Rule::in(array_keys(Product::categories()))],
+            'gender' => ['nullable', Rule::in(array_keys(Product::genders()))],
             'price' => ['required', 'numeric', 'min:0', 'max:99999999'],
             'description' => ['nullable', 'string', 'max:1000'],
             'image_url' => ['nullable', 'url', 'max:2048'],

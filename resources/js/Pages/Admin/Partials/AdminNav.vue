@@ -4,6 +4,7 @@ import { Link } from '@inertiajs/vue3';
 const tabs = [
     { label: 'Overview',   icon: '📊', route: 'admin.dashboard',        current: 'admin.dashboard' },
     { label: 'Products',   icon: '🎁', route: 'admin.products.index',   current: 'admin.products.*' },
+    { label: 'Gift Addons', icon: '🎀', route: 'admin.gift-addons.index', current: 'admin.gift-addons.*' },
     { label: 'Users',      icon: '👥', route: 'admin.users.index',      current: 'admin.users.*' },
     { label: 'Moderation', icon: '🛡️', route: 'admin.moderation.index', current: 'admin.moderation.*' },
     { label: 'Orders',     icon: '💳', route: 'admin.orders.index',     current: 'admin.orders.*' },

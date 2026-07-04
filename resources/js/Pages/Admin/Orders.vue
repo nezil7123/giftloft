@@ -5,7 +5,8 @@ import Pager from './Partials/Pager.vue';
 import { Head } from '@inertiajs/vue3';
 
 defineProps({
-    orders: { type: Object, required: true }, // paginator
+    orders: { type: Object, required: true }, // paginator (wishlist-item gifts)
+    shopOrders: { type: Object, required: true }, // paginator (shop cart orders)
     totals: { type: Object, required: true },
 });
 
@@ -51,7 +52,8 @@ const statusBadge = {
                     </div>
                 </div>
 
-                <!-- Orders table -->
+                <!-- Wishlist-item gifts -->
+                <h3 class="mb-3 text-sm font-bold uppercase tracking-wide text-neutral-500">Wishlist gifts</h3>
                 <div class="overflow-x-auto rounded-3xl bg-white shadow-sm ring-1 ring-neutral-200/70">
                     <table class="w-full min-w-[820px] text-left text-sm">
                         <thead>
@@ -81,13 +83,53 @@ const statusBadge = {
                                 <td class="px-6 py-3.5 text-right font-bold tabular-nums text-neutral-900">{{ money(o.amount) }}</td>
                             </tr>
                             <tr v-if="!orders.data.length">
-                                <td colspan="7" class="px-6 py-12 text-center text-neutral-400">No orders yet.</td>
+                                <td colspan="7" class="px-6 py-12 text-center text-neutral-400">No wishlist gifts yet.</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-
                 <Pager :paginator="orders" />
+
+                <!-- Shop cart orders -->
+                <h3 class="mb-3 mt-10 text-sm font-bold uppercase tracking-wide text-neutral-500">Shop orders</h3>
+                <div class="overflow-x-auto rounded-3xl bg-white shadow-sm ring-1 ring-neutral-200/70">
+                    <table class="w-full min-w-[820px] text-left text-sm">
+                        <thead>
+                            <tr class="border-b border-neutral-100 text-xs uppercase tracking-wider text-neutral-400">
+                                <th class="px-6 py-4 font-semibold">Items</th>
+                                <th class="px-4 py-4 font-semibold">Buyer</th>
+                                <th class="px-4 py-4 font-semibold">Delivery</th>
+                                <th class="px-4 py-4 font-semibold">Payment ref</th>
+                                <th class="px-4 py-4 font-semibold">Date</th>
+                                <th class="px-4 py-4 font-semibold">Status</th>
+                                <th class="px-6 py-4 text-right font-semibold">Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-neutral-50">
+                            <tr v-for="o in shopOrders.data" :key="o.id" class="transition hover:bg-neutral-50/60">
+                                <td class="px-6 py-3.5 font-semibold text-neutral-900">
+                                    {{ o.items.map((i) => i.name).join(', ') }}
+                                    <p v-if="o.addons?.length" class="mt-0.5 text-xs font-normal text-neutral-400">+ {{ o.addons.map((a) => a.name).join(', ') }}</p>
+                                </td>
+                                <td class="px-4 py-3.5 text-neutral-700">{{ o.user?.name }}</td>
+                                <td class="px-4 py-3.5">
+                                    <span class="rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide" :class="o.is_gift ? 'bg-indigo-100 text-indigo-700' : 'bg-neutral-100 text-neutral-500'">{{ o.is_gift ? 'Gift 🎁' : 'Self' }}</span>
+                                    <p class="mt-1 text-xs text-neutral-400">{{ o.recipient_name }}</p>
+                                </td>
+                                <td class="px-4 py-3.5 font-mono text-xs text-neutral-400">{{ o.payment?.razorpay_payment_id ?? '—' }}</td>
+                                <td class="px-4 py-3.5 text-xs text-neutral-500">{{ fmtDate(o.created_at) }}</td>
+                                <td class="px-4 py-3.5">
+                                    <span class="rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide" :class="statusBadge[o.status] ?? 'bg-neutral-100 text-neutral-500'">{{ o.status }}</span>
+                                </td>
+                                <td class="px-6 py-3.5 text-right font-bold tabular-nums text-neutral-900">{{ money(o.total ?? o.subtotal) }}</td>
+                            </tr>
+                            <tr v-if="!shopOrders.data.length">
+                                <td colspan="7" class="px-6 py-12 text-center text-neutral-400">No shop orders yet.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <Pager :paginator="shopOrders" />
             </div>
         </div>
     </AuthenticatedLayout>

@@ -44,6 +44,7 @@ watch(
                             <NavLink :href="route('events.index')" :active="route().current('events.*')">Events</NavLink>
                             <NavLink :href="route('wishlists.index')" :active="route().current('wishlists.*')">Wishlists</NavLink>
                             <NavLink :href="route('gifts.index')" :active="route().current('gifts.*')">Gifts</NavLink>
+                            <NavLink :href="route('orders.index')" :active="route().current('orders.*')">Orders</NavLink>
                             <template v-if="$page.props.auth.user.is_admin">
                                 <NavLink :href="route('admin.dashboard')" :active="route().current('admin.*')">Admin</NavLink>
                             </template>
@@ -93,6 +94,7 @@ watch(
                     <ResponsiveNavLink :href="route('events.index')" :active="route().current('events.*')">Events</ResponsiveNavLink>
                     <ResponsiveNavLink :href="route('wishlists.index')" :active="route().current('wishlists.*')">Wishlists</ResponsiveNavLink>
                     <ResponsiveNavLink :href="route('gifts.index')" :active="route().current('gifts.*')">Gifts</ResponsiveNavLink>
+                    <ResponsiveNavLink :href="route('orders.index')" :active="route().current('orders.*')">Orders</ResponsiveNavLink>
                     <template v-if="$page.props.auth.user.is_admin">
                         <ResponsiveNavLink :href="route('admin.dashboard')" :active="route().current('admin.*')">Admin</ResponsiveNavLink>
                     </template>

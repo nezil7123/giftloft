@@ -13,7 +13,8 @@ const inputClass = 'mt-1.5 block w-full rounded-xl border-neutral-300 text-sm sh
 
 const accentBg = {
     indigo: 'bg-indigo-500', neutral: 'bg-neutral-700', rose: 'bg-rose-500',
-    amber: 'bg-amber-500', violet: 'bg-violet-500',
+    amber: 'bg-amber-500', violet: 'bg-violet-500', emerald: 'bg-emerald-500',
+    fuchsia: 'bg-fuchsia-500', sky: 'bg-sky-500', orange: 'bg-orange-500',
 };
 
 const d = props.event.template_data ?? {};
@@ -26,11 +27,14 @@ const form = useForm({
         dress_code: d.dress_code ?? '',
         rsvp_note: d.rsvp_note ?? '',
         venue_note: d.venue_note ?? '',
+        venue_map_url: d.venue_map_url ?? '',
         travel: d.travel ?? '',
         stay: d.stay ?? '',
         schedule: Array.isArray(d.schedule) ? [...d.schedule] : [],
         faqs: Array.isArray(d.faqs) ? [...d.faqs] : [],
     },
+    venue_photo: null,
+    remove_venue_photo: false,
 });
 
 const addSchedule = () => form.template_data.schedule.push({ time: '', title: '', detail: '' });
@@ -39,6 +43,21 @@ const addFaq = () => form.template_data.faqs.push({ question: '', answer: '' });
 const removeFaq = (i) => form.template_data.faqs.splice(i, 1);
 
 const submit = () => form.put(route('events.design.update', props.event.id));
+
+// ── Venue photo upload ────────────────────────────────────
+const venuePhotoPreview = ref(d.venue_photo_url ?? null);
+const onVenuePhotoChange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    form.venue_photo = file;
+    form.remove_venue_photo = false;
+    venuePhotoPreview.value = URL.createObjectURL(file);
+};
+const removeVenuePhoto = () => {
+    form.venue_photo = null;
+    form.remove_venue_photo = true;
+    venuePhotoPreview.value = null;
+};
 
 // ── Gallery photos ──────────────────────────────────────────────
 const photos = computed(() => props.event.photos ?? []);
@@ -210,20 +229,8 @@ const inviteUrl = props.event.share_code ? `/e/${props.event.share_code}/invitat
                             <input v-model="form.template_data.dress_code" type="text" :class="inputClass" placeholder="e.g. Cocktail / Black tie" />
                         </div>
                         <div>
-                            <label class="text-sm font-semibold text-neutral-800">Registry / RSVP note</label>
+                            <label class="text-sm font-semibold text-neutral-800">Wishlist / RSVP note</label>
                             <input v-model="form.template_data.rsvp_note" type="text" :class="inputClass" placeholder="A short note for the gifts section" />
-                        </div>
-                        <div class="sm:col-span-2">
-                            <label class="text-sm font-semibold text-neutral-800">About the venue</label>
-                            <textarea v-model="form.template_data.venue_note" rows="2" :class="inputClass" placeholder="e.g. A sea-facing heritage ballroom in the heart of Colaba…"></textarea>
-                        </div>
-                        <div>
-                            <label class="text-sm font-semibold text-neutral-800">Getting there</label>
-                            <textarea v-model="form.template_data.travel" rows="2" :class="inputClass" placeholder="Parking, transit, directions…"></textarea>
-                        </div>
-                        <div>
-                            <label class="text-sm font-semibold text-neutral-800">Where to stay</label>
-                            <textarea v-model="form.template_data.stay" rows="2" :class="inputClass" placeholder="Nearby hotels, room blocks…"></textarea>
                         </div>
                     </div>
 
@@ -260,6 +267,52 @@ const inviteUrl = props.event.share_code ? `/e/${props.event.share_code}/invitat
                             </div>
                         </div>
                         <p v-else class="mt-2 text-xs text-neutral-400">No FAQs yet.</p>
+                    </div>
+                </section>
+
+                <!-- Venue -->
+                <section class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-neutral-200/70 sm:p-8">
+                    <h3 class="text-base font-bold text-neutral-900">Venue</h3>
+                    <p class="text-sm text-neutral-500">A photo and directions guests can use to find the place.</p>
+
+                    <!-- Venue photo -->
+                    <div class="mt-5">
+                        <label class="text-sm font-semibold text-neutral-800">Venue photo</label>
+                        <div class="mt-1.5 flex items-center gap-4">
+                            <div class="h-20 w-32 shrink-0 overflow-hidden rounded-xl bg-neutral-100 ring-1 ring-neutral-200">
+                                <img v-if="venuePhotoPreview" :src="venuePhotoPreview" class="h-full w-full object-cover" alt="" />
+                                <div v-else class="flex h-full w-full items-center justify-center text-2xl text-neutral-300">🖼️</div>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <label class="inline-flex w-fit cursor-pointer items-center gap-2 rounded-full bg-neutral-900 px-4 py-2 text-xs font-semibold text-white transition hover:bg-neutral-800">
+                                    <input type="file" accept="image/*" class="hidden" @change="onVenuePhotoChange" />
+                                    {{ venuePhotoPreview ? 'Change photo' : 'Upload photo' }}
+                                </label>
+                                <button v-if="venuePhotoPreview" type="button" @click="removeVenuePhoto" class="text-xs font-semibold text-rose-600 hover:text-rose-700">Remove</button>
+                            </div>
+                        </div>
+                        <p v-if="form.errors.venue_photo" class="mt-1.5 text-sm text-rose-600">{{ form.errors.venue_photo }}</p>
+                    </div>
+
+                    <div class="mt-6 grid gap-5 sm:grid-cols-2">
+                        <div class="sm:col-span-2">
+                            <label class="text-sm font-semibold text-neutral-800">About the venue</label>
+                            <textarea v-model="form.template_data.venue_note" rows="2" :class="inputClass" placeholder="e.g. A sea-facing heritage ballroom in the heart of Colaba…"></textarea>
+                        </div>
+                        <div class="sm:col-span-2">
+                            <label class="text-sm font-semibold text-neutral-800">Google Maps link</label>
+                            <input v-model="form.template_data.venue_map_url" type="url" :class="inputClass" placeholder="https://maps.google.com/…" />
+                            <p class="mt-1.5 text-xs text-neutral-400">Optional — paste a link from Google Maps. Leave blank and we'll build a directions link from your venue name &amp; location automatically.</p>
+                            <p v-if="form.errors['template_data.venue_map_url']" class="mt-1.5 text-sm text-rose-600">{{ form.errors['template_data.venue_map_url'] }}</p>
+                        </div>
+                        <div>
+                            <label class="text-sm font-semibold text-neutral-800">How to reach</label>
+                            <textarea v-model="form.template_data.travel" rows="2" :class="inputClass" placeholder="Parking, transit, directions…"></textarea>
+                        </div>
+                        <div>
+                            <label class="text-sm font-semibold text-neutral-800">Where to stay</label>
+                            <textarea v-model="form.template_data.stay" rows="2" :class="inputClass" placeholder="Nearby hotels, room blocks…"></textarea>
+                        </div>
                     </div>
                 </section>
 

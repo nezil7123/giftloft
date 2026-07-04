@@ -26,7 +26,17 @@ class EventRequest extends FormRequest
             'description' => ['nullable', 'string', 'max:5000'],
             'location' => ['nullable', 'string', 'max:255'],
             'venue' => ['nullable', 'string', 'max:255'],
-            'cover_photo_url' => ['nullable', 'url', 'max:2048'],
+            'cover_photo' => ['nullable', 'image', 'mimes:jpeg,jpg,png,webp,gif', 'max:8192'],
+            'remove_cover_photo' => ['nullable', 'boolean'],
+
+            // Venue extras — merged into the event's template_data (see EventController).
+            'venue_note' => ['nullable', 'string', 'max:600'],
+            'venue_map_url' => ['nullable', 'url', 'max:2048'],
+            'travel' => ['nullable', 'string', 'max:600'],
+            'stay' => ['nullable', 'string', 'max:600'],
+            'venue_photo' => ['nullable', 'image', 'mimes:jpeg,jpg,png,webp,gif', 'max:8192'],
+            'remove_venue_photo' => ['nullable', 'boolean'],
+
             'starts_at' => ['nullable', 'date'],
             'ends_at' => ['nullable', 'date', 'after_or_equal:starts_at'],
             'is_public' => ['required', 'boolean'],

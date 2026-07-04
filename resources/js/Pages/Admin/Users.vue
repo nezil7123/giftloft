@@ -55,7 +55,7 @@ const destroy = () => {
                                 <th class="px-6 py-4 font-semibold">User</th>
                                 <th class="px-4 py-4 font-semibold">Joined</th>
                                 <th class="px-4 py-4 text-center font-semibold">Events</th>
-                                <th class="px-4 py-4 text-center font-semibold">Registries</th>
+                                <th class="px-4 py-4 text-center font-semibold">Wishlists</th>
                                 <th class="px-4 py-4 text-center font-semibold">Gifts sent</th>
                                 <th class="px-4 py-4 font-semibold">Role</th>
                                 <th class="px-6 py-4 text-right font-semibold">Actions</th>
@@ -108,7 +108,7 @@ const destroy = () => {
                 <div class="w-full max-w-sm rounded-3xl bg-white p-6 text-center shadow-2xl">
                     <p class="text-3xl">⚠️</p>
                     <h3 class="mt-3 text-base font-bold text-neutral-900">Delete {{ confirmingDelete.name }}?</h3>
-                    <p class="mt-2 text-sm text-neutral-500">This permanently removes their account, events, registries and gift history.</p>
+                    <p class="mt-2 text-sm text-neutral-500">This permanently removes their account, events, wishlists and gift history.</p>
                     <div class="mt-6 flex justify-center gap-3">
                         <button type="button" @click="confirmingDelete = null" class="rounded-full px-5 py-2.5 text-sm font-semibold text-neutral-600 transition hover:bg-neutral-100">Cancel</button>
                         <button type="button" @click="destroy" class="rounded-full bg-rose-600 px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-rose-500">Delete account</button>

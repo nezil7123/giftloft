@@ -43,7 +43,7 @@ const fmtDate = (iso) => (iso ? new Date(iso).toLocaleDateString(undefined, { da
                     <div class="gl-enter gl-d2 rounded-3xl bg-white p-6 shadow-sm ring-1 ring-neutral-200/70">
                         <p class="text-xs font-semibold uppercase tracking-widest text-neutral-400">Events</p>
                         <p class="mt-3 text-3xl font-black tabular-nums text-neutral-900">{{ stats.events }}</p>
-                        <p class="mt-1 text-xs text-neutral-400">{{ stats.published_events }} live · {{ stats.wishlists }} registries</p>
+                        <p class="mt-1 text-xs text-neutral-400">{{ stats.published_events }} live · {{ stats.wishlists }} wishlists</p>
                     </div>
                     <div class="gl-enter gl-d3 rounded-3xl bg-white p-6 shadow-sm ring-1 ring-neutral-200/70">
                         <p class="text-xs font-semibold uppercase tracking-widest text-neutral-400">Shop products</p>

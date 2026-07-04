@@ -48,7 +48,7 @@ class WishlistController extends Controller
     }
 
     /**
-     * Show the wishlist with its items (registry builder).
+     * Show the wishlist with its items (wishlist builder).
      */
     public function show(Wishlist $wishlist)
     {

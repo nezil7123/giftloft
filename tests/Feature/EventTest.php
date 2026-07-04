@@ -5,6 +5,8 @@ namespace Tests\Feature;
 use App\Models\Event;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class EventTest extends TestCase
@@ -50,6 +52,125 @@ class EventTest extends TestCase
         $this->assertSame($user->id, $event->user_id);
         $this->assertNotEmpty($event->share_code);
         $response->assertRedirect("/events/{$event->id}");
+    }
+
+    public function test_user_can_create_an_event_with_an_uploaded_cover_photo(): void
+    {
+        Storage::fake('public');
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->post('/events', [
+            'title' => 'Sarah & James',
+            'type' => 'wedding',
+            'is_public' => true,
+            'status' => 'draft',
+            'cover_photo' => UploadedFile::fake()->image('cover.jpg'),
+        ]);
+
+        $event = Event::first();
+        $response->assertRedirect("/events/{$event->id}");
+        $this->assertNotNull($event->cover_photo_url);
+        $this->assertStringStartsWith("/storage/events/{$event->id}/", $event->cover_photo_url);
+        Storage::disk('public')->assertExists(str_replace('/storage/', '', $event->cover_photo_url));
+    }
+
+    public function test_cover_photo_must_be_an_image(): void
+    {
+        Storage::fake('public');
+        $user = User::factory()->create();
+
+        $this->actingAs($user)->post('/events', [
+            'title' => 'Sarah & James',
+            'type' => 'wedding',
+            'is_public' => true,
+            'status' => 'draft',
+            'cover_photo' => UploadedFile::fake()->create('notes.pdf', 100),
+        ])->assertSessionHasErrors(['cover_photo']);
+    }
+
+    public function test_owner_can_replace_and_remove_cover_photo(): void
+    {
+        Storage::fake('public');
+        $user = User::factory()->create();
+        $event = Event::create(['user_id' => $user->id, 'title' => 'X', 'type' => 'wedding', 'is_public' => true, 'status' => 'draft']);
+
+        $this->actingAs($user)->put("/events/{$event->id}", [
+            'title' => 'X', 'type' => 'wedding', 'is_public' => true, 'status' => 'draft',
+            'cover_photo' => UploadedFile::fake()->image('cover.jpg'),
+        ])->assertRedirect("/events/{$event->id}");
+
+        $event->refresh();
+        $this->assertNotNull($event->cover_photo_url);
+        $firstPath = str_replace('/storage/', '', $event->cover_photo_url);
+        Storage::disk('public')->assertExists($firstPath);
+
+        // Removing clears the URL and deletes the file.
+        $this->actingAs($user)->put("/events/{$event->id}", [
+            'title' => 'X', 'type' => 'wedding', 'is_public' => true, 'status' => 'draft',
+            'remove_cover_photo' => true,
+        ])->assertRedirect("/events/{$event->id}");
+
+        $this->assertNull($event->fresh()->cover_photo_url);
+        Storage::disk('public')->assertMissing($firstPath);
+    }
+
+    public function test_user_can_create_an_event_with_venue_details(): void
+    {
+        Storage::fake('public');
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->post('/events', [
+            'title' => 'Sarah & James',
+            'type' => 'wedding',
+            'venue' => 'The Taj Mahal Palace',
+            'location' => 'Mumbai',
+            'is_public' => true,
+            'status' => 'draft',
+            'venue_note' => 'A sea-facing heritage ballroom',
+            'venue_map_url' => 'https://maps.google.com/?q=Taj+Mahal+Palace',
+            'travel' => 'Nearest station is Churchgate',
+            'stay' => 'Try the Trident nearby',
+            'venue_photo' => UploadedFile::fake()->image('venue.jpg'),
+        ]);
+
+        $event = Event::first();
+        $response->assertRedirect("/events/{$event->id}");
+        $this->assertSame('A sea-facing heritage ballroom', $event->template_data['venue_note']);
+        $this->assertSame('https://maps.google.com/?q=Taj+Mahal+Palace', $event->template_data['venue_map_url']);
+        $this->assertSame('Nearest station is Churchgate', $event->template_data['travel']);
+        $this->assertSame('Try the Trident nearby', $event->template_data['stay']);
+        $this->assertNotNull($event->template_data['venue_photo_url']);
+        Storage::disk('public')->assertExists(str_replace('/storage/', '', $event->template_data['venue_photo_url']));
+    }
+
+    public function test_updating_an_event_does_not_wipe_out_design_editor_content(): void
+    {
+        $user = User::factory()->create();
+        $event = Event::create([
+            'user_id' => $user->id, 'title' => 'X', 'type' => 'wedding', 'is_public' => true, 'status' => 'draft',
+            'template_data' => ['hosts' => 'Sarah & James', 'schedule' => [['time' => '4 PM', 'title' => 'Ceremony']]],
+        ]);
+
+        // A basic profile edit that doesn't touch venue fields at all.
+        $this->actingAs($user)->put("/events/{$event->id}", [
+            'title' => 'Updated Title', 'type' => 'wedding', 'is_public' => true, 'status' => 'draft',
+        ])->assertRedirect("/events/{$event->id}");
+
+        $fresh = $event->fresh();
+        $this->assertSame('Updated Title', $fresh->title);
+        $this->assertSame('Sarah & James', $fresh->template_data['hosts']);
+        $this->assertCount(1, $fresh->template_data['schedule']);
+
+        // Now update just the venue note — schedule/hosts must still survive.
+        $this->actingAs($user)->put("/events/{$event->id}", [
+            'title' => 'Updated Title', 'type' => 'wedding', 'is_public' => true, 'status' => 'draft',
+            'venue_note' => 'Updated venue note',
+        ]);
+
+        $fresh = $event->fresh();
+        $this->assertSame('Updated venue note', $fresh->template_data['venue_note']);
+        $this->assertSame('Sarah & James', $fresh->template_data['hosts']);
+        $this->assertCount(1, $fresh->template_data['schedule']);
     }
 
     public function test_event_creation_is_validated(): void

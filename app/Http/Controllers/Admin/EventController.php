@@ -11,7 +11,7 @@ use Inertia\Inertia;
 class EventController extends Controller
 {
     /**
-     * Moderation overview — all events and registries on the platform.
+     * Moderation overview — all events and wishlists on the platform.
      */
     public function index(Request $request)
     {
@@ -61,12 +61,12 @@ class EventController extends Controller
     }
 
     /**
-     * Toggle a registry's active state.
+     * Toggle a wishlist's active state.
      */
     public function toggleWishlist(Wishlist $wishlist)
     {
         $wishlist->update(['active' => ! $wishlist->active]);
 
-        return back()->with('success', $wishlist->active ? 'Registry reactivated.' : 'Registry deactivated.');
+        return back()->with('success', $wishlist->active ? 'Wishlist reactivated.' : 'Wishlist deactivated.');
     }
 }

@@ -15,6 +15,7 @@ class Product extends Model
         'slug',
         'description',
         'category',
+        'gender',
         'price',
         'image_url',
         'product_url',
@@ -55,6 +56,25 @@ class Product extends Model
             'baby' => 'Baby gifts',
             'home' => 'Home & living',
             'experiences' => 'Experiences',
+            'fashion' => 'Fashion',
+            'jewellery' => 'Jewellery',
+            'gadgets' => 'Gadgets',
+        ];
+    }
+
+    /**
+     * Who a product is aimed at — used as a shop filter facet. Products with
+     * a null/'unisex' gender are shown regardless of the active gender filter.
+     *
+     * @return array<string, string>
+     */
+    public static function genders(): array
+    {
+        return [
+            'male' => 'Men',
+            'female' => 'Women',
+            'kids' => 'Kids',
+            'unisex' => 'Unisex',
         ];
     }
 }

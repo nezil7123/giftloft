@@ -67,7 +67,7 @@ const submitItem = () => {
 };
 
 const deleteItem = (item) => {
-    if (confirm(`Remove "${item.title}" from this registry?`)) {
+    if (confirm(`Remove "${item.title}" from this wishlist?`)) {
         router.delete(route('wishlists.items.destroy', [props.wishlist.id, item.id]), { preserveScroll: true });
     }
 };

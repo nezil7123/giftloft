@@ -22,7 +22,7 @@ const inputClass =
         <!-- Description -->
         <div>
             <label class="text-sm font-semibold text-neutral-800">Description</label>
-            <textarea v-model="form.description" rows="3" :class="inputClass" placeholder="What is this registry for?"></textarea>
+            <textarea v-model="form.description" rows="3" :class="inputClass" placeholder="What is this wishlist for?"></textarea>
             <InputError class="mt-1.5" :message="form.errors.description" />
         </div>
 

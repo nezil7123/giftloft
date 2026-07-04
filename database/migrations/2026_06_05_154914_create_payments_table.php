@@ -14,7 +14,9 @@ return new class extends Migration
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('gift_id')->nullable()->constrained()->cascadeOnDelete();
+            // gifts ↔ payments reference each other; the FK for this column is
+            // added in create_gifts_table (which runs after both tables exist).
+            $table->foreignId('gift_id')->nullable()->index();
             $table->string('razorpay_payment_id')->nullable();
             $table->string('razorpay_order_id')->nullable();
             $table->string('razorpay_signature')->nullable();

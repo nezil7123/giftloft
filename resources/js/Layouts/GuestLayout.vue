@@ -37,7 +37,7 @@ import { Link } from '@inertiajs/vue3';
                         Every celebration,<br/>
                         <span class="gl-pan bg-gradient-to-r from-indigo-300 via-violet-300 to-rose-300 bg-clip-text text-transparent">beautifully done.</span>
                     </h2>
-                    <p class="mt-5 max-w-sm text-sm leading-7 text-white/50">Event websites, invitations and gift registries your guests will adore — live in minutes.</p>
+                    <p class="mt-5 max-w-sm text-sm leading-7 text-white/50">Event websites, invitations and wishlists your guests will adore — live in minutes.</p>
                 </div>
 
                 <!-- floating product cards -->

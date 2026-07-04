@@ -6,7 +6,7 @@ import { useReveal } from '../useReveal.js';
 import { useScrollFx } from '../useScrollFx.js';
 
 const props = defineProps({ event: { type: Object, required: true } });
-const { typeLabel, hosts, tagline, dressCode, rsvpNote, schedule, faqs, location, venueNote, travel, stay, mapUrl, gallery, coverPhoto, registryUrl, countdown, fmtFull, fmtDate } = useEventDisplay(() => props.event);
+const { typeLabel, hosts, tagline, dressCode, rsvpNote, schedule, faqs, location, venueNote, venuePhoto, travel, stay, mapUrl, gallery, coverPhoto, registryUrl, countdown, fmtFull, fmtDate } = useEventDisplay(() => props.event);
 useReveal();
 const root = ref(null);
 useScrollFx(root);
@@ -120,7 +120,7 @@ const marquee = computed(() => [hosts.value || props.event.title, '✦', fmtDate
         </section>
 
         <!-- VENUE — under these stars -->
-        <section v-if="event.venue || venueNote || travel || stay" class="px-6 py-24 sm:px-10">
+        <section v-if="event.venue || venueNote || venuePhoto || travel || stay" class="px-6 py-24 sm:px-10">
             <div class="mx-auto max-w-5xl">
                 <svg data-fx="draw" viewBox="0 0 400 80" fill="none" class="mx-auto mb-10 h-16 w-full max-w-lg text-amber-300/50">
                     <path d="M20 60 L90 25 L160 45 L230 15 L300 40 L380 20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
@@ -129,6 +129,9 @@ const marquee = computed(() => [hosts.value || props.event.title, '✦', fmtDate
                 <p data-reveal class="text-center text-xs font-semibold uppercase tracking-[0.4em] text-amber-300/80">Under these stars</p>
                 <h2 data-fx="chars" class="mt-4 text-center font-serif text-4xl text-white sm:text-5xl">{{ event.venue || location }}</h2>
                 <p v-if="venueNote" data-reveal class="mx-auto mt-6 max-w-2xl text-center font-serif text-xl font-light italic leading-8 text-amber-100/70">{{ venueNote }}</p>
+                <div v-if="venuePhoto" data-reveal class="mx-auto mt-10 max-w-xl overflow-hidden rounded-[2rem] border border-amber-300/15">
+                    <img :src="venuePhoto" alt="" loading="lazy" class="aspect-[16/10] w-full object-cover" />
+                </div>
                 <div data-fx="batch" class="mt-10 grid gap-5 sm:grid-cols-2">
                     <div v-if="travel" class="rounded-3xl border border-white/10 bg-white/[0.03] p-7 transition hover:border-amber-300/30">
                         <p class="text-xs font-semibold uppercase tracking-[0.3em] text-amber-300/70">Getting there</p>
@@ -164,7 +167,7 @@ const marquee = computed(() => [hosts.value || props.event.title, '✦', fmtDate
         <section class="px-6 py-28 sm:px-10">
             <div data-reveal="zoom" class="gl-border-glow gl-grain relative mx-auto max-w-5xl overflow-hidden rounded-[2.5rem] px-8 py-20 text-center" style="--gl-bg:#0c0917">
                 <div class="gl-pan pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(251,191,36,0.15),transparent_65%)]"></div>
-                <h3 class="relative font-serif text-4xl text-white sm:text-5xl">Gift Registry</h3>
+                <h3 class="relative font-serif text-4xl text-white sm:text-5xl">Wishlist</h3>
                 <p class="relative mx-auto mt-4 max-w-md text-neutral-300">{{ rsvpNote || 'Browse our wishlist and send a thoughtful gift.' }}</p>
                 <Link :href="registryUrl" class="gl-btn relative mt-9 inline-flex items-center justify-center rounded-full bg-amber-300 px-9 py-4 text-sm font-semibold text-neutral-950 transition hover:scale-105">View the registry</Link>
             </div>

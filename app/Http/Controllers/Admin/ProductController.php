@@ -30,6 +30,7 @@ class ProductController extends Controller
         return Inertia::render('Admin/Products', [
             'products' => $products,
             'categories' => Product::categories(),
+            'genders' => Product::genders(),
             'filters' => ['q' => $q],
         ]);
     }
@@ -49,7 +50,7 @@ class ProductController extends Controller
     }
 
     /**
-     * Update a product (slug stays stable so registry links keep working).
+     * Update a product (slug stays stable so wishlist links keep working).
      */
     public function update(ProductRequest $request, Product $product)
     {

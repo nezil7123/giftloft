@@ -33,7 +33,7 @@ const hasEvents = computed(() => props.events.length > 0);
             <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                     <h2 class="text-xl font-bold text-neutral-900">My Events</h2>
-                    <p class="text-sm text-neutral-500">Manage your event pages and gift registries.</p>
+                    <p class="text-sm text-neutral-500">Manage your event pages and wishlists.</p>
                 </div>
                 <Link
                     :href="route('events.create')"

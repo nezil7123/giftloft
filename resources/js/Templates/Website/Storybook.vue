@@ -6,7 +6,7 @@ import { useReveal } from '../useReveal.js';
 import { useScrollFx } from '../useScrollFx.js';
 
 const props = defineProps({ event: { type: Object, required: true } });
-const { typeLabel, hosts, tagline, dressCode, rsvpNote, schedule, faqs, location, venueNote, travel, stay, mapUrl, gallery, coverPhoto, registryUrl, countdown, fmtFull, fmtDate } = useEventDisplay(() => props.event);
+const { typeLabel, hosts, tagline, dressCode, rsvpNote, schedule, faqs, location, venueNote, venuePhoto, travel, stay, mapUrl, gallery, coverPhoto, registryUrl, countdown, fmtFull, fmtDate } = useEventDisplay(() => props.event);
 useReveal();
 const root = ref(null);
 useScrollFx(root);
@@ -88,10 +88,13 @@ const stack = computed(() => [coverPhoto.value, ...gallery.value].filter(Boolean
             </div>
 
             <!-- The place -->
-            <div v-if="event.venue || venueNote || travel || stay" data-reveal class="-rotate-[0.5deg] rounded-xl border-[10px] border-white bg-white p-8 shadow-xl transition hover:rotate-0 sm:p-10">
+            <div v-if="event.venue || venueNote || venuePhoto || travel || stay" data-reveal class="-rotate-[0.5deg] rounded-xl border-[10px] border-white bg-white p-8 shadow-xl transition hover:rotate-0 sm:p-10">
                 <p class="font-serif text-sm uppercase tracking-[0.25em] text-rose-400">The place</p>
                 <p class="mt-3 font-serif text-2xl font-bold text-neutral-900">📍 {{ event.venue || location }}</p>
                 <p v-if="venueNote" class="mt-3 font-serif text-lg leading-8 text-neutral-600">{{ venueNote }}</p>
+                <div v-if="venuePhoto" class="mx-auto mt-5 max-w-md -rotate-1 overflow-hidden rounded-lg border-[6px] border-white shadow-md">
+                    <img :src="venuePhoto" alt="" loading="lazy" class="aspect-[4/3] w-full object-cover" />
+                </div>
                 <div data-fx="batch" class="mt-6 grid gap-4 sm:grid-cols-2">
                     <div v-if="travel" class="-rotate-1 rounded-lg bg-amber-50 p-5 shadow-sm">
                         <p class="text-xs font-bold uppercase tracking-widest text-amber-700">🚗 Getting there</p>
@@ -131,7 +134,7 @@ const stack = computed(() => [coverPhoto.value, ...gallery.value].filter(Boolean
             <div data-reveal="zoom" class="rounded-2xl bg-rose-500 p-8 text-center text-white shadow-xl sm:p-12">
                 <p class="font-serif text-4xl">Our Wishlist 🎁</p>
                 <p class="mx-auto mt-3 max-w-md text-rose-100">{{ rsvpNote || 'A few things that would make us smile.' }}</p>
-                <Link :href="registryUrl" class="gl-btn mt-7 inline-flex rounded-full bg-white px-8 py-3.5 text-sm font-semibold text-rose-600 transition hover:scale-105">Open the registry</Link>
+                <Link :href="registryUrl" class="gl-btn mt-7 inline-flex rounded-full bg-white px-8 py-3.5 text-sm font-semibold text-rose-600 transition hover:scale-105">Open the wishlist</Link>
             </div>
 
             <p class="text-center font-serif text-base italic text-neutral-400">Made with love by {{ event.user?.name }} · Gift Loft</p>

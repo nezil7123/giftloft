@@ -9,6 +9,7 @@ import { ref } from 'vue';
 const props = defineProps({
     products: { type: Object, required: true }, // paginator
     categories: { type: Object, required: true },
+    genders: { type: Object, required: true },
     filters: { type: Object, default: () => ({}) },
 });
 
@@ -27,7 +28,7 @@ const search = () => router.get(route('admin.products.index'), q.value ? { q: q.
 // ── Create / edit modal ──
 const editing = ref(null); // null = closed, 'new' = create, product object = edit
 const form = useForm({
-    name: '', category: 'wedding', price: '', description: '',
+    name: '', category: 'wedding', gender: 'unisex', price: '', description: '',
     image_url: '', product_url: '', emoji: '🎁', accent: 'indigo',
     is_active: true, sort_order: null,
 });
@@ -40,7 +41,7 @@ const openCreate = () => {
 const openEdit = (p) => {
     form.clearErrors();
     Object.assign(form, {
-        name: p.name, category: p.category, price: p.price, description: p.description ?? '',
+        name: p.name, category: p.category, gender: p.gender ?? 'unisex', price: p.price, description: p.description ?? '',
         image_url: p.image_url ?? '', product_url: p.product_url ?? '', emoji: p.emoji ?? '🎁',
         accent: p.accent ?? 'indigo', is_active: !!p.is_active, sort_order: p.sort_order,
     });
@@ -103,6 +104,7 @@ const labelClass = 'mb-1.5 block text-sm font-medium text-neutral-700';
                             <tr class="border-b border-neutral-100 text-xs uppercase tracking-wider text-neutral-400">
                                 <th class="px-6 py-4 font-semibold">Product</th>
                                 <th class="px-4 py-4 font-semibold">Category</th>
+                                <th class="px-4 py-4 font-semibold">Gender</th>
                                 <th class="px-4 py-4 font-semibold">Price</th>
                                 <th class="px-4 py-4 font-semibold">Status</th>
                                 <th class="px-6 py-4 text-right font-semibold">Actions</th>
@@ -123,6 +125,7 @@ const labelClass = 'mb-1.5 block text-sm font-medium text-neutral-700';
                                     </div>
                                 </td>
                                 <td class="px-4 py-3.5 text-neutral-600">{{ categories[p.category] ?? p.category }}</td>
+                                <td class="px-4 py-3.5 text-neutral-500">{{ genders[p.gender] ?? '—' }}</td>
                                 <td class="px-4 py-3.5 font-semibold tabular-nums text-neutral-900">{{ money(p.price) }}</td>
                                 <td class="px-4 py-3.5">
                                     <button type="button" @click="toggleActive(p)"
@@ -137,7 +140,7 @@ const labelClass = 'mb-1.5 block text-sm font-medium text-neutral-700';
                                 </td>
                             </tr>
                             <tr v-if="!products.data.length">
-                                <td colspan="5" class="px-6 py-12 text-center text-neutral-400">No products found.</td>
+                                <td colspan="6" class="px-6 py-12 text-center text-neutral-400">No products found.</td>
                             </tr>
                         </tbody>
                     </table>
@@ -173,10 +176,17 @@ const labelClass = 'mb-1.5 block text-sm font-medium text-neutral-700';
                                 <InputError class="mt-1" :message="form.errors.category" />
                             </div>
                             <div>
-                                <label :class="labelClass">Price (₹)</label>
-                                <input v-model="form.price" type="number" min="0" step="0.01" :class="inputClass" required />
-                                <InputError class="mt-1" :message="form.errors.price" />
+                                <label :class="labelClass">Gender</label>
+                                <select v-model="form.gender" :class="inputClass">
+                                    <option v-for="(label, key) in genders" :key="key" :value="key">{{ label }}</option>
+                                </select>
+                                <InputError class="mt-1" :message="form.errors.gender" />
                             </div>
+                        </div>
+                        <div>
+                            <label :class="labelClass">Price (₹)</label>
+                            <input v-model="form.price" type="number" min="0" step="0.01" :class="inputClass" required />
+                            <InputError class="mt-1" :message="form.errors.price" />
                         </div>
                         <div>
                             <label :class="labelClass">Description</label>
@@ -231,7 +241,7 @@ const labelClass = 'mb-1.5 block text-sm font-medium text-neutral-700';
                 <div class="w-full max-w-sm rounded-3xl bg-white p-6 text-center shadow-2xl">
                     <p class="text-3xl">🗑️</p>
                     <h3 class="mt-3 text-base font-bold text-neutral-900">Delete “{{ confirmingDelete.name }}”?</h3>
-                    <p class="mt-2 text-sm text-neutral-500">This removes it from the shop permanently. Registry items already added are not affected.</p>
+                    <p class="mt-2 text-sm text-neutral-500">This removes it from the shop permanently. Wishlist items already added are not affected.</p>
                     <div class="mt-6 flex justify-center gap-3">
                         <button type="button" @click="confirmingDelete = null" class="rounded-full px-5 py-2.5 text-sm font-semibold text-neutral-600 transition hover:bg-neutral-100">Cancel</button>
                         <button type="button" @click="destroy" class="rounded-full bg-rose-600 px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-rose-500">Delete</button>

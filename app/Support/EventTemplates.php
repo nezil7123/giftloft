@@ -26,6 +26,11 @@ class EventTemplates
             ['key' => 'botanical', 'name' => 'Botanical Garden',    'description' => 'Soft cream and greenery for an organic, natural feel.', 'accent' => 'emerald'],
             ['key' => 'midnight',  'name' => 'Midnight Luxe',       'description' => 'Dramatic dark canvas with gold accents for evening affairs.', 'accent' => 'amber'],
             ['key' => 'storybook', 'name' => 'Storybook',           'description' => 'Warm scrapbook style with taped photos and handwritten charm.', 'accent' => 'rose'],
+            ['key' => 'aurora',    'name' => 'Aurora Nights',       'description' => 'Northern-lights ribbons, glass cards and kinetic type under the stars.', 'accent' => 'sky'],
+            ['key' => 'cinema',    'name' => 'Cinéma',              'description' => 'Black-and-white editorial with a pinned horizontal photo reel.', 'accent' => 'neutral'],
+            ['key' => 'royal',     'name' => 'Royal Heritage',      'description' => 'Emerald and gold grandeur — a hand-drawn crest and arched gallery frames.', 'accent' => 'emerald'],
+            ['key' => 'prism',     'name' => 'Prism',               'description' => 'Light glassmorphism with floating colour and a playful bento layout.', 'accent' => 'violet'],
+            ['key' => 'ember',     'name' => 'Golden Hour',         'description' => 'Sun-washed terracotta warmth with counter-scrolling film-strip galleries.', 'accent' => 'orange'],
         ];
     }
 
@@ -43,6 +48,11 @@ class EventTemplates
             ['key' => 'minimalist',  'name' => 'Minimalist',  'description' => 'Ultra-clean type-only card with airy spacing.', 'accent' => 'neutral'],
             ['key' => 'deco',        'name' => 'Art Deco',    'description' => 'Navy and gold geometric 1920s glamour.', 'accent' => 'amber'],
             ['key' => 'confetti',    'name' => 'Confetti',    'description' => 'Bright, playful party card with confetti.', 'accent' => 'fuchsia'],
+            ['key' => 'aurora',      'name' => 'Aurora',      'description' => 'Holographic night-sky card that tilts with your cursor.', 'accent' => 'sky'],
+            ['key' => 'royal',       'name' => 'Royal',       'description' => 'Emerald and gold monogram card with a laurel crest.', 'accent' => 'emerald'],
+            ['key' => 'noir',        'name' => 'Noir',        'description' => 'High-fashion editorial card with oversized date numerals.', 'accent' => 'neutral'],
+            ['key' => 'vintage',     'name' => 'Vintage Seal', 'description' => 'Aged parchment finished with a pressed wax seal.', 'accent' => 'amber'],
+            ['key' => 'neon',        'name' => 'Neon Glow',   'description' => 'Electric after-dark card that literally glows.', 'accent' => 'fuchsia'],
         ];
     }
 
@@ -85,7 +95,7 @@ class EventTemplates
                 'faqs' => $s['faqs'],
             ],
             'user' => ['id' => 0, 'name' => $s['hosts']],
-            'wishlists' => [['id' => 0, 'name' => 'Our Registry', 'slug' => 'preview']],
+            'wishlists' => [['id' => 0, 'name' => 'Our Wishlist', 'slug' => 'preview']],
         ];
     }
 
@@ -202,7 +212,7 @@ class EventTemplates
                 'hosts' => 'Sarah & James', 'title' => 'Sarah & James', 'tagline' => "We're getting married!",
                 'location' => 'Mumbai, India', 'venue' => 'The Taj Mahal Palace', 'dress_code' => 'Garden formal',
                 'description' => "From a chance meeting in a little coffee shop to forever — we can't wait to celebrate our love story with the people who mean the most to us.",
-                'rsvp_note' => 'Your presence is the greatest gift — but if you wish to give more, our registry is here.',
+                'rsvp_note' => 'Your presence is the greatest gift — but if you wish to give more, our wishlist is here.',
                 'venue_note' => 'A sea-facing heritage ballroom beneath crystal chandeliers, steps from the Gateway of India. The ceremony unfolds on the Rose Garden Lawn as the sun sets over the Arabian Sea.',
                 'travel' => '20 minutes from CSMIA airport. Complimentary valet at the Palm Court entrance, and a shuttle runs from the Colaba causeway every half hour.',
                 'stay' => 'A room block is reserved at the Taj (mention “Sarah & James”). Boutique stays at Abode and The Bombay Canteen quarter are five minutes away.',
@@ -237,7 +247,7 @@ class EventTemplates
                 'hosts' => 'Priya & Arjun', 'title' => 'Priya & Arjun', 'tagline' => 'She said yes! 💍',
                 'location' => 'Delhi, India', 'venue' => 'The Garden Pavilion', 'dress_code' => 'Cocktail',
                 'description' => "We're engaged and over the moon! Come raise a glass with us as we begin this beautiful new chapter together.",
-                'rsvp_note' => 'Your blessings mean the world. A registry is available if you wish.',
+                'rsvp_note' => 'Your blessings mean the world. A wishlist is available if you wish.',
                 'venue_note' => 'A glasshouse pavilion wrapped in gardens — marigold installations, a live sitar duo, and the ring ceremony under the old banyan tree.',
                 'travel' => '30 minutes from IGI airport via NH48. On-site parking for 200 cars; e-rickshaws ferry guests from the gate to the pavilion.',
                 'stay' => 'Preferred rates at The Leela Ambience (code PRIYA-ARJUN) and a curated Airbnb list for the weekend is on request.',
@@ -270,7 +280,7 @@ class EventTemplates
                 'hosts' => 'Baby Kapoor', 'title' => 'A Little One Is On the Way', 'tagline' => "It's almost time! 👶",
                 'location' => 'Pune, India', 'venue' => 'The Sunroom Café', 'dress_code' => 'Soft pastels',
                 'description' => "We're welcoming a tiny new member to our family and would love for you to shower us with joy, advice, and a little fun.",
-                'rsvp_note' => 'Gifts from our registry help us prepare for the big arrival.',
+                'rsvp_note' => 'Gifts from our wishlist help us prepare for the big arrival.',
                 'venue_note' => 'A plant-filled sunroom café with soft corners, bottomless mocktails, and a long brunch table set in the bay window.',
                 'travel' => 'Koregaon Park, lane 5 — parking in the rear courtyard, strollers welcome via the garden ramp.',
                 'stay' => 'Visiting family can book the café’s partner guesthouse two doors down — cots available on request.',
@@ -318,7 +328,7 @@ class EventTemplates
                 'hosts' => 'The Sharmas', 'title' => 'Our New Home', 'tagline' => 'Come see our new place! 🏡',
                 'location' => 'Hyderabad, India', 'venue' => '12 Lotus Avenue', 'dress_code' => 'Casual',
                 'description' => "We've finally found our forever home and can't wait to share it with you. Drop by for warmth, food, and good company.",
-                'rsvp_note' => 'No gifts needed — just bring yourselves! A registry is here if you’d like.',
+                'rsvp_note' => 'No gifts needed — just bring yourselves! A wishlist is here if you’d like.',
                 'venue_note' => 'Our new place on Lotus Avenue — a skylit courtyard house with a mango tree in the middle and far too many bookshelves already.',
                 'travel' => 'Ten minutes from Jubilee Hills checkpost; street parking along the avenue and two EV chargers at the community lot.',
                 'stay' => 'The guest room is claimed (sorry!), but the Treebo around the corner is lovely and walkable.',

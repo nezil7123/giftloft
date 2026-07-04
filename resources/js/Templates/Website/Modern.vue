@@ -6,7 +6,7 @@ import { useReveal } from '../useReveal.js';
 import { useScrollFx } from '../useScrollFx.js';
 
 const props = defineProps({ event: { type: Object, required: true } });
-const { typeLabel, hosts, tagline, dressCode, rsvpNote, schedule, faqs, location, venueNote, travel, stay, mapUrl, gallery, coverPhoto, registryUrl, countdown, fmtFull, fmtDate } = useEventDisplay(() => props.event);
+const { typeLabel, hosts, tagline, dressCode, rsvpNote, schedule, faqs, location, venueNote, venuePhoto, travel, stay, mapUrl, gallery, coverPhoto, registryUrl, countdown, fmtFull, fmtDate } = useEventDisplay(() => props.event);
 useReveal();
 const root = ref(null);
 useScrollFx(root);
@@ -96,7 +96,7 @@ const strip = computed(() => [coverPhoto.value, ...gallery.value].filter(Boolean
         </section>
 
         <!-- VENUE — editorial -->
-        <section v-if="event.venue || venueNote || travel || stay" class="border-t border-neutral-300 px-6 py-24 sm:px-10">
+        <section v-if="event.venue || venueNote || venuePhoto || travel || stay" class="border-t border-neutral-300 px-6 py-24 sm:px-10">
             <div class="mx-auto max-w-6xl">
                 <div class="grid gap-12 lg:grid-cols-[0.4fr_1fr]">
                     <p data-reveal="left" class="text-xs font-bold uppercase tracking-[0.4em] text-neutral-400">The venue</p>
@@ -104,6 +104,9 @@ const strip = computed(() => [coverPhoto.value, ...gallery.value].filter(Boolean
                         <h2 data-fx="chars" class="text-4xl font-black uppercase tracking-tight sm:text-6xl">{{ event.venue || location }}</h2>
                         <p v-if="venueNote" data-reveal class="mt-6 max-w-2xl text-xl font-light leading-8 text-neutral-600">{{ venueNote }}</p>
                         <a v-if="mapUrl" :href="mapUrl" target="_blank" rel="noopener" class="mt-6 inline-flex items-center gap-2 border-b-2 border-neutral-950 pb-1 text-sm font-bold uppercase tracking-widest transition-all hover:gap-4">Open in maps →</a>
+                        <div v-if="venuePhoto" class="mt-8 overflow-hidden rounded-2xl">
+                            <img :src="venuePhoto" alt="" loading="lazy" class="aspect-[16/9] w-full object-cover" />
+                        </div>
                         <div data-fx="batch" class="mt-10 grid gap-8 sm:grid-cols-2">
                             <div v-if="travel" class="border-t-2 border-neutral-950 pt-4">
                                 <p class="text-xs font-bold uppercase tracking-[0.3em] text-neutral-400">Getting there</p>
@@ -180,7 +183,7 @@ const strip = computed(() => [coverPhoto.value, ...gallery.value].filter(Boolean
                 <div class="gl-aurora opacity-20"></div>
                 <h3 class="gl-display-sm relative font-black uppercase">Send a gift</h3>
                 <p v-if="rsvpNote" class="relative mx-auto mt-5 max-w-md text-white/60">{{ rsvpNote }}</p>
-                <Link :href="registryUrl" class="gl-btn relative mt-9 inline-flex items-center justify-center rounded-full bg-white px-9 py-4 text-sm font-bold uppercase tracking-widest text-neutral-950 transition hover:scale-105">View registry →</Link>
+                <Link :href="registryUrl" class="gl-btn relative mt-9 inline-flex items-center justify-center rounded-full bg-white px-9 py-4 text-sm font-bold uppercase tracking-widest text-neutral-950 transition hover:scale-105">View wishlist →</Link>
             </div>
             <p class="mt-10 text-center text-xs uppercase tracking-[0.3em] text-neutral-400">{{ event.user?.name }} · Gift Loft</p>
         </section>

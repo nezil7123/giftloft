@@ -16,6 +16,7 @@ class ShopController extends Controller
         return Inertia::render('Public/Shop', [
             'products' => Product::active()->orderBy('sort_order')->get(),
             'categories' => Product::categories(),
+            'genders' => Product::genders(),
             'myWishlists' => $this->myWishlists(),
             'filters' => [
                 'category' => request('category'),
@@ -45,7 +46,7 @@ class ShopController extends Controller
     }
 
     /**
-     * The current user's registries (for the "Add to registry" picker), or null when guest.
+     * The current user's wishlists (for the "Add to wishlist" picker), or null when guest.
      *
      * @return \Illuminate\Support\Collection<int, array<string, mixed>>|null
      */

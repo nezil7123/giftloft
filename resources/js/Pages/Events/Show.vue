@@ -107,11 +107,11 @@ const destroy = () => {
                     </div>
                 </div>
 
-                <!-- Registry / gift summary -->
+                <!-- Wishlist / gift summary -->
                 <div class="grid gap-4 sm:grid-cols-2">
                     <div class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-neutral-200/70">
                         <p class="text-3xl font-extrabold text-neutral-900">{{ event.wishlists_count ?? 0 }}</p>
-                        <p class="mt-1 text-sm text-neutral-500">Wishlists / registries</p>
+                        <p class="mt-1 text-sm text-neutral-500">Wishlists</p>
                     </div>
                     <div class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-neutral-200/70">
                         <p class="text-3xl font-extrabold text-neutral-900">{{ event.gifts_count ?? 0 }}</p>

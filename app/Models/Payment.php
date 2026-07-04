@@ -12,6 +12,7 @@ class Payment extends Model
     protected $fillable = [
         'user_id',
         'gift_id',
+        'order_id',
         'razorpay_payment_id',
         'razorpay_order_id',
         'razorpay_signature',
@@ -34,5 +35,10 @@ class Payment extends Model
     public function gift()
     {
         return $this->belongsTo(Gift::class);
+    }
+
+    public function order()
+    {
+        return $this->belongsTo(Order::class);
     }
 }
