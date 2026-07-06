@@ -12,9 +12,9 @@ const { typeLabel, hosts, tagline, location, fmtFull } = useEventDisplay(() => p
         <div class="gl-float pointer-events-none absolute -bottom-6 -right-6 -rotate-12 text-7xl opacity-30" style="animation-delay:2.5s">🌿</div>
 
         <div class="relative">
-            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-rose-400">Together with family</p>
+            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-rose-600">Together with family</p>
             <p class="gl-float-soft mt-6 text-3xl">💐</p>
-            <p class="mt-4 text-xs uppercase tracking-[0.3em] text-rose-400">{{ typeLabel }}</p>
+            <p class="mt-4 text-xs uppercase tracking-[0.3em] text-rose-600">{{ typeLabel }}</p>
             <h1 class="mt-2 font-serif text-5xl font-medium leading-[0.95] text-rose-900">{{ hosts || event.title }}</h1>
             <p v-if="tagline" class="mt-3 text-base italic text-rose-500">{{ tagline }}</p>
             <div class="mx-auto mt-6 flex items-center justify-center gap-2 text-rose-300">
@@ -22,7 +22,7 @@ const { typeLabel, hosts, tagline, location, fmtFull } = useEventDisplay(() => p
             </div>
             <p v-if="event.starts_at" class="mt-5 text-sm font-medium text-rose-800">{{ fmtFull(event.starts_at) }}</p>
             <p v-if="location" class="mt-1 text-xs uppercase tracking-[0.2em] text-rose-500">{{ location }}</p>
-            <p class="mt-8 text-xs italic text-rose-400">With love, {{ event.user?.name }}</p>
+            <p class="mt-8 text-xs italic text-rose-600">With love, {{ event.user?.name }}</p>
         </div>
     </div>
 </template>

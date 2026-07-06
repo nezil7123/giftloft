@@ -17,13 +17,13 @@ const { typeLabel, hosts, tagline, location, fmtFull } = useEventDisplay(() => p
         <div class="relative">
             <p class="font-serif text-xs uppercase tracking-[0.4em] text-amber-600">You're invited</p>
             <div class="gl-grow mx-auto mt-6 h-px w-16 bg-amber-400/60"></div>
-            <p class="mt-6 font-serif text-sm uppercase tracking-[0.3em] text-neutral-400">{{ typeLabel }}</p>
+            <p class="mt-6 font-serif text-sm uppercase tracking-[0.3em] text-neutral-500">{{ typeLabel }}</p>
             <h1 class="mt-3 font-serif text-5xl font-medium leading-[0.95] text-amber-700 gl-shimmer">{{ hosts || event.title }}</h1>
             <p v-if="tagline" class="mt-3 font-serif text-lg italic text-amber-700">{{ tagline }}</p>
             <div class="gl-grow mx-auto mt-7 h-px w-16 bg-amber-400/60"></div>
             <p v-if="event.starts_at" class="mt-6 text-sm font-medium text-neutral-700">{{ fmtFull(event.starts_at) }}</p>
             <p v-if="location" class="mt-1 text-xs uppercase tracking-[0.2em] text-neutral-500">{{ location }}</p>
-            <p class="mt-8 font-serif text-xs italic text-neutral-400">With love, {{ event.user?.name }}</p>
+            <p class="mt-8 font-serif text-xs italic text-neutral-500">With love, {{ event.user?.name }}</p>
         </div>
     </div>
 </template>

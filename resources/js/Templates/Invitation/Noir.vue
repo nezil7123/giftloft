@@ -39,7 +39,7 @@ const year = computed(() => (props.event.starts_at ? new Date(props.event.starts
                 <p v-if="location" class="text-xs uppercase tracking-[0.2em] text-neutral-500">{{ location }}</p>
             </div>
 
-            <p data-card class="mt-8 text-[10px] font-bold uppercase tracking-[0.3em] text-neutral-400">Hosted by {{ event.user?.name }}</p>
+            <p data-card class="mt-8 text-[10px] font-bold uppercase tracking-[0.3em] text-neutral-500">Hosted by {{ event.user?.name }}</p>
         </div>
     </div>
 </template>

@@ -25,7 +25,7 @@ const { typeLabel, hosts, tagline, location, fmtFull } = useEventDisplay(() => p
                     <span v-if="event.starts_at">📅 {{ fmtFull(event.starts_at) }}</span>
                 </div>
                 <p v-if="location" class="mt-3 text-sm font-semibold text-neutral-500">📍 {{ location }}</p>
-                <p class="mt-8 text-xs font-bold uppercase tracking-widest text-neutral-300">Hosted by {{ event.user?.name }}</p>
+                <p class="mt-8 text-xs font-bold uppercase tracking-widest text-neutral-500">Hosted by {{ event.user?.name }}</p>
             </div>
         </div>
     </div>
