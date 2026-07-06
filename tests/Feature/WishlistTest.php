@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Event;
+use App\Models\Product;
 use App\Models\User;
 use App\Models\Wishlist;
 use App\Models\WishlistItem;
@@ -72,27 +73,56 @@ class WishlistTest extends TestCase
             ->assertForbidden();
     }
 
-    public function test_owner_can_add_item(): void
+    private function makeProduct(array $attrs = []): Product
+    {
+        return Product::create(array_merge([
+            'name' => 'Espresso Machine',
+            'slug' => 'espresso-'.uniqid(),
+            'category' => 'home',
+            'price' => 12999.00,
+            'emoji' => '☕',
+            'accent' => 'neutral',
+            'is_active' => true,
+        ], $attrs));
+    }
+
+    public function test_owner_can_add_catalog_item(): void
     {
         $user = User::factory()->create();
         $wishlist = $this->makeWishlist($user);
+        $product = $this->makeProduct();
 
-        $this->actingAs($user)->post("/wishlists/{$wishlist->id}/items", [
+        $this->actingAs($user)
+            ->post(route('registry.products.add', $product->slug), ['wishlist_id' => $wishlist->id])
+            ->assertRedirect();
+
+        $this->assertDatabaseHas('wishlist_items', [
+            'wishlist_id' => $wishlist->id,
+            'product_id' => $product->id,
             'title' => 'Espresso Machine',
-            'price' => 12999.00,
-            'quantity' => 1,
-            'is_giftable' => true,
-        ])->assertRedirect();
+        ]);
+    }
 
-        $this->assertDatabaseHas('wishlist_items', ['wishlist_id' => $wishlist->id, 'title' => 'Espresso Machine']);
+    public function test_adding_the_same_product_twice_bumps_quantity(): void
+    {
+        $user = User::factory()->create();
+        $wishlist = $this->makeWishlist($user);
+        $product = $this->makeProduct();
+
+        $this->actingAs($user)->post(route('registry.products.add', $product->slug), ['wishlist_id' => $wishlist->id]);
+        $this->actingAs($user)->post(route('registry.products.add', $product->slug), ['wishlist_id' => $wishlist->id]);
+
+        $this->assertDatabaseCount('wishlist_items', 1);
+        $this->assertDatabaseHas('wishlist_items', ['product_id' => $product->id, 'quantity' => 2]);
     }
 
     public function test_non_owner_cannot_add_item(): void
     {
         $wishlist = $this->makeWishlist(User::factory()->create());
+        $product = $this->makeProduct();
 
         $this->actingAs(User::factory()->create())
-            ->post("/wishlists/{$wishlist->id}/items", ['title' => 'Hax', 'quantity' => 1, 'is_giftable' => true])
+            ->post(route('registry.products.add', $product->slug), ['wishlist_id' => $wishlist->id])
             ->assertForbidden();
     }
 
@@ -104,7 +134,7 @@ class WishlistTest extends TestCase
         $item = WishlistItem::create(['wishlist_id' => $otherList->id, 'title' => 'A', 'quantity' => 1, 'is_giftable' => true]);
 
         $this->actingAs($user)
-            ->put("/wishlists/{$wishlist->id}/items/{$item->id}", ['title' => 'B', 'quantity' => 1, 'is_giftable' => true])
+            ->put("/wishlists/{$wishlist->id}/items/{$item->id}", ['quantity' => 1, 'is_giftable' => true])
             ->assertNotFound();
     }
 

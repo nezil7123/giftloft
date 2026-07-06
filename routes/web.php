@@ -80,7 +80,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::resource('wishlists', WishlistController::class);
     Route::post('registry/products/{product}', [WishlistItemController::class, 'addProduct'])->name('registry.products.add');
-    Route::post('wishlists/{wishlist}/items', [WishlistItemController::class, 'store'])->name('wishlists.items.store');
     Route::put('wishlists/{wishlist}/items/{item}', [WishlistItemController::class, 'update'])->name('wishlists.items.update');
     Route::delete('wishlists/{wishlist}/items/{item}', [WishlistItemController::class, 'destroy'])->name('wishlists.items.destroy');
 

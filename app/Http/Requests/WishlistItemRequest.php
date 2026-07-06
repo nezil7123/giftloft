@@ -16,11 +16,10 @@ class WishlistItemRequest extends FormRequest
      */
     public function rules(): array
     {
+        // Items are sourced from the catalog, so title/price/image/link are
+        // fixed. The owner may only adjust quantity, their note, and whether
+        // guests can gift the item.
         return [
-            'title' => ['required', 'string', 'max:255'],
-            'product_url' => ['nullable', 'url', 'max:2048'],
-            'image_url' => ['nullable', 'url', 'max:2048'],
-            'price' => ['nullable', 'numeric', 'min:0', 'max:99999999'],
             'quantity' => ['required', 'integer', 'min:1', 'max:999'],
             'note' => ['nullable', 'string', 'max:1000'],
             'is_giftable' => ['required', 'boolean'],

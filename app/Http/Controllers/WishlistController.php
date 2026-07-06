@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\WishlistRequest;
 use App\Models\Event;
+use App\Models\Product;
 use App\Models\Wishlist;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -58,6 +59,11 @@ class WishlistController extends Controller
 
         return Inertia::render('Wishlists/Show', [
             'wishlist' => $wishlist,
+            // Catalog for the "Add item" picker — items can only come from here.
+            'catalog' => Product::active()
+                ->orderBy('sort_order')
+                ->get(['id', 'name', 'slug', 'category', 'price', 'image_url', 'emoji', 'accent']),
+            'categories' => Product::categories(),
         ]);
     }
 

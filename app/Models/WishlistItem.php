@@ -12,6 +12,7 @@ class WishlistItem extends Model
     protected $fillable = [
         'wishlist_id',
         'user_id',
+        'product_id',
         'title',
         'product_url',
         'image_url',
@@ -33,6 +34,11 @@ class WishlistItem extends Model
     public function wishlist()
     {
         return $this->belongsTo(Wishlist::class);
+    }
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
     }
 
     public function user()

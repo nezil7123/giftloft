@@ -25,8 +25,19 @@ class WishlistItemController extends Controller
 
         abort_unless($product->is_active, 404);
 
+        // Store-only registry: if this product is already on the list, just bump
+        // the quantity rather than creating a duplicate row.
+        $existing = $wishlist->items()->where('product_id', $product->id)->first();
+
+        if ($existing) {
+            $existing->increment('quantity');
+
+            return back(303)->with('success', "Increased the quantity of “{$product->name}” in {$wishlist->name}.");
+        }
+
         $wishlist->items()->create([
             'user_id' => $request->user()->id,
+            'product_id' => $product->id,
             'title' => $product->name,
             'product_url' => $product->product_url,
             'image_url' => $product->image_url,
@@ -41,23 +52,8 @@ class WishlistItemController extends Controller
     }
 
     /**
-     * Add an item to the wishlist.
-     */
-    public function store(WishlistItemRequest $request, Wishlist $wishlist)
-    {
-        $this->authorize('update', $wishlist);
-
-        $wishlist->items()->create([
-            ...$request->validated(),
-            'user_id' => $request->user()->id,
-            'status' => 'available',
-        ]);
-
-        return back()->with('success', 'Item added to your wishlist.');
-    }
-
-    /**
-     * Update an existing item.
+     * Update the owner-editable fields of a catalog item. Title, price, image
+     * and link come from the catalog product and are not editable here.
      */
     public function update(WishlistItemRequest $request, Wishlist $wishlist, WishlistItem $item)
     {
