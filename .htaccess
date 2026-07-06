@@ -1,0 +1,18 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Block direct web access to sensitive files/folders that live inside the
+    # web root on shared hosting where the docroot can't be pointed at public/.
+    RewriteRule ^\.env - [F,L]
+    RewriteRule ^(app|bootstrap|config|database|routes|storage|vendor|tests)/ - [F,L]
+
+    # Serve every request through the public/ folder, so the site loads at the
+    # bare domain (domain.com) instead of domain.com/public.
+    RewriteCond %{REQUEST_URI} !^/public/
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>
+
+# Belt-and-suspenders: never serve dotfiles like .env, even if mod_rewrite is off.
+<FilesMatch "^\.">
+    Require all denied
+</FilesMatch>
