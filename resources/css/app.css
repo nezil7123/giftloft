@@ -91,6 +91,10 @@
     background-clip: text;
     color: transparent;
     animation: gl-shimmer 4s linear infinite;
+    /* bg-clip:text clips to the line box; tight leading-[0.95] otherwise cuts off
+       descenders (y, g, p, j). Give the tails room, compensate so layout holds. */
+    padding-bottom: 0.14em;
+    margin-bottom: -0.14em;
 }
 
 /* ── Slow panning gradient (animated hero backgrounds) ── */
