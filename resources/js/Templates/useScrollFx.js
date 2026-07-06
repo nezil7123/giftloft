@@ -22,6 +22,9 @@ gsap.registerPlugin(ScrollTrigger);
  *   data-fx="draw"                         — SVG path stroke draws itself on scrub (put on <svg>)
  *   data-fx="hscroll"                      — pinned section; child [data-fx-track] scrolls horizontally
  *   data-fx="batch"                        — children fade-rise in with stagger when entering
+ *   data-fx="tilt3d"                       — card tilts in 3D following the pointer
+ *   data-fx="decrypt"                      — text scrambles through glyphs, then settles (on enter)
+ *   data-fx="rise3d"                       — children flip up from 3D depth with stagger (on enter)
  *
  * Cleanup is automatic (gsap.context). Reduced-motion users get static layouts.
  */
@@ -36,6 +39,69 @@ export function useScrollFx(rootRef) {
             const mm = gsap.matchMedia();
 
             mm.add('(prefers-reduced-motion: no-preference)', () => {
+                // Manual listeners registered here; matchMedia calls the
+                // returned cleanup when the context reverts.
+                const cleanups = [];
+
+                // ── Pointer-tracked 3D tilt ──
+                root.querySelectorAll('[data-fx="tilt3d"]').forEach((el) => {
+                    gsap.set(el, { transformPerspective: 800 });
+                    const rx = gsap.quickTo(el, 'rotationX', { duration: 0.45, ease: 'power2.out' });
+                    const ry = gsap.quickTo(el, 'rotationY', { duration: 0.45, ease: 'power2.out' });
+                    const move = (e) => {
+                        const r = el.getBoundingClientRect();
+                        rx(((e.clientY - r.top) / r.height - 0.5) * -8);
+                        ry(((e.clientX - r.left) / r.width - 0.5) * 10);
+                    };
+                    const leave = () => { rx(0); ry(0); };
+                    el.addEventListener('pointermove', move);
+                    el.addEventListener('pointerleave', leave);
+                    cleanups.push(() => {
+                        el.removeEventListener('pointermove', move);
+                        el.removeEventListener('pointerleave', leave);
+                    });
+                });
+
+                // ── Decrypt / scramble text ──
+                root.querySelectorAll('[data-fx="decrypt"]').forEach((el) => {
+                    if (el.dataset.fxSplit) return;
+                    el.dataset.fxSplit = '1';
+                    const finalText = el.textContent;
+                    const glyphs = '█▓▒░<>/=+*#XKZQ0147';
+                    const state = { p: 0 };
+                    gsap.to(state, {
+                        p: 1,
+                        duration: 1.1,
+                        ease: 'power1.inOut',
+                        scrollTrigger: { trigger: el, start: 'top 90%', once: true },
+                        onUpdate() {
+                            const reveal = Math.floor(state.p * finalText.length);
+                            el.textContent = finalText.slice(0, reveal)
+                                + [...finalText.slice(reveal)].map((c) => (c === ' ' ? ' ' : glyphs[(Math.random() * glyphs.length) | 0])).join('');
+                        },
+                        onComplete() { el.textContent = finalText; },
+                    });
+                });
+
+                // ── Children flip up from 3D depth ──
+                root.querySelectorAll('[data-fx="rise3d"]').forEach((wrap) => {
+                    gsap.set(wrap, { perspective: 900 });
+                    gsap.from(wrap.children, {
+                        rotationX: 28,
+                        y: 90,
+                        z: -120,
+                        opacity: 0,
+                        transformOrigin: '50% 100%',
+                        duration: 0.9,
+                        ease: 'power3.out',
+                        stagger: 0.08,
+                        scrollTrigger: { trigger: wrap, start: 'top 85%', once: true },
+                        // Re-center the pivot so a tilt3d on the same element
+                        // rotates around its middle, not its bottom edge.
+                        onComplete() { gsap.set(wrap.children, { transformOrigin: '50% 50%' }); },
+                    });
+                });
+
                 // ── Parallax drift ──
                 root.querySelectorAll('[data-fx="parallax"]').forEach((el) => {
                     const speed = parseFloat(el.dataset.speed ?? '0.25');
@@ -204,6 +270,8 @@ export function useScrollFx(rootRef) {
                         scrollTrigger: { trigger: wrap, start: 'top 85%', once: true },
                     });
                 });
+
+                return () => cleanups.forEach((fn) => fn());
             });
         }, root);
 

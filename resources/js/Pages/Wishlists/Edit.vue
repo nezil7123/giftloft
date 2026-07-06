@@ -8,12 +8,20 @@ const props = defineProps({
     events: { type: Array, default: () => [] },
 });
 
+const a = props.wishlist.delivery_address ?? {};
 const form = useForm({
     name: props.wishlist.name ?? '',
     description: props.wishlist.description ?? '',
     event_id: props.wishlist.event_id ?? null,
     visibility: props.wishlist.visibility ?? 'public',
     active: Boolean(props.wishlist.active),
+    delivery_address: {
+        recipient_name: a.recipient_name ?? '',
+        phone: a.phone ?? '',
+        address_line: a.address_line ?? '',
+        city: a.city ?? '',
+        postal_code: a.postal_code ?? '',
+    },
 });
 
 const submit = () => form.put(route('wishlists.update', props.wishlist.id));

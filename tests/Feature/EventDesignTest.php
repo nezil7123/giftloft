@@ -38,7 +38,7 @@ class EventDesignTest extends TestCase
             ->assertOk()
             ->assertInertia(fn ($page) => $page
                 ->component('Events/Design')
-                ->has('websiteTemplates', 11)
+                ->has('websiteTemplates', 12)
                 ->has('invitationTemplates', 11));
     }
 

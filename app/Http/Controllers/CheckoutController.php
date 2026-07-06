@@ -14,6 +14,7 @@ use App\Support\Cart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 
 class CheckoutController extends Controller
@@ -35,6 +36,10 @@ class CheckoutController extends Controller
         $amount = (float) ($item->price ?? 0);
         $order = $this->razorpay->createOrder($amount, 'INR', ['wishlist_item_id' => $item->id]);
 
+        // Tell the gifter a saved address exists — but only reveal who it
+        // ships to and the city, never the address itself.
+        $saved = $item->wishlist->delivery_address;
+
         return Inertia::render('Gifts/Checkout', [
             'item' => $item,
             'recipient' => $item->wishlist->user,
@@ -42,6 +47,10 @@ class CheckoutController extends Controller
             'order' => $order,
             'razorpayKey' => $this->razorpay->publicKey(),
             'testMode' => ! $this->razorpay->isLive(),
+            'savedAddress' => $saved ? [
+                'recipient_name' => $saved['recipient_name'] ?? $item->wishlist->user->name,
+                'city' => $saved['city'] ?? '',
+            ] : null,
         ]);
     }
 
@@ -70,7 +79,41 @@ class CheckoutController extends Controller
 
         $amount = (float) ($item->price ?? 0);
 
-        $gift = DB::transaction(function () use ($request, $item, $data, $amount) {
+        // Live mode: the paid order's amount must match this item's price —
+        // rejects payments made against a stale or cheaper order.
+        if ($this->razorpay->isLive()
+            && $this->razorpay->orderAmount($data['razorpay_order_id']) !== (int) round($amount * 100)) {
+            return back()->with('error', 'Payment amount mismatch. Please try again.');
+        }
+
+        // Resolve the shipping address server-side: either the wishlist
+        // owner's saved address (never shown to the gifter) or the address
+        // the gifter typed.
+        $useSaved = (bool) ($data['use_saved_address'] ?? false);
+        $saved = $item->wishlist->delivery_address;
+
+        if ($useSaved && ! $saved) {
+            throw ValidationException::withMessages([
+                'use_saved_address' => 'This wishlist has no saved delivery address — please enter one.',
+            ]);
+        }
+
+        $deliveryAddress = $useSaved
+            ? [
+                'recipient_name' => $saved['recipient_name'],
+                'address_line' => $saved['address_line'],
+                'city' => $saved['city'],
+                'postal_code' => $saved['postal_code'],
+                'phone' => $saved['phone'] ?? null,
+            ]
+            : [
+                'recipient_name' => $data['recipient_name'],
+                'address_line' => $data['address_line'],
+                'city' => $data['city'],
+                'postal_code' => $data['postal_code'],
+            ];
+
+        $gift = DB::transaction(function () use ($request, $item, $data, $amount, $deliveryAddress) {
             $payment = Payment::create([
                 'user_id' => $request->user()->id,
                 'razorpay_order_id' => $data['razorpay_order_id'],
@@ -92,12 +135,7 @@ class CheckoutController extends Controller
                 'currency' => 'INR',
                 'status' => 'completed',
                 'message' => $data['message'] ?? null,
-                'delivery_address' => [
-                    'recipient_name' => $data['recipient_name'],
-                    'address_line' => $data['address_line'],
-                    'city' => $data['city'],
-                    'postal_code' => $data['postal_code'],
-                ],
+                'delivery_address' => $deliveryAddress,
                 'claimed_at' => now(),
             ]);
 
@@ -155,7 +193,34 @@ class CheckoutController extends Controller
     }
 
     /**
-     * Process the (stubbed) payment for the cart and record the order.
+     * Create the Razorpay order at pay time, priced from the live cart plus
+     * the validated addon selection — the amount the widget charges always
+     * matches what the server will expect in storeCart().
+     */
+    public function createCartOrder(Request $request)
+    {
+        $items = Cart::items();
+
+        abort_if($items->isEmpty(), 404);
+
+        $data = $request->validate(CartCheckoutRequest::addonRules());
+        $isGift = (bool) ($data['is_gift'] ?? false);
+        $selectedAddons = $isGift ? $this->resolveGiftAddons($data) : collect();
+        $total = Cart::subtotal() + $selectedAddons->sum(fn ($row) => (float) $row['addon']->price);
+
+        $order = $this->razorpay->createOrder($total, 'INR', [
+            'type' => 'cart',
+            'user_id' => (string) $request->user()->id,
+        ]);
+
+        return response()->json([
+            'order' => $order,
+            'key' => $this->razorpay->publicKey(),
+        ]);
+    }
+
+    /**
+     * Process the payment for the cart and record the order.
      */
     public function storeCart(CartCheckoutRequest $request)
     {
@@ -180,6 +245,14 @@ class CheckoutController extends Controller
 
         if (! $verified) {
             return back()->with('error', 'Payment could not be verified. Please try again.');
+        }
+
+        // Live mode: what was actually paid must equal the recomputed total
+        // (cart + addons) — rejects stale orders created before the cart or
+        // addon selection changed.
+        if ($this->razorpay->isLive()
+            && $this->razorpay->orderAmount($data['razorpay_order_id']) !== (int) round($total * 100)) {
+            return back()->with('error', 'Payment amount mismatch — your cart may have changed. Please try again.');
         }
 
         $order = DB::transaction(function () use ($request, $items, $data, $subtotal, $addonsTotal, $total, $isGift, $selectedAddons) {

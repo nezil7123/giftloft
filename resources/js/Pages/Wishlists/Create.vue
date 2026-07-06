@@ -13,6 +13,7 @@ const form = useForm({
     event_id: null,
     visibility: 'public',
     active: true,
+    delivery_address: { recipient_name: '', phone: '', address_line: '', city: '', postal_code: '' },
 });
 
 const submit = () => form.post(route('wishlists.store'));

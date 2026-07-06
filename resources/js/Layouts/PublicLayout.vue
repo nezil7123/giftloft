@@ -203,9 +203,13 @@ const navLinks = [
                         </div>
                     </div>
                 </div>
-                <div class="mt-10 flex items-center justify-between border-t border-white/10 pt-6">
-                    <p class="text-xs text-white/30">&copy; 2025 Gift Loft. All rights reserved.</p>
-                    <p class="text-xs text-white/20">Made with love in India 🇮🇳</p>
+                <div class="mt-10 flex flex-col items-center gap-3 border-t border-white/10 pt-6 sm:flex-row sm:justify-between">
+                    <p class="text-xs text-white/30">&copy; 2026 Gift Loft. All rights reserved.</p>
+                    <div class="flex items-center gap-5">
+                        <Link href="/privacy" class="text-xs text-white/40 transition hover:text-white">Privacy Policy</Link>
+                        <Link href="/terms" class="text-xs text-white/40 transition hover:text-white">Terms &amp; Conditions</Link>
+                        <p class="text-xs text-white/20">Made with love in India 🇮🇳</p>
+                    </div>
                 </div>
             </div>
         </footer>

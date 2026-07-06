@@ -18,6 +18,7 @@ const user = usePage().props.auth.user;
 
 const form = useForm({
     name: user.name,
+    username: user.username ?? '',
     email: user.email,
 });
 </script>
@@ -52,6 +53,28 @@ const form = useForm({
                 />
 
                 <InputError class="mt-2" :message="form.errors.name" />
+            </div>
+
+            <div>
+                <InputLabel for="username" value="Username" />
+
+                <div class="relative mt-1">
+                    <span class="pointer-events-none absolute inset-y-0 left-3 flex items-center text-sm text-gray-400">@</span>
+                    <TextInput
+                        id="username"
+                        type="text"
+                        class="block w-full pl-8"
+                        v-model="form.username"
+                        autocomplete="off"
+                        placeholder="e.g. sarah-james"
+                    />
+                </div>
+
+                <p class="mt-1.5 text-xs text-gray-500">
+                    Optional — friends can find you with it, and your public profile becomes
+                    <span class="font-semibold text-gray-700">giftloft.app/u/{{ form.username || 'your-username' }}</span>
+                </p>
+                <InputError class="mt-2" :message="form.errors.username" />
             </div>
 
             <div>

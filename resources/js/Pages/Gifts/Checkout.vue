@@ -1,8 +1,9 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import InputError from '@/Components/InputError.vue';
+import { openRazorpay } from '@/razorpay.js';
 import { Head, Link, useForm } from '@inertiajs/vue3';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 
 const props = defineProps({
     item: { type: Object, required: true },
@@ -11,6 +12,7 @@ const props = defineProps({
     order: { type: Object, required: true },
     razorpayKey: { type: String, default: null },
     testMode: { type: Boolean, default: true },
+    savedAddress: { type: Object, default: null }, // { recipient_name, city } — never the full address
 });
 
 const inputClass = 'mt-1.5 block w-full rounded-xl border-neutral-300 text-sm shadow-sm focus:border-indigo-500 focus:ring-indigo-500';
@@ -18,6 +20,7 @@ const money = computed(() => `₹${Number(props.amount).toLocaleString('en-IN', 
 
 const form = useForm({
     message: '',
+    use_saved_address: Boolean(props.savedAddress),
     recipient_name: props.recipient.name ?? '',
     address_line: '',
     city: '',
@@ -27,7 +30,10 @@ const form = useForm({
     razorpay_signature: '',
 });
 
-const pay = () => {
+const paying = ref(false);
+const payError = ref('');
+
+const pay = async () => {
     if (props.testMode) {
         // STUB: fabricate a successful payment, skip the Razorpay widget.
         form.razorpay_payment_id = 'pay_test_' + Math.random().toString(36).slice(2, 16);
@@ -36,9 +42,29 @@ const pay = () => {
         return;
     }
 
-    // LIVE: open the Razorpay checkout widget here, then submit on success.
-    // const rzp = new window.Razorpay({ key: props.razorpayKey, order_id: props.order.id, ... });
-    // rzp.open();
+    // LIVE: open the Razorpay widget, then submit the verified handshake.
+    paying.value = true;
+    payError.value = '';
+    try {
+        await openRazorpay({
+            key: props.razorpayKey,
+            order: props.order,
+            description: `Gift: ${props.item.title}`,
+            prefill: { name: form.recipient_name || undefined },
+            onSuccess: (r) => {
+                form.razorpay_order_id = r.razorpay_order_id;
+                form.razorpay_payment_id = r.razorpay_payment_id;
+                form.razorpay_signature = r.razorpay_signature;
+                form.post(route('checkout.store', props.item.id), {
+                    onFinish: () => (paying.value = false),
+                });
+            },
+            onDismiss: () => (paying.value = false),
+        });
+    } catch (e) {
+        payError.value = e.message;
+        paying.value = false;
+    }
 };
 </script>
 
@@ -61,7 +87,29 @@ const pay = () => {
                     <!-- Delivery form -->
                     <form @submit.prevent="pay" class="order-2 rounded-2xl bg-white p-8 shadow-sm ring-1 ring-neutral-200/70 lg:order-1">
                         <h3 class="text-base font-bold text-neutral-900">Delivery details</h3>
-                        <div class="mt-5 space-y-4">
+
+                        <!-- Saved-address shortcut -->
+                        <div v-if="savedAddress" class="mt-4 grid gap-3 sm:grid-cols-2">
+                            <button type="button" @click="form.use_saved_address = true"
+                                class="rounded-2xl border-2 px-4 py-3.5 text-left transition"
+                                :class="form.use_saved_address ? 'border-indigo-500 bg-indigo-50/60' : 'border-neutral-200 hover:border-neutral-300'">
+                                <span class="block text-sm font-bold text-neutral-900">📍 Their saved address</span>
+                                <span class="mt-0.5 block text-xs text-neutral-500">Ships to {{ savedAddress.recipient_name }}<span v-if="savedAddress.city"> in {{ savedAddress.city }}</span> — no address needed</span>
+                            </button>
+                            <button type="button" @click="form.use_saved_address = false"
+                                class="rounded-2xl border-2 px-4 py-3.5 text-left transition"
+                                :class="!form.use_saved_address ? 'border-indigo-500 bg-indigo-50/60' : 'border-neutral-200 hover:border-neutral-300'">
+                                <span class="block text-sm font-bold text-neutral-900">Enter an address</span>
+                                <span class="mt-0.5 block text-xs text-neutral-500">Send it somewhere else</span>
+                            </button>
+                        </div>
+                        <InputError class="mt-1.5" :message="form.errors.use_saved_address" />
+
+                        <p v-if="savedAddress && form.use_saved_address" class="mt-4 rounded-xl bg-neutral-50 px-4 py-3 text-xs leading-5 text-neutral-500">
+                            🔒 The full address stays private — we'll ship directly to the one {{ savedAddress.recipient_name }} saved on this wishlist.
+                        </p>
+
+                        <div v-if="!savedAddress || !form.use_saved_address" class="mt-5 space-y-4">
                             <div>
                                 <label class="text-sm font-semibold text-neutral-800">Recipient name <span class="text-rose-500">*</span></label>
                                 <input v-model="form.recipient_name" type="text" :class="inputClass" />
@@ -84,11 +132,12 @@ const pay = () => {
                                     <InputError class="mt-1.5" :message="form.errors.postal_code" />
                                 </div>
                             </div>
-                            <div>
-                                <label class="text-sm font-semibold text-neutral-800">Gift message</label>
-                                <textarea v-model="form.message" rows="3" :class="inputClass" placeholder="Add a personal note…"></textarea>
-                                <InputError class="mt-1.5" :message="form.errors.message" />
-                            </div>
+                        </div>
+
+                        <div class="mt-5">
+                            <label class="text-sm font-semibold text-neutral-800">Gift message</label>
+                            <textarea v-model="form.message" rows="3" :class="inputClass" placeholder="Add a personal note…"></textarea>
+                            <InputError class="mt-1.5" :message="form.errors.message" />
                         </div>
                     </form>
 
@@ -112,11 +161,12 @@ const pay = () => {
                             <button
                                 type="button"
                                 @click="pay"
-                                :disabled="form.processing"
+                                :disabled="form.processing || paying"
                                 class="mt-6 w-full rounded-full bg-indigo-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-indigo-500 disabled:opacity-50"
                             >
-                                {{ form.processing ? 'Processing…' : `Pay ${money}` }}
+                                {{ form.processing || paying ? 'Processing…' : `Pay ${money}` }}
                             </button>
+                            <p v-if="payError" class="mt-3 text-center text-xs text-rose-600">{{ payError }}</p>
                             <Link :href="route('wishlists.index')" class="mt-3 block text-center text-xs font-medium text-neutral-400 hover:text-neutral-600">Cancel</Link>
                         </div>
                     </div>

@@ -14,15 +14,17 @@ const stars = Array.from({ length: 24 }, (_, i) => ({
 }));
 
 // ── Celebration categories (full Tailwind class strings so JIT picks them up) ──
+// Styled to match the pastel feature cards above: white-core gradients,
+// soft rings, tinted glows, dark text.
 const categories = [
-    { name: 'Wedding',     emoji: '💍', blurb: 'Celebrate your love story with a site your guests will adore.', grad: 'from-rose-500 to-pink-700',     glow: 'hover:shadow-rose-500/40',    tint: 'text-rose-100/80' },
-    { name: 'Birthday',    emoji: '🎂', blurb: 'Make every birthday legendary with your own party page.',       grad: 'from-amber-400 to-orange-600',  glow: 'hover:shadow-amber-500/40',   tint: 'text-amber-100/80' },
-    { name: 'Engagement',  emoji: '💞', blurb: 'Announce the big yes and let everyone share the joy.',           grad: 'from-fuchsia-500 to-purple-700', glow: 'hover:shadow-fuchsia-500/40', tint: 'text-fuchsia-100/80' },
-    { name: 'Baby Shower', emoji: '👶', blurb: 'Welcome your little one with a sweet wishlist and page.',         grad: 'from-sky-400 to-blue-700',      glow: 'hover:shadow-sky-500/40',     tint: 'text-sky-100/80' },
-    { name: 'Anniversary', emoji: '💕', blurb: 'Mark the years together with a page full of memories.',          grad: 'from-red-400 to-rose-600',      glow: 'hover:shadow-rose-500/40',    tint: 'text-rose-100/80' },
-    { name: 'Proposal',    emoji: '💜', blurb: 'Plan the perfect moment and share it beautifully.',              grad: 'from-violet-500 to-purple-800', glow: 'hover:shadow-violet-500/40',  tint: 'text-violet-100/80' },
-    { name: 'Graduation',  emoji: '🎓', blurb: 'Celebrate the milestone and gather everyone to cheer.',          grad: 'from-indigo-500 to-blue-700',   glow: 'hover:shadow-indigo-500/40',  tint: 'text-indigo-100/80' },
-    { name: 'Housewarming',emoji: '🏡', blurb: 'Open the doors to your new home with a warm invite.',            grad: 'from-emerald-400 to-teal-700',  glow: 'hover:shadow-emerald-500/40', tint: 'text-emerald-100/80' },
+    { name: 'Wedding',     emoji: '💍', blurb: 'Celebrate your love story with a site your guests will adore.', bg: 'from-rose-50 via-white to-white',    ring: 'ring-rose-100/80',    glow: 'shadow-[0_24px_60px_-24px_rgba(244,63,94,0.35)]',   blob: 'bg-rose-200/40',    tile: 'bg-rose-100 ring-rose-200/70',       accent: 'text-rose-500' },
+    { name: 'Birthday',    emoji: '🎂', blurb: 'Make every birthday legendary with your own party page.',       bg: 'from-amber-50 via-white to-white',   ring: 'ring-amber-100/80',   glow: 'shadow-[0_24px_60px_-24px_rgba(245,158,11,0.35)]',  blob: 'bg-amber-200/40',   tile: 'bg-amber-100 ring-amber-200/70',     accent: 'text-amber-500' },
+    { name: 'Engagement',  emoji: '💞', blurb: 'Announce the big yes and let everyone share the joy.',           bg: 'from-fuchsia-50 via-white to-white', ring: 'ring-fuchsia-100/80', glow: 'shadow-[0_24px_60px_-24px_rgba(217,70,239,0.35)]',  blob: 'bg-fuchsia-200/40', tile: 'bg-fuchsia-100 ring-fuchsia-200/70', accent: 'text-fuchsia-500' },
+    { name: 'Baby Shower', emoji: '👶', blurb: 'Welcome your little one with a sweet wishlist and page.',         bg: 'from-sky-50 via-white to-white',     ring: 'ring-sky-100/80',     glow: 'shadow-[0_24px_60px_-24px_rgba(14,165,233,0.35)]',  blob: 'bg-sky-200/40',     tile: 'bg-sky-100 ring-sky-200/70',         accent: 'text-sky-500' },
+    { name: 'Anniversary', emoji: '💕', blurb: 'Mark the years together with a page full of memories.',          bg: 'from-red-50 via-white to-white',     ring: 'ring-red-100/80',     glow: 'shadow-[0_24px_60px_-24px_rgba(239,68,68,0.35)]',   blob: 'bg-red-200/40',     tile: 'bg-red-100 ring-red-200/70',         accent: 'text-red-500' },
+    { name: 'Proposal',    emoji: '💜', blurb: 'Plan the perfect moment and share it beautifully.',              bg: 'from-violet-50 via-white to-white',  ring: 'ring-violet-100/80',  glow: 'shadow-[0_24px_60px_-24px_rgba(139,92,246,0.35)]',  blob: 'bg-violet-200/40',  tile: 'bg-violet-100 ring-violet-200/70',   accent: 'text-violet-500' },
+    { name: 'Graduation',  emoji: '🎓', blurb: 'Celebrate the milestone and gather everyone to cheer.',          bg: 'from-indigo-50 via-white to-white',  ring: 'ring-indigo-100/80',  glow: 'shadow-[0_24px_60px_-24px_rgba(99,102,241,0.35)]',  blob: 'bg-indigo-200/40',  tile: 'bg-indigo-100 ring-indigo-200/70',   accent: 'text-indigo-500' },
+    { name: 'Housewarming',emoji: '🏡', blurb: 'Open the doors to your new home with a warm invite.',            bg: 'from-emerald-50 via-white to-white', ring: 'ring-emerald-100/80', glow: 'shadow-[0_24px_60px_-24px_rgba(16,185,129,0.35)]',  blob: 'bg-emerald-200/40', tile: 'bg-emerald-100 ring-emerald-200/70', accent: 'text-emerald-500' },
 ];
 
 // ── Scroll reveal ──
@@ -356,7 +358,7 @@ onUnmounted(() => {
         <!-- ╔══════════════════════════════════════════╗ -->
         <!-- ║  CATEGORIES                              ║ -->
         <!-- ╚══════════════════════════════════════════╝ -->
-        <section class="bg-white py-28">
+        <section class="bg-gradient-to-b from-neutral-50 via-white to-white py-28">
             <div class="mx-auto max-w-7xl px-6 sm:px-10 lg:px-12">
                 <div data-animate class="mx-auto max-w-2xl text-center">
                     <p class="text-xs font-semibold uppercase tracking-[0.35em] text-indigo-500">Made for every moment</p>
@@ -370,22 +372,22 @@ onUnmounted(() => {
                         href="/register"
                         data-animate
                         :style="`transition-delay:${i * 0.06}s`"
-                        class="cat-card group relative block cursor-pointer overflow-hidden rounded-[1.75rem] bg-gradient-to-br p-8 shadow-lg transition-all duration-300 hover:-translate-y-2.5 hover:shadow-2xl"
-                        :class="[cat.grad, cat.glow]"
+                        class="cat-card group relative block cursor-pointer overflow-hidden rounded-3xl bg-gradient-to-br p-7 ring-1 transition-all duration-500 hover:-translate-y-2 hover:rotate-0"
+                        :class="[cat.bg, cat.ring, cat.glow, i % 2 === 0 ? 'rotate-[-0.75deg]' : 'rotate-[0.75deg]']"
                     >
+                        <!-- soft corner glow -->
+                        <div class="pointer-events-none absolute -right-8 -top-8 h-24 w-24 rounded-full blur-2xl transition-transform duration-700 group-hover:scale-150" :class="cat.blob"></div>
                         <!-- shine sweep -->
-                        <div class="pointer-events-none absolute inset-0 -translate-x-[120%] -skew-x-12 bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-[900ms] ease-out group-hover:translate-x-[120%]"></div>
-                        <!-- scaling glow blob -->
-                        <div class="pointer-events-none absolute -bottom-12 -right-12 h-40 w-40 rounded-full bg-white/10 transition-transform duration-500 group-hover:scale-[2.4]"></div>
+                        <div class="pointer-events-none absolute inset-0 -translate-x-[120%] -skew-x-12 bg-gradient-to-r from-transparent via-white/60 to-transparent transition-transform duration-[900ms] ease-out group-hover:translate-x-[120%]"></div>
 
-                        <!-- floating emoji badge -->
-                        <div class="cat-emoji relative flex h-16 w-16 items-center justify-center rounded-2xl bg-white/15 text-4xl ring-1 ring-white/25 backdrop-blur-sm transition-transform duration-500 group-hover:scale-110 group-hover:-rotate-12" :style="`animation-delay:${i * 0.35}s`">
+                        <!-- floating emoji tile -->
+                        <div class="cat-emoji relative flex h-14 w-14 items-center justify-center rounded-2xl text-3xl ring-1 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6" :class="cat.tile" :style="`animation-delay:${i * 0.35}s`">
                             {{ cat.emoji }}
                         </div>
 
-                        <h3 class="relative mt-6 text-2xl font-extrabold tracking-tight text-white">{{ cat.name }}</h3>
-                        <p class="relative mt-2 text-sm leading-6" :class="cat.tint">{{ cat.blurb }}</p>
-                        <span class="relative mt-5 inline-flex items-center gap-1.5 text-xs font-semibold text-white/75 transition group-hover:text-white">
+                        <h3 class="relative mt-5 text-xl font-bold tracking-tight text-neutral-900">{{ cat.name }}</h3>
+                        <p class="relative mt-2 text-sm leading-6 text-neutral-500">{{ cat.blurb }}</p>
+                        <span class="relative mt-5 inline-flex items-center gap-1.5 text-xs font-bold" :class="cat.accent">
                             Get started
                             <svg class="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg>
                         </span>
@@ -402,7 +404,7 @@ onUnmounted(() => {
                 <div data-animate class="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
                     <div>
                         <p class="text-xs font-semibold uppercase tracking-[0.35em] text-indigo-500">Designs that wow</p>
-                        <h2 class="mt-4 text-4xl font-extrabold tracking-tight text-neutral-950 sm:text-6xl">Twelve templates,<br/>endlessly <span class="font-serif font-medium italic text-indigo-600">yours.</span></h2>
+                        <h2 class="mt-4 text-4xl font-extrabold tracking-tight text-neutral-950 sm:text-6xl">Twenty-three designs,<br/>endlessly <span class="font-serif font-medium italic text-indigo-600">yours.</span></h2>
                     </div>
                     <Link href="/templates" class="group inline-flex shrink-0 items-center gap-2 text-sm font-bold text-neutral-900 transition hover:text-indigo-600">
                         Explore the gallery
@@ -445,7 +447,7 @@ onUnmounted(() => {
                     </Link>
                 </div>
 
-                <p data-animate class="mt-10 text-center text-sm text-neutral-400">6 website designs · 6 invitation cards · every event type, beautifully themed</p>
+                <p data-animate class="mt-10 text-center text-sm text-neutral-400">12 website designs · 11 invitation cards · every event type, beautifully themed</p>
             </div>
         </section>
 
@@ -456,30 +458,61 @@ onUnmounted(() => {
             <div class="gl-mesh-dark gl-mesh-anim pointer-events-none absolute inset-0 opacity-30"></div>
             <div class="relative mx-auto max-w-7xl px-6 sm:px-10 lg:px-12">
                 <div data-animate class="mx-auto max-w-xl text-center">
-                    <p class="text-xs font-semibold uppercase tracking-[0.35em] text-violet-400">Simple as 1 – 2 – 3</p>
+                    <p class="text-xs font-semibold uppercase tracking-[0.35em] text-violet-400">Plan · Design · Wish · Celebrate</p>
                     <h2 class="mt-4 text-4xl font-extrabold tracking-tight text-white sm:text-6xl">How Gift Loft works.</h2>
+                    <p class="mt-5 text-sm leading-7 text-white/50">One link does it all — your invitation, your event website, your wishlist, and gifting for every guest.</p>
                 </div>
 
-                <div class="mt-14 grid gap-5 lg:grid-cols-3">
-                    <div data-animate class="group relative overflow-hidden rounded-[1.75rem] border border-white/10 bg-white/[0.04] p-10 backdrop-blur-sm transition hover:border-white/20 hover:bg-white/[0.06]" style="transition-delay:.05s">
-                        <p class="bg-gradient-to-br from-violet-400 to-purple-600 bg-clip-text text-8xl font-black leading-none text-transparent">01</p>
+                <div class="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+                    <div data-animate class="group relative overflow-hidden rounded-[1.75rem] border border-white/10 bg-white/[0.04] p-8 backdrop-blur-sm transition hover:border-white/20 hover:bg-white/[0.06]" style="transition-delay:.05s">
+                        <p class="bg-gradient-to-br from-violet-400 to-purple-600 bg-clip-text text-7xl font-black leading-none text-transparent">01</p>
                         <h3 class="mt-5 text-xl font-bold text-white">Create your event</h3>
-                        <p class="mt-3 text-sm leading-7 text-white/50">Sign up, choose your event type — wedding, birthday, proposal — and have a beautiful page live in minutes.</p>
-                        <div class="gl-float absolute right-7 top-7 text-4xl opacity-10 transition group-hover:opacity-25">🎉</div>
+                        <p class="mt-3 text-sm leading-7 text-white/50">Weddings, birthdays, baby showers, proposals — set the date, venue, and cover photo in minutes.</p>
+                        <ul class="mt-4 space-y-1.5 text-xs leading-5 text-white/40">
+                            <li><span class="text-violet-400">✓</span> 8 event types, all beautifully themed</li>
+                            <li><span class="text-violet-400">✓</span> Venue photo, map link & travel directions</li>
+                            <li><span class="text-violet-400">✓</span> Live countdown for your guests</li>
+                        </ul>
+                        <div class="gl-float absolute right-6 top-6 text-4xl opacity-10 transition group-hover:opacity-25">🎉</div>
                         <div class="absolute -bottom-10 -right-10 h-36 w-36 rounded-full bg-violet-600/10 transition-all duration-500 group-hover:scale-[2]"></div>
                     </div>
-                    <div data-animate class="group relative overflow-hidden rounded-[1.75rem] border border-white/10 bg-white/[0.04] p-10 backdrop-blur-sm transition hover:border-white/20 hover:bg-white/[0.06]" style="transition-delay:.1s">
-                        <p class="bg-gradient-to-br from-rose-400 to-pink-600 bg-clip-text text-8xl font-black leading-none text-transparent">02</p>
+
+                    <div data-animate class="group relative overflow-hidden rounded-[1.75rem] border border-white/10 bg-white/[0.04] p-8 backdrop-blur-sm transition hover:border-white/20 hover:bg-white/[0.06]" style="transition-delay:.1s">
+                        <p class="bg-gradient-to-br from-fuchsia-400 to-pink-600 bg-clip-text text-7xl font-black leading-none text-transparent">02</p>
+                        <h3 class="mt-5 text-xl font-bold text-white">Design website & invitation</h3>
+                        <p class="mt-3 text-sm leading-7 text-white/50">Pick from 12 animated website templates and 11 invitation cards, then make them yours — no code, ever.</p>
+                        <ul class="mt-4 space-y-1.5 text-xs leading-5 text-white/40">
+                            <li><span class="text-fuchsia-400">✓</span> Your story, schedule, FAQs & photo gallery</li>
+                            <li><span class="text-fuchsia-400">✓</span> Shareable invitation card for WhatsApp & email</li>
+                            <li><span class="text-fuchsia-400">✓</span> Cinematic scroll animations built in</li>
+                        </ul>
+                        <div class="gl-float absolute right-6 top-6 text-4xl opacity-10 transition group-hover:opacity-25" style="animation-delay:1s">💌</div>
+                        <div class="absolute -bottom-10 -right-10 h-36 w-36 rounded-full bg-fuchsia-600/10 transition-all duration-500 group-hover:scale-[2]"></div>
+                    </div>
+
+                    <div data-animate class="group relative overflow-hidden rounded-[1.75rem] border border-white/10 bg-white/[0.04] p-8 backdrop-blur-sm transition hover:border-white/20 hover:bg-white/[0.06]" style="transition-delay:.15s">
+                        <p class="bg-gradient-to-br from-rose-400 to-pink-600 bg-clip-text text-7xl font-black leading-none text-transparent">03</p>
                         <h3 class="mt-5 text-xl font-bold text-white">Build your wishlist</h3>
-                        <p class="mt-3 text-sm leading-7 text-white/50">Add gifts, experiences, and cash funds. Guests can browse and buy directly — no awkward conversations needed.</p>
-                        <div class="gl-float absolute right-7 top-7 text-4xl opacity-10 transition group-hover:opacity-25" style="animation-delay:1.5s">🎁</div>
+                        <p class="mt-3 text-sm leading-7 text-white/50">Curate exactly what you'd love from our shop or anywhere else. Claimed gifts are marked instantly — no duplicates.</p>
+                        <ul class="mt-4 space-y-1.5 text-xs leading-5 text-white/40">
+                            <li><span class="text-rose-400">✓</span> Add from our curated shop or any link</li>
+                            <li><span class="text-rose-400">✓</span> Save a delivery address — guests never need it</li>
+                            <li><span class="text-rose-400">✓</span> Link it to your event or keep it standalone</li>
+                        </ul>
+                        <div class="gl-float absolute right-6 top-6 text-4xl opacity-10 transition group-hover:opacity-25" style="animation-delay:2s">🎁</div>
                         <div class="absolute -bottom-10 -right-10 h-36 w-36 rounded-full bg-rose-600/10 transition-all duration-500 group-hover:scale-[2]"></div>
                     </div>
-                    <div data-animate class="group relative overflow-hidden rounded-[1.75rem] border border-white/10 bg-white/[0.04] p-10 backdrop-blur-sm transition hover:border-white/20 hover:bg-white/[0.06]" style="transition-delay:.15s">
-                        <p class="bg-gradient-to-br from-amber-400 to-orange-500 bg-clip-text text-8xl font-black leading-none text-transparent">03</p>
-                        <h3 class="mt-5 text-xl font-bold text-white">Share & celebrate</h3>
-                        <p class="mt-3 text-sm leading-7 text-white/50">Share your link, track RSVPs and gifts in real-time, and focus on what matters most — your special day.</p>
-                        <div class="gl-float absolute right-7 top-7 text-4xl opacity-10 transition group-hover:opacity-25" style="animation-delay:3s">✨</div>
+
+                    <div data-animate class="group relative overflow-hidden rounded-[1.75rem] border border-white/10 bg-white/[0.04] p-8 backdrop-blur-sm transition hover:border-white/20 hover:bg-white/[0.06]" style="transition-delay:.2s">
+                        <p class="bg-gradient-to-br from-amber-400 to-orange-500 bg-clip-text text-7xl font-black leading-none text-transparent">04</p>
+                        <h3 class="mt-5 text-xl font-bold text-white">Share, gift & celebrate</h3>
+                        <p class="mt-3 text-sm leading-7 text-white/50">Send one link. Guests see everything, gift in a few taps, and can even wrap it up beautifully.</p>
+                        <ul class="mt-4 space-y-1.5 text-xs leading-5 text-white/40">
+                            <li><span class="text-amber-400">✓</span> Premium boxes, message stickers & custom cards</li>
+                            <li><span class="text-amber-400">✓</span> Gifts ship straight to the celebrant</li>
+                            <li><span class="text-amber-400">✓</span> Track every order & gift in one place</li>
+                        </ul>
+                        <div class="gl-float absolute right-6 top-6 text-4xl opacity-10 transition group-hover:opacity-25" style="animation-delay:3s">✨</div>
                         <div class="absolute -bottom-10 -right-10 h-36 w-36 rounded-full bg-amber-600/10 transition-all duration-500 group-hover:scale-[2]"></div>
                     </div>
                 </div>

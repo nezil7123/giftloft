@@ -31,6 +31,7 @@ class EventTemplates
             ['key' => 'royal',     'name' => 'Royal Heritage',      'description' => 'Emerald and gold grandeur — a hand-drawn crest and arched gallery frames.', 'accent' => 'emerald'],
             ['key' => 'prism',     'name' => 'Prism',               'description' => 'Light glassmorphism with floating colour and a playful bento layout.', 'accent' => 'violet'],
             ['key' => 'ember',     'name' => 'Golden Hour',         'description' => 'Sun-washed terracotta warmth with counter-scrolling film-strip galleries.', 'accent' => 'orange'],
+            ['key' => 'nova',      'name' => 'Nova',                'description' => 'Futuristic launch sequence — the title flies in, then your photo grows from a single dot to fill the screen.', 'accent' => 'sky'],
         ];
     }
 

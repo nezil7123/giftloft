@@ -15,7 +15,7 @@ class TemplateGalleryTest extends TestCase
             ->assertOk()
             ->assertInertia(fn ($page) => $page
                 ->component('Public/Templates/Index')
-                ->has('websiteTemplates', 11)
+                ->has('websiteTemplates', 12)
                 ->has('invitationTemplates', 11)
                 ->has('eventTypes', 8)
                 ->where('samples.wedding.title', 'Sarah & James')
@@ -59,7 +59,7 @@ class TemplateGalleryTest extends TestCase
 
     public function test_new_premium_website_templates_are_previewable(): void
     {
-        foreach (['aurora', 'cinema', 'royal', 'prism', 'ember'] as $key) {
+        foreach (['aurora', 'cinema', 'royal', 'prism', 'ember', 'nova'] as $key) {
             $this->get("/templates/website/{$key}")
                 ->assertOk()
                 ->assertInertia(fn ($page) => $page->where('templateKey', $key));

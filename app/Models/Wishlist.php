@@ -15,12 +15,23 @@ class Wishlist extends Model
         'name',
         'description',
         'visibility',
+        'delivery_address',
         'slug',
         'active',
     ];
 
     protected $casts = [
         'active' => 'boolean',
+        'delivery_address' => 'array',
+    ];
+
+    /**
+     * Hidden by default so the owner's home address never leaks through a
+     * serialized wishlist (public pages, checkout, admin lists). The owner's
+     * own edit screen calls makeVisible() explicitly.
+     */
+    protected $hidden = [
+        'delivery_address',
     ];
 
     public function user()

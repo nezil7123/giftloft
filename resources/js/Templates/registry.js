@@ -9,6 +9,7 @@ import WebsiteCinema from './Website/Cinema.vue';
 import WebsiteRoyal from './Website/Royal.vue';
 import WebsitePrism from './Website/Prism.vue';
 import WebsiteEmber from './Website/Ember.vue';
+import WebsiteNova from './Website/Nova.vue';
 
 import InvitationElegant from './Invitation/Elegant.vue';
 import InvitationFloral from './Invitation/Floral.vue';
@@ -34,6 +35,7 @@ const websiteTemplates = {
     royal: WebsiteRoyal,
     prism: WebsitePrism,
     ember: WebsiteEmber,
+    nova: WebsiteNova,
 };
 
 const invitationTemplates = {

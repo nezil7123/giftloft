@@ -5,6 +5,7 @@ import { computed } from 'vue';
 
 const props = defineProps({
     wishlist: { type: Object, required: true },
+    hasSavedAddress: { type: Boolean, default: false },
     isAuthenticated: { type: Boolean, default: false },
 });
 
@@ -30,6 +31,9 @@ const itemsLeft = computed(() => props.wishlist.items.filter((i) => !isClaimed(i
                     <span>Curated by {{ wishlist.user?.name }}</span>
                     <span v-if="wishlist.event">· for {{ wishlist.event.title }}</span>
                 </div>
+                <p v-if="hasSavedAddress" class="mx-auto mt-5 inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-xs font-semibold text-white/90 ring-1 ring-white/20">
+                    📦 Delivery address saved — gifts ship straight to {{ wishlist.user?.name }}, no address needed
+                </p>
             </div>
         </section>
 

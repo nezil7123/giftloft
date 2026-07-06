@@ -44,6 +44,8 @@ return [
     'razorpay' => [
         'key' => env('RAZORPAY_KEY'),
         'secret' => env('RAZORPAY_SECRET'),
+        // Set in Dashboard → Settings → Webhooks; verifies incoming webhooks.
+        'webhook_secret' => env('RAZORPAY_WEBHOOK_SECRET'),
         // When key and secret are absent, checkout runs in test/stub mode
         // and payments are auto-approved without contacting Razorpay.
     ],

@@ -1,8 +1,9 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import InputError from '@/Components/InputError.vue';
+import { openRazorpay } from '@/razorpay.js';
 import { Head, Link, useForm } from '@inertiajs/vue3';
-import { computed, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 
 const props = defineProps({
     items: { type: Array, required: true },
@@ -90,7 +91,10 @@ const selectCard = (choice) => {
     if (!choice.id) form.custom_card_note = '';
 };
 
-const pay = () => {
+const paying = ref(false);
+const payError = ref('');
+
+const pay = async () => {
     if (props.testMode) {
         // STUB: fabricate a successful payment, skip the Razorpay widget.
         form.razorpay_payment_id = 'pay_test_' + Math.random().toString(36).slice(2, 16);
@@ -99,9 +103,37 @@ const pay = () => {
         return;
     }
 
-    // LIVE: open the Razorpay checkout widget here, then submit on success.
-    // const rzp = new window.Razorpay({ key: props.razorpayKey, order_id: props.order.id, ... });
-    // rzp.open();
+    // LIVE: create the order at pay time (so it's priced with the selected
+    // addons), open the widget, then submit the verified handshake.
+    paying.value = true;
+    payError.value = '';
+    try {
+        const { data } = await window.axios.post(route('checkout.cart.order'), {
+            is_gift: form.is_gift,
+            packaging_addon_id: form.packaging_addon_id,
+            message_sticker_addon_id: form.message_sticker_addon_id,
+            custom_card_addon_id: form.custom_card_addon_id,
+        });
+
+        await openRazorpay({
+            key: data.key,
+            order: data.order,
+            description: 'Gift Loft order',
+            prefill: { name: form.recipient_name || undefined, email: form.recipient_email || undefined, contact: form.recipient_phone || undefined },
+            onSuccess: (r) => {
+                form.razorpay_order_id = r.razorpay_order_id;
+                form.razorpay_payment_id = r.razorpay_payment_id;
+                form.razorpay_signature = r.razorpay_signature;
+                form.post(route('checkout.cart.store'), {
+                    onFinish: () => (paying.value = false),
+                });
+            },
+            onDismiss: () => (paying.value = false),
+        });
+    } catch (e) {
+        payError.value = e.response?.data?.message ?? e.message ?? 'Payment could not be started.';
+        paying.value = false;
+    }
 };
 </script>
 
@@ -301,11 +333,12 @@ const pay = () => {
                             <button
                                 type="button"
                                 @click="pay"
-                                :disabled="form.processing"
+                                :disabled="form.processing || paying"
                                 class="mt-6 w-full rounded-full bg-indigo-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-indigo-500 disabled:opacity-50"
                             >
-                                {{ form.processing ? 'Processing…' : `Pay ${total}` }}
+                                {{ form.processing || paying ? 'Processing…' : `Pay ${total}` }}
                             </button>
+                            <p v-if="payError" class="mt-3 text-center text-xs text-rose-600">{{ payError }}</p>
                             <Link :href="route('cart.index')" class="mt-3 block text-center text-xs font-medium text-neutral-400 hover:text-neutral-600">Back to cart</Link>
                         </div>
                     </div>

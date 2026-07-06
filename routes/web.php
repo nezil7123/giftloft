@@ -15,8 +15,11 @@ use App\Http\Controllers\GiftController;
 use App\Http\Controllers\HelpController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RazorpayWebhookController;
+use App\Http\Controllers\UserSearchController;
 use App\Http\Controllers\Public\CartController;
 use App\Http\Controllers\Public\EventController as PublicEventController;
+use App\Http\Controllers\Public\ProfileController as PublicProfileController;
 use App\Http\Controllers\Public\ShopController;
 use App\Http\Controllers\Public\TemplateController as PublicTemplateController;
 use App\Http\Controllers\Public\WishlistController as PublicWishlistController;
@@ -34,6 +37,12 @@ Route::get('/', function () {
     ]);
 });
 
+// Signature-authenticated (see RazorpayWebhookController); CSRF-exempt.
+Route::post('/webhooks/razorpay', RazorpayWebhookController::class)->name('webhooks.razorpay');
+
+Route::get('/privacy', fn () => Inertia::render('Public/Legal/Privacy'))->name('legal.privacy');
+Route::get('/terms', fn () => Inertia::render('Public/Legal/Terms'))->name('legal.terms');
+
 Route::get('/shop', [ShopController::class, 'index'])->name('public.shop');
 Route::get('/shop/{product}', [ShopController::class, 'show'])->name('public.shop.show');
 
@@ -49,12 +58,18 @@ Route::get('/templates/website/{key}', [PublicTemplateController::class, 'websit
 Route::get('/e/{shareCode}', [PublicEventController::class, 'show'])->name('public.event');
 Route::get('/e/{shareCode}/invitation', [PublicEventController::class, 'invitation'])->name('public.event.invitation');
 Route::get('/r/{slug}', [PublicWishlistController::class, 'show'])->name('public.wishlist');
+Route::get('/u/{identifier}', [PublicProfileController::class, 'show'])->name('public.profile');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::get('/help', [HelpController::class, 'index'])->name('help.index');
     Route::get('/help/{guide}', [HelpController::class, 'show'])->name('help.show');
+
+    // Exact-match people search; throttled to block enumeration attempts.
+    Route::get('/people', [UserSearchController::class, 'index'])
+        ->middleware('throttle:30,1')
+        ->name('people.find');
 
     Route::resource('events', EventController::class);
     Route::get('events/{event}/design', [EventDesignController::class, 'edit'])->name('events.design.edit');
@@ -76,6 +91,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Cart checkout — buy for yourself or send everything as a personal gift.
     Route::get('/checkout/cart', [CheckoutController::class, 'cart'])->name('checkout.cart');
     Route::post('/checkout/cart', [CheckoutController::class, 'storeCart'])->name('checkout.cart.store');
+    Route::post('/checkout/cart/order', [CheckoutController::class, 'createCartOrder'])->name('checkout.cart.order');
 
     Route::resource('gifts', GiftController::class)->only(['index', 'show']);
     Route::resource('orders', OrderController::class)->only(['index', 'show']);

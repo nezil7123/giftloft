@@ -120,7 +120,12 @@ const inputClass =
                 </template>
             </button>
 
-            <p class="text-center text-xs leading-5 text-neutral-400">By continuing you agree to our terms — celebrations only, no spam. 🎉</p>
+            <p class="text-center text-xs leading-5 text-neutral-400">
+                By continuing you agree to our
+                <Link href="/terms" class="font-semibold text-neutral-500 underline decoration-neutral-300 transition hover:text-indigo-600">Terms &amp; Conditions</Link>
+                and
+                <Link href="/privacy" class="font-semibold text-neutral-500 underline decoration-neutral-300 transition hover:text-indigo-600">Privacy Policy</Link>. Celebrations only, no spam. 🎉
+            </p>
         </form>
 
         <p class="gl-enter gl-d3 mt-6 text-center text-sm text-neutral-500">

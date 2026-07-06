@@ -24,7 +24,8 @@ class WishlistController extends Controller
             ->firstOrFail();
 
         return Inertia::render('Public/WishlistShow', [
-            'wishlist' => $wishlist,
+            'wishlist' => $wishlist, // delivery_address stays hidden (model $hidden)
+            'hasSavedAddress' => (bool) $wishlist->delivery_address,
             'isAuthenticated' => auth()->check(),
         ]);
     }

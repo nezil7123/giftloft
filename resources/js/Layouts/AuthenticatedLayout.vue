@@ -66,7 +66,9 @@ watch(
                             </template>
 
                             <template #content>
-                                <DropdownLink :href="route('profile.edit')">Profile</DropdownLink>
+                                <DropdownLink :href="route('public.profile', $page.props.auth.user.username ?? $page.props.auth.user.id)">My public profile</DropdownLink>
+                                <DropdownLink :href="route('people.find')">Find people</DropdownLink>
+                                <DropdownLink :href="route('profile.edit')">Settings</DropdownLink>
                                 <DropdownLink :href="route('logout')" method="post" as="button">Log Out</DropdownLink>
                             </template>
                         </Dropdown>
@@ -105,7 +107,9 @@ watch(
                         <div class="text-sm text-slate-500">{{ $page.props.auth.user.email }}</div>
                     </div>
                     <div class="mt-3 space-y-1">
-                        <ResponsiveNavLink :href="route('profile.edit')">Profile</ResponsiveNavLink>
+                        <ResponsiveNavLink :href="route('public.profile', $page.props.auth.user.username ?? $page.props.auth.user.id)">My public profile</ResponsiveNavLink>
+                        <ResponsiveNavLink :href="route('people.find')">Find people</ResponsiveNavLink>
+                        <ResponsiveNavLink :href="route('profile.edit')">Settings</ResponsiveNavLink>
                         <ResponsiveNavLink :href="route('logout')" method="post" as="button">Log Out</ResponsiveNavLink>
                     </div>
                 </div>

@@ -66,7 +66,8 @@ class WishlistController extends Controller
         $this->authorize('update', $wishlist);
 
         return Inertia::render('Wishlists/Edit', [
-            'wishlist' => $wishlist,
+            // The owner may see their own saved address (hidden by default).
+            'wishlist' => $wishlist->makeVisible('delivery_address'),
             'events' => $this->userEvents($request),
         ]);
     }
