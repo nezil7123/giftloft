@@ -11,7 +11,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 #[Fillable(['name', 'username', 'email', 'mobile', 'password', 'avatar_url', 'bio', 'address_line_1', 'address_line_2', 'city', 'state', 'country', 'postal_code', 'profile_visible', 'google_id', 'google_token', 'google_refresh_token'])]
-#[Hidden(['password', 'remember_token'])]
+#[Hidden(['password', 'remember_token', 'google_token', 'google_refresh_token'])]
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
