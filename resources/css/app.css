@@ -82,7 +82,10 @@
     100% { background-position: 200% 0; }
 }
 .gl-shimmer {
-    background: linear-gradient(110deg, currentColor 35%, rgba(255,255,255,0.85) 50%, currentColor 65%);
+    /* Base colour comes from --gl-shimmer-color, NOT currentColor: bg-clip:text
+       forces color:transparent, so currentColor would be transparent too and the
+       text would vanish. Templates set --gl-shimmer-color to their accent. */
+    background: linear-gradient(110deg, var(--gl-shimmer-color, #b45309) 30%, rgba(255,255,255,0.9) 50%, var(--gl-shimmer-color, #b45309) 70%);
     background-size: 200% 100%;
     -webkit-background-clip: text;
     background-clip: text;

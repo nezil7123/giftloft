@@ -15,7 +15,7 @@ const { typeLabel, hosts, tagline, location, fmtFull } = useEventDisplay(() => p
 
             <p class="text-[10px] font-semibold uppercase tracking-[0.5em] text-amber-300">{{ typeLabel }}</p>
             <p class="gl-twinkle mt-6 text-2xl text-amber-300">✦</p>
-            <h1 class="mt-4 font-serif text-5xl font-medium leading-[0.95] text-amber-200 gl-shimmer">{{ hosts || event.title }}</h1>
+            <h1 class="mt-4 font-serif text-5xl font-medium leading-[0.95] text-amber-200 gl-shimmer" style="--gl-shimmer-color:#fde68a">{{ hosts || event.title }}</h1>
             <p v-if="tagline" class="mt-3 font-serif text-base italic text-amber-200/90">{{ tagline }}</p>
 
             <div class="mx-auto mt-6 flex items-center justify-center gap-2">
