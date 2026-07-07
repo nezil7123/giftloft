@@ -55,6 +55,11 @@ Route::delete('/cart/{product}', [CartController::class, 'remove'])->name('cart.
 Route::get('/templates', [PublicTemplateController::class, 'index'])->name('public.templates');
 Route::get('/templates/website/{key}', [PublicTemplateController::class, 'website'])->name('public.templates.website');
 
+// "How it works" onboarding guides — public so prospective users can learn
+// how Gift Loft works before signing up.
+Route::get('/help', [HelpController::class, 'index'])->name('help.index');
+Route::get('/help/{guide}', [HelpController::class, 'show'])->name('help.show');
+
 Route::get('/e/{shareCode}', [PublicEventController::class, 'show'])->name('public.event');
 Route::get('/e/{shareCode}/invitation', [PublicEventController::class, 'invitation'])->name('public.event.invitation');
 Route::get('/r/{slug}', [PublicWishlistController::class, 'show'])->name('public.wishlist');
@@ -62,9 +67,6 @@ Route::get('/u/{identifier}', [PublicProfileController::class, 'show'])->name('p
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-
-    Route::get('/help', [HelpController::class, 'index'])->name('help.index');
-    Route::get('/help/{guide}', [HelpController::class, 'show'])->name('help.show');
 
     // Exact-match people search; throttled to block enumeration attempts.
     Route::get('/people', [UserSearchController::class, 'index'])

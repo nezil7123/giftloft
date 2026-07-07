@@ -11,10 +11,17 @@ class HelpTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_guest_is_redirected_from_help_pages(): void
+    public function test_guest_can_view_help_pages(): void
     {
-        $this->get('/help')->assertRedirect('/login');
-        $this->get('/help/wishlist')->assertRedirect('/login');
+        // Onboarding guides are public so prospective users can learn the
+        // product before signing up.
+        $this->get('/help')
+            ->assertOk()
+            ->assertInertia(fn ($page) => $page->component('Help/Index'));
+
+        $this->get('/help/wishlist')
+            ->assertOk()
+            ->assertInertia(fn ($page) => $page->component('Help/Guide'));
     }
 
     public function test_help_hub_lists_all_guides(): void

@@ -1,5 +1,5 @@
 <script setup>
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import PublicLayout from '@/Layouts/PublicLayout.vue';
 import { Head, Link } from '@inertiajs/vue3';
 
 const props = defineProps({
@@ -8,18 +8,15 @@ const props = defineProps({
 </script>
 
 <template>
-    <Head :title="guide.title" />
+    <Head :title="`${guide.title} — Gift Loft`" />
 
-    <AuthenticatedLayout>
-        <template #header>
-            <div class="flex items-center justify-between">
-                <h2 class="text-xl font-bold text-neutral-900">How it works</h2>
-                <Link :href="route('help.index')" class="text-sm font-medium text-neutral-500 hover:text-neutral-900">← All guides</Link>
-            </div>
-        </template>
-
-        <div class="py-10">
-            <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+    <PublicLayout theme="light">
+        <div class="pb-20 pt-28 sm:pt-32">
+            <div class="mx-auto max-w-4xl px-6 sm:px-8">
+                <Link :href="route('help.index')" class="mb-6 inline-flex items-center gap-1.5 text-sm font-medium text-neutral-500 transition hover:text-neutral-900">
+                    <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M7 16l-4-4m0 0l4-4m-4 4h18" /></svg>
+                    All guides
+                </Link>
                 <!-- Hero -->
                 <div class="overflow-hidden rounded-[2rem] bg-gradient-to-br p-8 text-white shadow-sm sm:p-10" :class="guide.gradient">
                     <div class="grid gap-8 sm:grid-cols-[1.2fr_1fr] sm:items-center">
@@ -81,5 +78,5 @@ const props = defineProps({
                 </div>
             </div>
         </div>
-    </AuthenticatedLayout>
+    </PublicLayout>
 </template>

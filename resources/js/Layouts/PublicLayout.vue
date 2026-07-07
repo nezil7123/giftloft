@@ -34,9 +34,11 @@ function onScroll() {
 onMounted(() => window.addEventListener('scroll', onScroll, { passive: true }));
 onUnmounted(() => window.removeEventListener('scroll', onScroll));
 
-// Deliberately minimal: two destinations, everything else lives in the
-// footer. Fewer exits from the page = more sign-ups.
+// Deliberately minimal: a few high-intent destinations, everything else lives
+// in the footer. "How it works" onboards prospective users; fewer exits = more
+// sign-ups.
 const navLinks = [
+    { label: 'How it works', href: '/help' },
     { label: 'Shop gifts', href: '/shop' },
     { label: 'Invitations & websites', href: '/templates' },
 ];
