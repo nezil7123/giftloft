@@ -32,6 +32,16 @@ class EventTemplates
             ['key' => 'prism',     'name' => 'Prism',               'description' => 'Light glassmorphism with floating colour and a playful bento layout.', 'accent' => 'violet'],
             ['key' => 'ember',     'name' => 'Golden Hour',         'description' => 'Sun-washed terracotta warmth with counter-scrolling film-strip galleries.', 'accent' => 'orange'],
             ['key' => 'nova',      'name' => 'Nova',                'description' => 'Futuristic launch sequence — the title flies in, then your photo grows from a single dot to fill the screen.', 'accent' => 'sky'],
+            ['key' => 'gilded',    'name' => 'Gilded Ivory',        'description' => 'Champagne gold on warm ivory — a luxe, shimmering serif for timeless celebrations.', 'accent' => 'amber'],
+            ['key' => 'coastal',   'name' => 'Coastal',             'description' => 'Breezy ocean blues and soft sand with rolling wave gradients.', 'accent' => 'sky'],
+            ['key' => 'blossom',   'name' => 'Cherry Blossom',      'description' => 'Soft sakura pinks with petals drifting gently down the page.', 'accent' => 'rose'],
+            ['key' => 'monochrome', 'name' => 'Monochrome',         'description' => 'Bold black-and-white brutalist grid with oversized type and gridlines.', 'accent' => 'neutral'],
+            ['key' => 'pastel',    'name' => 'Pastel Dream',        'description' => 'Dreamy candy gradients and floating blobs in soft rounded cards.', 'accent' => 'violet'],
+            ['key' => 'celestial', 'name' => 'Celestial',           'description' => 'A deep night sky of twinkling stars, a glowing moon and constellation type.', 'accent' => 'violet'],
+            ['key' => 'retro',     'name' => 'Retro Pop',           'description' => 'Groovy 70s sunburst warmth with a scrolling marquee band.', 'accent' => 'orange'],
+            ['key' => 'tropical',  'name' => 'Tropical',            'description' => 'Lush jungle greens and lime with drifting palm leaves.', 'accent' => 'emerald'],
+            ['key' => 'letterpress', 'name' => 'Letterpress',       'description' => 'Refined pressed-paper editorial with hairline rules and quiet luxury.', 'accent' => 'neutral'],
+            ['key' => 'marble',    'name' => 'Marble & Gold',       'description' => 'Veined white marble finished with shimmering gold accents.', 'accent' => 'amber'],
         ];
     }
 
@@ -54,6 +64,16 @@ class EventTemplates
             ['key' => 'noir',        'name' => 'Noir',        'description' => 'High-fashion editorial card with oversized date numerals.', 'accent' => 'neutral'],
             ['key' => 'vintage',     'name' => 'Vintage Seal', 'description' => 'Aged parchment finished with a pressed wax seal.', 'accent' => 'amber'],
             ['key' => 'neon',        'name' => 'Neon Glow',   'description' => 'Electric after-dark card that literally glows.', 'accent' => 'fuchsia'],
+            ['key' => 'botanical',   'name' => 'Botanical',   'description' => 'Sage-green pressed-leaf card with corner foliage.', 'accent' => 'emerald'],
+            ['key' => 'celestial',   'name' => 'Celestial',   'description' => 'Starry night card with a crescent moon and glowing gradient name.', 'accent' => 'violet'],
+            ['key' => 'marble',      'name' => 'Marble',      'description' => 'Veined marble card with a shimmering gold headline.', 'accent' => 'amber'],
+            ['key' => 'watercolor',  'name' => 'Watercolor',  'description' => 'Soft artistic washes bleeding behind a gradient name.', 'accent' => 'rose'],
+            ['key' => 'typographic', 'name' => 'Typographic', 'description' => 'Loud type-first poster card in electric yellow and black.', 'accent' => 'amber'],
+            ['key' => 'pastel',      'name' => 'Pastel',      'description' => 'Sweet candy-gradient frame around a frosted glass card.', 'accent' => 'violet'],
+            ['key' => 'gilded',      'name' => 'Gilded',      'description' => 'Gold foil borders and a shimmering serif on warm ivory.', 'accent' => 'amber'],
+            ['key' => 'retro',       'name' => 'Retro',       'description' => 'Groovy 70s sunburst card in terracotta and mustard.', 'accent' => 'orange'],
+            ['key' => 'tropical',    'name' => 'Tropical',    'description' => 'Dark jungle card lit with lime and palm-leaf accents.', 'accent' => 'emerald'],
+            ['key' => 'letterpress', 'name' => 'Letterpress', 'description' => 'Pressed-paper card with an embossed monogram medallion.', 'accent' => 'neutral'],
         ];
     }
 

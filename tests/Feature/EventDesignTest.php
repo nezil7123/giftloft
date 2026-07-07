@@ -38,8 +38,8 @@ class EventDesignTest extends TestCase
             ->assertOk()
             ->assertInertia(fn ($page) => $page
                 ->component('Events/Design')
-                ->has('websiteTemplates', 12)
-                ->has('invitationTemplates', 11));
+                ->has('websiteTemplates', 22)
+                ->has('invitationTemplates', 21));
     }
 
     public function test_non_owner_cannot_open_design_editor(): void

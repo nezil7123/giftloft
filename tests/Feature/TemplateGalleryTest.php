@@ -15,8 +15,8 @@ class TemplateGalleryTest extends TestCase
             ->assertOk()
             ->assertInertia(fn ($page) => $page
                 ->component('Public/Templates/Index')
-                ->has('websiteTemplates', 12)
-                ->has('invitationTemplates', 11)
+                ->has('websiteTemplates', 22)
+                ->has('invitationTemplates', 21)
                 ->has('eventTypes', 8)
                 ->where('samples.wedding.title', 'Sarah & James')
                 ->where('samples.birthday.type', 'birthday')
