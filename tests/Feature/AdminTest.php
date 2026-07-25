@@ -106,20 +106,21 @@ class AdminTest extends TestCase
     {
         Storage::fake('public');
         Http::fake([
-            'cdn.shopify.com/board.jpg' => Http::response('fake-jpeg-bytes', 200, ['Content-Type' => 'image/jpeg']),
+            'cdn.shopify.com/board.jpg' => Http::response('fake-jpeg-bytes-1', 200, ['Content-Type' => 'image/jpeg']),
+            'cdn.shopify.com/board-2.jpg' => Http::response('fake-jpeg-bytes-2', 200, ['Content-Type' => 'image/jpeg']),
             // simulate a broken/unreachable image — the import should still
             // succeed for the product, falling back to the Shopify URL.
             'cdn.shopify.com/ring.jpg' => Http::response('', 404),
         ]);
 
-        $header = 'Handle,Title,Body (HTML),Type,Tags,Published,Status,Variant Price,Image Src';
+        $header = 'Handle,Title,Body (HTML),Type,Tags,Published,Status,Variant Price,Image Src,Image Position';
         $rows = [
-            'marble-board,Marble Cheese Board,"<p>Lovely <b>board</b>.</p>",Home Decor,"housewarming, kitchen",TRUE,active,2499.00,https://cdn.shopify.com/board.jpg',
-            // second row of the same product (an extra image) — Title/Type/Price blank, should not create a duplicate
-            'marble-board,,,,,,,,https://cdn.shopify.com/board-2.jpg',
-            'gold-ring,Gold Ring,,Jewelry,,TRUE,active,4999.00,https://cdn.shopify.com/ring.jpg',
-            'draft-thing,Unfinished Draft,,Gadgets,,FALSE,draft,999.00,',
-            'no-price,Missing Price,,Home,,TRUE,active,,https://cdn.shopify.com/x.jpg',
+            'marble-board,Marble Cheese Board,"<p>Lovely <b>board</b>.</p>",Home Decor,"housewarming, kitchen",TRUE,active,2499.00,https://cdn.shopify.com/board.jpg,1',
+            // second row of the same product (an extra gallery image) — Title/Type/Price blank, should not create a duplicate product but should add a second gallery image
+            'marble-board,,,,,,,,https://cdn.shopify.com/board-2.jpg,2',
+            'gold-ring,Gold Ring,,Jewelry,,TRUE,active,4999.00,https://cdn.shopify.com/ring.jpg,1',
+            'draft-thing,Unfinished Draft,,Gadgets,,FALSE,draft,999.00,,',
+            'no-price,Missing Price,,Home,,TRUE,active,,https://cdn.shopify.com/x.jpg,1',
         ];
         $csv = $header."\n".implode("\n", $rows)."\n";
 
@@ -134,7 +135,7 @@ class AdminTest extends TestCase
             ->assertRedirect();
 
         // marble-board: only one product despite two CSV rows, category guessed
-        // from "Home Decor" tag/type, image downloaded and re-hosted locally
+        // from "Home Decor" tag/type, both its images downloaded and re-hosted locally
         $marble = Product::where('slug', 'marble-board')->first();
         $this->assertNotNull($marble);
         $this->assertSame('Marble Cheese Board', $marble->name);
@@ -145,6 +146,15 @@ class AdminTest extends TestCase
         $this->assertStringNotContainsString('shopify.com', $marble->image_url);
         Storage::disk('public')->assertExists(str_replace('/storage/', '', parse_url($marble->image_url, PHP_URL_PATH)));
         $this->assertSame(1, Product::where('slug', 'marble-board')->count());
+
+        // all images for the product were fetched, not just the first — both
+        // rehosted, in Shopify's "Image Position" order, and image_url is the first
+        $this->assertCount(2, $marble->images);
+        $this->assertSame($marble->images[0], $marble->image_url);
+        foreach ($marble->images as $img) {
+            $this->assertStringContainsString('/storage/products/', $img);
+            Storage::disk('public')->assertExists(str_replace('/storage/', '', parse_url($img, PHP_URL_PATH)));
+        }
 
         // "Jewelry" (US spelling) still maps to our "jewellery" category; its
         // image download failed (404), so it falls back to the Shopify URL

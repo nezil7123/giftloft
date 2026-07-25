@@ -18,6 +18,7 @@ class Product extends Model
         'gender',
         'price',
         'image_url',
+        'images',
         'product_url',
         'emoji',
         'accent',
@@ -28,6 +29,7 @@ class Product extends Model
     protected $casts = [
         'price' => 'decimal:2',
         'is_active' => 'boolean',
+        'images' => 'array',
     ];
 
     /**

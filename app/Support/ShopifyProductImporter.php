@@ -14,13 +14,14 @@ use Illuminate\Support\Str;
  * Shopify writes one row per variant/image, repeating the Handle and leaving
  * Title/Body/Type blank after the first row of each product — so rows are
  * grouped by Handle and only the first non-empty value per column is used.
- * Gift Loft's catalog has no variants, so only the first price/image per
- * product is kept.
+ * Gift Loft's catalog has no variants, so only the first price is kept, but
+ * every distinct "Image Src" row for the product is imported as a gallery
+ * image (ordered by "Image Position" when present).
  *
- * Each product's image is downloaded and re-hosted on our own storage disk
- * rather than hotlinked from Shopify's CDN, so it keeps working even after
- * the Shopify store is closed. If a download fails, the original Shopify
- * URL is kept as a fallback rather than losing the image entirely.
+ * Every image is downloaded and re-hosted on our own storage disk rather
+ * than hotlinked from Shopify's CDN, so it keeps working even after the
+ * Shopify store is closed. If a download fails, the original Shopify URL is
+ * kept as a fallback rather than losing the image entirely.
  */
 class ShopifyProductImporter
 {
@@ -50,9 +51,10 @@ class ShopifyProductImporter
      */
     public function import(string $path, string $defaultCategory, ?string $defaultGender): array
     {
-        // A catalog with many products means many synchronous image
-        // downloads below; the default PHP time limit can be too short.
-        set_time_limit(300);
+        // A catalog with many products — and now every image per product,
+        // not just one — means many synchronous downloads below; the
+        // default PHP time limit can be far too short for that.
+        set_time_limit(600);
 
         $rows = $this->readCsv($path);
         if (empty($rows)) {
@@ -96,14 +98,18 @@ class ShopifyProductImporter
             }
 
             $description = $this->firstNonEmpty($records, 'Body (HTML)');
-            $sourceImageUrl = $this->firstNonEmpty($records, 'Image Src') ?? $this->firstNonEmpty($records, 'Variant Image');
             $category = $this->guessCategory($records) ?? $defaultCategory;
             $sortOrder++;
 
-            $imageUrl = $this->rehostImage($sourceImageUrl);
-            if ($sourceImageUrl && $imageUrl === $sourceImageUrl) {
-                $imagesHotlinked++;
+            $images = [];
+            foreach ($this->collectImageUrls($records) as $sourceUrl) {
+                $rehosted = $this->rehostImage($sourceUrl);
+                if ($rehosted === $sourceUrl) {
+                    $imagesHotlinked++;
+                }
+                $images[] = $rehosted;
             }
+            $images = array_values(array_unique($images));
 
             Product::create([
                 'name' => Str::limit($name, 150, ''),
@@ -112,7 +118,8 @@ class ShopifyProductImporter
                 'category' => $category,
                 'gender' => $defaultGender,
                 'price' => round((float) $price, 2),
-                'image_url' => $imageUrl,
+                'image_url' => $images[0] ?? null,
+                'images' => $images ?: null,
                 'product_url' => null,
                 'emoji' => '🎁',
                 'accent' => self::ACCENTS[$accentIndex++ % count(self::ACCENTS)],
@@ -220,6 +227,48 @@ class ShopifyProductImporter
         }
 
         return null;
+    }
+
+    /**
+     * All distinct image URLs for a product, ordered by Shopify's "Image
+     * Position" column when present (falling back to CSV row order), then
+     * deduplicated. Falls back to "Variant Image" values when the product
+     * has no dedicated "Image Src" rows at all.
+     *
+     * @param list<array<string, string>> $records
+     * @return list<string>
+     */
+    private function collectImageUrls(array $records): array
+    {
+        $ordered = [];
+        foreach ($records as $i => $record) {
+            $src = trim($record['Image Src'] ?? '');
+            if ($src === '') {
+                continue;
+            }
+            $position = is_numeric($record['Image Position'] ?? null) ? (float) $record['Image Position'] : $i;
+            $ordered[] = [$position, $src];
+        }
+
+        if (empty($ordered)) {
+            foreach ($records as $i => $record) {
+                $src = trim($record['Variant Image'] ?? '');
+                if ($src !== '') {
+                    $ordered[] = [$i, $src];
+                }
+            }
+        }
+
+        usort($ordered, fn ($a, $b) => $a[0] <=> $b[0]);
+
+        $urls = [];
+        foreach ($ordered as [, $src]) {
+            if (! in_array($src, $urls, true)) {
+                $urls[] = $src;
+            }
+        }
+
+        return $urls;
     }
 
     /**

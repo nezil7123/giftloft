@@ -12,6 +12,9 @@ const props = defineProps({
 
 const money = (v) => `₹${Number(v ?? 0).toLocaleString('en-IN')}`;
 
+const gallery = (props.product.images ?? []).length ? props.product.images : [props.product.image_url].filter(Boolean);
+const activeImage = ref(gallery[0] ?? null);
+
 const accentGrad = {
     indigo: 'from-indigo-500 to-violet-500',
     rose: 'from-rose-400 to-pink-500',
@@ -69,10 +72,19 @@ const addToCart = () => {
 
             <div class="mt-5 grid gap-8 lg:grid-cols-2 lg:items-start">
                 <!-- Visual -->
-                <div class="overflow-hidden rounded-[2rem] border border-neutral-200 bg-white shadow-sm">
-                    <img v-if="product.image_url" :src="product.image_url" :alt="product.name" class="aspect-square w-full object-cover" />
-                    <div v-else class="flex aspect-square w-full items-center justify-center bg-gradient-to-br text-[10rem]" :class="accentGrad[product.accent] || accentGrad.indigo">
-                        <span class="drop-shadow">{{ product.emoji || '🎁' }}</span>
+                <div>
+                    <div class="overflow-hidden rounded-[2rem] border border-neutral-200 bg-white shadow-sm">
+                        <img v-if="activeImage" :src="activeImage" :alt="product.name" class="aspect-square w-full object-cover" />
+                        <div v-else class="flex aspect-square w-full items-center justify-center bg-gradient-to-br text-[10rem]" :class="accentGrad[product.accent] || accentGrad.indigo">
+                            <span class="drop-shadow">{{ product.emoji || '🎁' }}</span>
+                        </div>
+                    </div>
+                    <div v-if="gallery.length > 1" class="mt-3 grid grid-cols-5 gap-3">
+                        <button v-for="(img, i) in gallery" :key="i" type="button" @click="activeImage = img"
+                            class="aspect-square overflow-hidden rounded-xl ring-2 transition"
+                            :class="activeImage === img ? 'ring-indigo-500' : 'ring-transparent hover:ring-neutral-300'">
+                            <img :src="img" :alt="`${product.name} photo ${i + 1}`" class="h-full w-full object-cover" />
+                        </button>
                     </div>
                 </div>
 
