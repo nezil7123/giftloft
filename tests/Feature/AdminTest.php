@@ -7,6 +7,8 @@ use App\Models\Product;
 use App\Models\User;
 use App\Models\Wishlist;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class AdminTest extends TestCase
@@ -102,6 +104,14 @@ class AdminTest extends TestCase
 
     public function test_admin_can_import_products_from_shopify_csv(): void
     {
+        Storage::fake('public');
+        Http::fake([
+            'cdn.shopify.com/board.jpg' => Http::response('fake-jpeg-bytes', 200, ['Content-Type' => 'image/jpeg']),
+            // simulate a broken/unreachable image — the import should still
+            // succeed for the product, falling back to the Shopify URL.
+            'cdn.shopify.com/ring.jpg' => Http::response('', 404),
+        ]);
+
         $header = 'Handle,Title,Body (HTML),Type,Tags,Published,Status,Variant Price,Image Src';
         $rows = [
             'marble-board,Marble Cheese Board,"<p>Lovely <b>board</b>.</p>",Home Decor,"housewarming, kitchen",TRUE,active,2499.00,https://cdn.shopify.com/board.jpg',
@@ -115,7 +125,7 @@ class AdminTest extends TestCase
 
         $file = \Illuminate\Http\UploadedFile::fake()->createWithContent('shopify_products_export.csv', $csv);
 
-        $this->actingAs($this->admin())
+        $response = $this->actingAs($this->admin())
             ->post('/admin/products/import', [
                 'file' => $file,
                 'default_category' => 'home',
@@ -123,15 +133,24 @@ class AdminTest extends TestCase
             ])
             ->assertRedirect();
 
-        // marble-board: only one product despite two CSV rows, category guessed from "Home Decor" tag/type
-        $this->assertDatabaseHas('products', [
-            'slug' => 'marble-board', 'name' => 'Marble Cheese Board', 'category' => 'home',
-            'price' => '2499.00', 'image_url' => 'https://cdn.shopify.com/board.jpg', 'is_active' => true,
-        ]);
+        // marble-board: only one product despite two CSV rows, category guessed
+        // from "Home Decor" tag/type, image downloaded and re-hosted locally
+        $marble = Product::where('slug', 'marble-board')->first();
+        $this->assertNotNull($marble);
+        $this->assertSame('Marble Cheese Board', $marble->name);
+        $this->assertSame('home', $marble->category);
+        $this->assertSame('2499.00', $marble->price);
+        $this->assertTrue($marble->is_active);
+        $this->assertStringContainsString('/storage/products/', $marble->image_url);
+        $this->assertStringNotContainsString('shopify.com', $marble->image_url);
+        Storage::disk('public')->assertExists(str_replace('/storage/', '', parse_url($marble->image_url, PHP_URL_PATH)));
         $this->assertSame(1, Product::where('slug', 'marble-board')->count());
 
-        // "Jewelry" (US spelling) still maps to our "jewellery" category
-        $this->assertDatabaseHas('products', ['slug' => 'gold-ring', 'category' => 'jewellery']);
+        // "Jewelry" (US spelling) still maps to our "jewellery" category; its
+        // image download failed (404), so it falls back to the Shopify URL
+        $ring = Product::where('slug', 'gold-ring')->first();
+        $this->assertSame('jewellery', $ring->category);
+        $this->assertSame('https://cdn.shopify.com/ring.jpg', $ring->image_url);
 
         // draft/unpublished product imports as inactive
         $this->assertDatabaseHas('products', ['slug' => 'draft-thing', 'is_active' => false]);
@@ -140,6 +159,8 @@ class AdminTest extends TestCase
         $this->assertDatabaseMissing('products', ['slug' => 'no-price']);
 
         $this->assertSame(3, Product::count());
+
+        $response->assertSessionHas('success', fn ($v) => str_contains($v, "1 image(s) couldn't be downloaded"));
     }
 
     public function test_reimporting_the_same_shopify_csv_skips_existing_products(): void

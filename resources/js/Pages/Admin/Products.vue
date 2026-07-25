@@ -300,7 +300,7 @@ const labelClass = 'mb-1.5 block text-sm font-medium text-neutral-700';
                                 <InputError class="mt-1" :message="importForm.errors.default_gender" />
                             </div>
                         </div>
-                        <p class="text-xs text-neutral-400">Imported products land as new catalog entries — review categories, add an emoji/accent, and toggle visibility from the table afterwards. Products already in the catalog (matched by Shopify handle) are skipped, so it's safe to re-run.</p>
+                        <p class="text-xs text-neutral-400">Product images are downloaded and stored on Gift Loft so they keep working even after the Shopify store closes. Imported products land as new catalog entries — review categories, add an emoji/accent, and toggle visibility from the table afterwards. Products already in the catalog (matched by Shopify handle) are skipped, so it's safe to re-run.</p>
 
                         <div class="flex justify-end gap-3 border-t border-neutral-100 pt-5">
                             <button type="button" @click="closeImport" class="rounded-full px-5 py-2.5 text-sm font-semibold text-neutral-600 transition hover:bg-neutral-100">Cancel</button>

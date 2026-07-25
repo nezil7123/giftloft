@@ -93,6 +93,9 @@ class ProductController extends Controller
         if ($result['skipped_invalid'] > 0) {
             $summary .= " Skipped {$result['skipped_invalid']} with no title/price.";
         }
+        if ($result['images_hotlinked'] > 0) {
+            $summary .= " {$result['images_hotlinked']} image(s) couldn't be downloaded and still link to Shopify.";
+        }
 
         return back()->with('success', $summary);
     }

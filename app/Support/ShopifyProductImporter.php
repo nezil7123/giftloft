@@ -3,6 +3,8 @@
 namespace App\Support;
 
 use App\Models\Product;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 /**
@@ -14,9 +16,22 @@ use Illuminate\Support\Str;
  * grouped by Handle and only the first non-empty value per column is used.
  * Gift Loft's catalog has no variants, so only the first price/image per
  * product is kept.
+ *
+ * Each product's image is downloaded and re-hosted on our own storage disk
+ * rather than hotlinked from Shopify's CDN, so it keeps working even after
+ * the Shopify store is closed. If a download fails, the original Shopify
+ * URL is kept as a fallback rather than losing the image entirely.
  */
 class ShopifyProductImporter
 {
+    private const IMAGE_EXTENSIONS = [
+        'image/jpeg' => 'jpg',
+        'image/png' => 'png',
+        'image/webp' => 'webp',
+        'image/gif' => 'gif',
+    ];
+
+    private const MAX_IMAGE_BYTES = 8 * 1024 * 1024; // matches EventPhotoController's per-photo limit
     private const CATEGORY_KEYWORDS = [
         'wedding' => ['wedding', 'bridal'],
         'birthday' => ['birthday', 'party'],
@@ -31,13 +46,17 @@ class ShopifyProductImporter
     private const ACCENTS = ['indigo', 'rose', 'amber', 'violet', 'emerald', 'sky', 'neutral'];
 
     /**
-     * @return array{created: int, skipped_duplicate: int, skipped_invalid: int}
+     * @return array{created: int, skipped_duplicate: int, skipped_invalid: int, images_hotlinked: int}
      */
     public function import(string $path, string $defaultCategory, ?string $defaultGender): array
     {
+        // A catalog with many products means many synchronous image
+        // downloads below; the default PHP time limit can be too short.
+        set_time_limit(300);
+
         $rows = $this->readCsv($path);
         if (empty($rows)) {
-            return ['created' => 0, 'skipped_duplicate' => 0, 'skipped_invalid' => 0];
+            return ['created' => 0, 'skipped_duplicate' => 0, 'skipped_invalid' => 0, 'images_hotlinked' => 0];
         }
 
         $header = array_map('trim', array_shift($rows));
@@ -57,6 +76,7 @@ class ShopifyProductImporter
         $created = 0;
         $skippedDuplicate = 0;
         $skippedInvalid = 0;
+        $imagesHotlinked = 0;
         $sortOrder = (int) (Product::max('sort_order') ?? 0);
         $accentIndex = 0;
 
@@ -76,9 +96,14 @@ class ShopifyProductImporter
             }
 
             $description = $this->firstNonEmpty($records, 'Body (HTML)');
-            $imageUrl = $this->firstNonEmpty($records, 'Image Src') ?? $this->firstNonEmpty($records, 'Variant Image');
+            $sourceImageUrl = $this->firstNonEmpty($records, 'Image Src') ?? $this->firstNonEmpty($records, 'Variant Image');
             $category = $this->guessCategory($records) ?? $defaultCategory;
             $sortOrder++;
+
+            $imageUrl = $this->rehostImage($sourceImageUrl);
+            if ($sourceImageUrl && $imageUrl === $sourceImageUrl) {
+                $imagesHotlinked++;
+            }
 
             Product::create([
                 'name' => Str::limit($name, 150, ''),
@@ -87,7 +112,7 @@ class ShopifyProductImporter
                 'category' => $category,
                 'gender' => $defaultGender,
                 'price' => round((float) $price, 2),
-                'image_url' => $imageUrl ?: null,
+                'image_url' => $imageUrl,
                 'product_url' => null,
                 'emoji' => '🎁',
                 'accent' => self::ACCENTS[$accentIndex++ % count(self::ACCENTS)],
@@ -97,7 +122,66 @@ class ShopifyProductImporter
             $created++;
         }
 
-        return ['created' => $created, 'skipped_duplicate' => $skippedDuplicate, 'skipped_invalid' => $skippedInvalid];
+        return [
+            'created' => $created,
+            'skipped_duplicate' => $skippedDuplicate,
+            'skipped_invalid' => $skippedInvalid,
+            'images_hotlinked' => $imagesHotlinked,
+        ];
+    }
+
+    /**
+     * Download a Shopify image and store it on our own public disk so it
+     * survives the Shopify store closing. Falls back to the original URL
+     * (still hotlinked) if the download fails or isn't a recognizable image.
+     */
+    private function rehostImage(?string $url): ?string
+    {
+        if (! $url) {
+            return null;
+        }
+
+        try {
+            $response = Http::timeout(8)->get($url);
+        } catch (\Throwable) {
+            return $url;
+        }
+
+        if (! $response->successful()) {
+            return $url;
+        }
+
+        $body = $response->body();
+        if ($body === '' || strlen($body) > self::MAX_IMAGE_BYTES) {
+            return $url;
+        }
+
+        $extension = $this->extensionFor($url, $response->header('Content-Type'));
+        if ($extension === null) {
+            return $url;
+        }
+
+        $filename = Str::random(24).'.'.$extension;
+        Storage::disk('public')->put("products/{$filename}", $body);
+
+        return Storage::disk('public')->url("products/{$filename}");
+    }
+
+    private function extensionFor(string $url, ?string $contentType): ?string
+    {
+        if ($contentType) {
+            $mime = strtolower(trim(explode(';', $contentType)[0]));
+            if (isset(self::IMAGE_EXTENSIONS[$mime])) {
+                return self::IMAGE_EXTENSIONS[$mime];
+            }
+        }
+
+        $ext = strtolower(pathinfo(parse_url($url, PHP_URL_PATH) ?? '', PATHINFO_EXTENSION));
+        if ($ext === 'jpeg') {
+            $ext = 'jpg';
+        }
+
+        return in_array($ext, ['jpg', 'png', 'webp', 'gif'], true) ? $ext : null;
     }
 
     /**
