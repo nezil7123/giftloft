@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\ProductImportRequest;
 use App\Http\Requests\Admin\ProductRequest;
 use App\Models\Product;
+use App\Support\ShopifyProductImporter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
@@ -67,6 +69,32 @@ class ProductController extends Controller
         $product->delete();
 
         return back()->with('success', 'Product removed.');
+    }
+
+    /**
+     * Bulk-import products from a Shopify "Products" CSV export.
+     */
+    public function import(ProductImportRequest $request, ShopifyProductImporter $importer)
+    {
+        $result = $importer->import(
+            $request->file('file')->getRealPath(),
+            $request->validated('default_category'),
+            $request->validated('default_gender'),
+        );
+
+        if ($result['created'] === 0) {
+            return back()->with('error', 'Nothing was imported — check the file is a Shopify products CSV export.');
+        }
+
+        $summary = "Imported {$result['created']} product(s).";
+        if ($result['skipped_duplicate'] > 0) {
+            $summary .= " Skipped {$result['skipped_duplicate']} already in the catalog.";
+        }
+        if ($result['skipped_invalid'] > 0) {
+            $summary .= " Skipped {$result['skipped_invalid']} with no title/price.";
+        }
+
+        return back()->with('success', $summary);
     }
 
     protected function uniqueSlug(string $name): string

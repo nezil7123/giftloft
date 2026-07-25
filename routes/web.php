@@ -106,6 +106,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         Route::get('/products', [AdminProductController::class, 'index'])->name('products.index');
         Route::post('/products', [AdminProductController::class, 'store'])->name('products.store');
+        Route::post('/products/import', [AdminProductController::class, 'import'])->name('products.import');
         Route::put('/products/{product}', [AdminProductController::class, 'update'])->name('products.update');
         Route::delete('/products/{product}', [AdminProductController::class, 'destroy'])->name('products.destroy');
 

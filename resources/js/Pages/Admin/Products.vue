@@ -55,6 +55,27 @@ const save = () => {
     else form.put(route('admin.products.update', editing.value.slug), opts);
 };
 
+// ── Import from Shopify CSV ──
+const importing = ref(false);
+const importForm = useForm({
+    file: null,
+    default_category: 'home',
+    default_gender: '',
+});
+const openImport = () => {
+    importForm.reset();
+    importForm.clearErrors();
+    importing.value = true;
+};
+const closeImport = () => (importing.value = false);
+const runImport = () => {
+    importForm.post(route('admin.products.import'), {
+        preserveScroll: true,
+        forceFormData: true,
+        onSuccess: closeImport,
+    });
+};
+
 const toggleActive = (p) => {
     router.put(route('admin.products.update', p.slug), { ...p, is_active: !p.is_active }, { preserveScroll: true });
 };
@@ -91,10 +112,16 @@ const labelClass = 'mb-1.5 block text-sm font-medium text-neutral-700';
                     <form @submit.prevent="search" class="relative w-full sm:max-w-xs">
                         <input v-model="q" type="search" placeholder="Search products…" :class="inputClass" @change="search" />
                     </form>
-                    <button type="button" @click="openCreate" class="inline-flex shrink-0 items-center gap-2 rounded-full bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-indigo-500">
-                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
-                        New product
-                    </button>
+                    <div class="flex shrink-0 gap-2">
+                        <button type="button" @click="openImport" class="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-neutral-700 ring-1 ring-neutral-300 transition hover:bg-neutral-50">
+                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 15V3" /></svg>
+                            Import from Shopify
+                        </button>
+                        <button type="button" @click="openCreate" class="inline-flex items-center gap-2 rounded-full bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-indigo-500">
+                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
+                            New product
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Table -->
@@ -228,6 +255,57 @@ const labelClass = 'mb-1.5 block text-sm font-medium text-neutral-700';
                             <button type="button" @click="close" class="rounded-full px-5 py-2.5 text-sm font-semibold text-neutral-600 transition hover:bg-neutral-100">Cancel</button>
                             <button type="submit" :disabled="form.processing" class="rounded-full bg-indigo-600 px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-indigo-500 disabled:opacity-50">
                                 {{ form.processing ? 'Saving…' : editing === 'new' ? 'Add product' : 'Save changes' }}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </Teleport>
+
+        <!-- Import from Shopify modal -->
+        <Teleport to="body">
+            <div v-if="importing" class="fixed inset-0 z-50 flex items-end justify-center bg-black/50 p-4 sm:items-center" @click.self="closeImport">
+                <div class="w-full max-w-lg rounded-3xl bg-white p-6 shadow-2xl sm:p-7">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-lg font-bold text-neutral-900">Import from Shopify</h3>
+                        <button type="button" @click="closeImport" class="rounded-full p-1 text-neutral-400 transition hover:bg-neutral-100 hover:text-neutral-700" aria-label="Close">
+                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                        </button>
+                    </div>
+                    <p class="mt-2 text-sm text-neutral-500">
+                        In your Shopify admin, go to <span class="font-medium text-neutral-700">Products → Export → All products → CSV for Excel, Numbers, or other spreadsheet programs</span>, then upload the downloaded file here.
+                    </p>
+
+                    <form @submit.prevent="runImport" class="mt-5 space-y-4">
+                        <div>
+                            <label :class="labelClass">Shopify products CSV</label>
+                            <input type="file" accept=".csv,text/csv" :class="inputClass" @change="importForm.file = $event.target.files[0]" required />
+                            <InputError class="mt-1" :message="importForm.errors.file" />
+                        </div>
+                        <div class="grid gap-4 sm:grid-cols-2">
+                            <div>
+                                <label :class="labelClass">Default category</label>
+                                <select v-model="importForm.default_category" :class="inputClass">
+                                    <option v-for="(label, key) in categories" :key="key" :value="key">{{ label }}</option>
+                                </select>
+                                <p class="mt-1 text-xs text-neutral-400">Used when a product's Shopify type/tags don't match one of our categories.</p>
+                                <InputError class="mt-1" :message="importForm.errors.default_category" />
+                            </div>
+                            <div>
+                                <label :class="labelClass">Gender <span class="font-normal text-neutral-400">(optional)</span></label>
+                                <select v-model="importForm.default_gender" :class="inputClass">
+                                    <option value="">— Not set —</option>
+                                    <option v-for="(label, key) in genders" :key="key" :value="key">{{ label }}</option>
+                                </select>
+                                <InputError class="mt-1" :message="importForm.errors.default_gender" />
+                            </div>
+                        </div>
+                        <p class="text-xs text-neutral-400">Imported products land as new catalog entries — review categories, add an emoji/accent, and toggle visibility from the table afterwards. Products already in the catalog (matched by Shopify handle) are skipped, so it's safe to re-run.</p>
+
+                        <div class="flex justify-end gap-3 border-t border-neutral-100 pt-5">
+                            <button type="button" @click="closeImport" class="rounded-full px-5 py-2.5 text-sm font-semibold text-neutral-600 transition hover:bg-neutral-100">Cancel</button>
+                            <button type="submit" :disabled="importForm.processing" class="rounded-full bg-indigo-600 px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-indigo-500 disabled:opacity-50">
+                                {{ importForm.processing ? 'Importing…' : 'Import products' }}
                             </button>
                         </div>
                     </form>
