@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+/* No page on this site legitimately scrolls horizontally (the pinned
+   hscroll galleries move via `transform`, not real document scroll).
+   Off-screen [data-reveal="left"/"right"] sections still carry their
+   pre-reveal translateX offset before they scroll into view, which can
+   otherwise widen the page's scrollable area on mobile. This is the
+   safety net. */
+html, body { overflow-x: hidden; }
+
 /* ════════════════════════════════════════════════════════════
    Shared template animations (used across all event templates)
    ════════════════════════════════════════════════════════════ */
@@ -288,4 +296,13 @@
     }
     .gl-clip { clip-path: none !important; }
     .gl-tilt, .gl-photo img { transition: none; }
+}
+
+/* Scroll-off pause: applied by IframeThumb.vue to a live template preview's
+   own <html> once it scrolls out of view on the /templates gallery. That
+   page can have 20+ animated previews mounted at once (each with its own
+   marquee/float/Ken-Burns/etc. running forever) — pausing the ones you
+   can't see keeps the gallery scrolling smooth. */
+.gl-anim-paused, .gl-anim-paused * {
+    animation-play-state: paused !important;
 }

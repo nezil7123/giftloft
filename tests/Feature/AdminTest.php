@@ -144,7 +144,8 @@ class AdminTest extends TestCase
         $this->assertSame('draft', $fresh->status);
         $this->assertFalse($fresh->is_public);
 
-        // Public page is now gone
+        // Public page is now gone for guests (admins can still open it to moderate)
+        auth()->logout();
         $this->get("/e/{$fresh->share_code}")->assertNotFound();
 
         $this->actingAs($admin)->put("/admin/events/{$event->id}/restore")->assertRedirect();

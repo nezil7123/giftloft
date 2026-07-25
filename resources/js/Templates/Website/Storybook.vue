@@ -93,7 +93,7 @@ const stack = computed(() => [coverPhoto.value, ...gallery.value].filter(Boolean
                 <p class="mt-3 font-serif text-2xl font-bold text-neutral-900">📍 {{ event.venue || location }}</p>
                 <p v-if="venueNote" class="mt-3 font-serif text-lg leading-8 text-neutral-600">{{ venueNote }}</p>
                 <div v-if="venuePhoto" class="mx-auto mt-5 max-w-md -rotate-1 overflow-hidden rounded-lg border-[6px] border-white shadow-md">
-                    <img :src="venuePhoto" alt="" loading="lazy" class="aspect-[4/3] w-full object-cover" />
+                    <img :src="venuePhoto" alt="" loading="lazy" decoding="async" class="aspect-[4/3] w-full object-cover" />
                 </div>
                 <div data-fx="batch" class="mt-6 grid gap-4 sm:grid-cols-2">
                     <div v-if="travel" class="-rotate-1 rounded-lg bg-amber-50 p-5 shadow-sm">
@@ -115,7 +115,7 @@ const stack = computed(() => [coverPhoto.value, ...gallery.value].filter(Boolean
                     <figure v-for="(p,i) in gallery" :key="i"
                         class="gl-photo gl-float-soft rounded-sm border-[6px] border-white bg-white pb-6 shadow-lg transition hover:rotate-0 hover:scale-[1.04]"
                         :class="i % 2 ? 'rotate-2' : '-rotate-2'" :style="`animation-delay:${(i % 4) * 0.4}s`">
-                        <img :src="p" alt="" loading="lazy" class="aspect-square w-full object-cover" />
+                        <img :src="p" alt="" loading="lazy" decoding="async" class="aspect-square w-full object-cover" />
                         <figcaption class="pt-2 text-center font-serif text-xs italic text-neutral-400">♡</figcaption>
                     </figure>
                 </div>

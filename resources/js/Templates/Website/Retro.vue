@@ -21,7 +21,7 @@ useScrollFx(root);
 
             <div data-fx="hero-exit" class="relative z-10">
                 <p class="gl-enter inline-block rounded-full bg-[#e8804a] px-4 py-1.5 text-xs font-black uppercase tracking-[0.3em] text-[#f6ead3]">{{ typeLabel }}</p>
-                <h1 data-fx="chars" class="mt-8 font-serif text-[15vw] font-black uppercase leading-[0.82] text-[#c14a1f] sm:text-[11vw]">{{ hosts || event.title }}</h1>
+                <h1 data-fx="chars-in" class="mt-8 font-serif text-[15vw] font-black uppercase leading-[0.82] text-[#c14a1f] sm:text-[11vw]">{{ hosts || event.title }}</h1>
                 <p v-if="tagline" class="gl-enter gl-d2 mt-6 text-xl font-bold text-[#8a5a2a] sm:text-2xl">{{ tagline }}</p>
                 <p class="gl-enter gl-d3 mt-6 text-sm font-bold uppercase tracking-[0.3em] text-[#a06a35]">{{ fmtDate(event.starts_at) }}<span v-if="location"> · {{ location }}</span></p>
 
@@ -35,9 +35,11 @@ useScrollFx(root);
         </section>
 
         <!-- MARQUEE BAND -->
-        <div class="gl-marquee overflow-hidden border-y-2 border-[#4a2e17] bg-[#e8804a] py-3">
-            <div class="flex whitespace-nowrap text-lg font-black uppercase tracking-widest text-[#4a2e17]">
-                <span v-for="n in 8" :key="n" class="mx-6">{{ tagline || typeLabel }} ✺</span>
+        <div class="overflow-hidden border-y-2 border-[#4a2e17] bg-[#e8804a] py-3">
+            <div class="gl-marquee text-lg font-black uppercase tracking-widest text-[#4a2e17]">
+                <span v-for="g in 2" :key="g" class="flex items-center">
+                    <span v-for="n in 8" :key="n" class="mx-6">{{ tagline || typeLabel }} ✺</span>
+                </span>
             </div>
         </div>
 
@@ -58,12 +60,12 @@ useScrollFx(root);
 
         <!-- DETAILS -->
         <section class="px-6 pb-10 sm:px-10">
-            <div data-fx="batch" class="mx-auto grid max-w-5xl gap-5 sm:grid-cols-2">
-                <div class="rounded-[2rem] border-2 border-[#4a2e17] bg-[#f4b860]/40 p-8">
+            <div data-fx="rise3d" class="mx-auto grid max-w-5xl gap-5 sm:grid-cols-2">
+                <div data-fx="tilt3d" class="rounded-[2rem] border-2 border-[#4a2e17] bg-[#f4b860]/40 p-8">
                     <p class="text-xs font-black uppercase tracking-[0.3em] text-[#c14a1f]">When</p>
                     <p class="mt-3 font-serif text-2xl font-bold text-[#4a2e17]">{{ fmtFull(event.starts_at) || 'To be announced' }}</p>
                 </div>
-                <div class="rounded-[2rem] border-2 border-[#4a2e17] bg-[#f4b860]/40 p-8">
+                <div data-fx="tilt3d" class="rounded-[2rem] border-2 border-[#4a2e17] bg-[#f4b860]/40 p-8">
                     <p class="text-xs font-black uppercase tracking-[0.3em] text-[#c14a1f]">Where</p>
                     <p class="mt-3 font-serif text-2xl font-bold text-[#4a2e17]">{{ location || 'To be announced' }}</p>
                 </div>
@@ -105,7 +107,7 @@ useScrollFx(root);
                 <h2 data-fx="chars" class="mt-4 text-center font-serif text-4xl font-black uppercase text-[#c14a1f] sm:text-6xl">{{ event.venue || location }}</h2>
                 <p v-if="venueNote" data-fx="words" class="mx-auto mt-6 max-w-2xl text-center font-serif text-xl font-medium italic leading-8 text-[#6a4426]">{{ venueNote }}</p>
                 <div v-if="venuePhoto" data-fx="img-reveal" class="mx-auto mt-10 max-w-xl overflow-hidden rounded-[2rem] border-2 border-[#4a2e17]">
-                    <img :src="venuePhoto" alt="" loading="lazy" class="aspect-[16/10] w-full object-cover sepia-[0.2]" />
+                    <img :src="venuePhoto" alt="" loading="lazy" decoding="async" class="aspect-[16/10] w-full object-cover sepia-[0.2]" />
                 </div>
                 <div data-fx="batch" class="mt-10 grid gap-5 sm:grid-cols-2">
                     <div v-if="travel" class="rounded-[2rem] border-2 border-[#4a2e17] bg-[#f4b860]/40 p-7">
@@ -128,7 +130,7 @@ useScrollFx(root);
             <p data-reveal class="text-center text-xs font-black uppercase tracking-[0.5em] text-[#c14a1f]">Moments</p>
             <div class="mx-auto mt-10 grid max-w-5xl grid-cols-2 gap-4 sm:grid-cols-3">
                 <div v-for="(p,i) in gallery" :key="i" data-fx="parallax" :data-speed="(0.1 + (i % 3) * 0.1).toFixed(2)" class="gl-photo group overflow-hidden rounded-2xl border-2 border-[#4a2e17]">
-                    <img :src="p" alt="" loading="lazy" class="aspect-[3/4] w-full object-cover sepia-[0.15] transition duration-700 group-hover:scale-105" />
+                    <img :src="p" alt="" loading="lazy" decoding="async" class="aspect-[3/4] w-full object-cover sepia-[0.15] transition duration-700 group-hover:scale-105" />
                 </div>
             </div>
         </section>

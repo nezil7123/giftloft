@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { useEventDisplay } from '../useEventDisplay.js';
 import { useCardFx } from '../useCardFx.js';
 
@@ -7,6 +7,9 @@ const props = defineProps({ event: { type: Object, required: true } });
 const { typeLabel, hosts, tagline, location, fmtFull } = useEventDisplay(() => props.event);
 const card = ref(null);
 useCardFx(card);
+
+const monogram = computed(() => (hosts.value || props.event.title || '')
+    .split(/[\s&]+/).filter(Boolean).slice(0, 2).map((w) => w[0]).join('').toUpperCase());
 </script>
 
 <template>
@@ -18,12 +21,26 @@ useCardFx(card);
         <div data-card-shine class="pointer-events-none absolute inset-[-40%] bg-[radial-gradient(circle,rgba(255,255,255,0.5),transparent_45%)]"></div>
 
         <div class="relative">
-            <p data-card class="text-xs font-semibold uppercase tracking-[0.4em] text-neutral-500">{{ typeLabel }}</p>
-            <h1 data-card class="mt-6 font-serif text-5xl font-medium leading-[0.95]">
+            <div data-card class="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-white/80 shadow-lg shadow-neutral-300/40 ring-1 ring-neutral-200">
+                <span class="font-serif text-2xl text-neutral-700">{{ monogram || '·' }}</span>
+            </div>
+            <p data-card class="mt-5 text-xs font-semibold uppercase tracking-[0.4em] text-neutral-500">{{ typeLabel }}</p>
+            <h1 data-card class="mt-4 font-serif text-5xl font-medium leading-[0.95]">
                 <span class="bg-gradient-to-br from-rose-500 via-violet-500 to-sky-500 bg-clip-text text-transparent">{{ hosts || event.title }}</span>
             </h1>
             <p v-if="tagline" data-card class="mt-3 font-serif text-lg italic text-neutral-500">{{ tagline }}</p>
-            <div data-card class="mx-auto mt-7 h-1 w-20 rounded-full bg-gradient-to-r from-rose-400 via-violet-400 to-sky-400"></div>
+            <svg data-card viewBox="0 0 120 32" fill="none" class="mx-auto mt-6 h-6 w-24 text-violet-400/60">
+                <path d="M0 16 C22 16 30 16 44 16" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+                <path d="M76 16 C90 16 98 16 120 16" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+                <g transform="translate(60 16)">
+                    <ellipse cx="0" cy="-8" rx="4" ry="7" stroke="currentColor" stroke-width="1.1"/>
+                    <ellipse cx="7" cy="-2.5" rx="4" ry="7" stroke="currentColor" stroke-width="1.1" transform="rotate(72 7 -2.5)"/>
+                    <ellipse cx="4.3" cy="6.5" rx="4" ry="7" stroke="currentColor" stroke-width="1.1" transform="rotate(144 4.3 6.5)"/>
+                    <ellipse cx="-4.3" cy="6.5" rx="4" ry="7" stroke="currentColor" stroke-width="1.1" transform="rotate(216 -4.3 6.5)"/>
+                    <ellipse cx="-7" cy="-2.5" rx="4" ry="7" stroke="currentColor" stroke-width="1.1" transform="rotate(288 -7 -2.5)"/>
+                    <circle r="2.4" fill="currentColor"/>
+                </g>
+            </svg>
             <p v-if="event.starts_at" data-card class="mt-6 text-sm font-medium text-neutral-700">{{ fmtFull(event.starts_at) }}</p>
             <p v-if="location" data-card class="mt-1 text-xs uppercase tracking-[0.2em] text-neutral-400">{{ location }}</p>
             <p data-card class="mt-8 font-serif text-xs italic text-neutral-400">With love, {{ event.user?.name }}</p>

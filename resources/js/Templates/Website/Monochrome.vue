@@ -22,7 +22,7 @@ useScrollFx(root);
             </div>
 
             <div data-fx="hero-exit">
-                <h1 data-fx="chars" class="text-[16vw] font-black uppercase leading-[0.82] tracking-tighter sm:text-[13vw]">{{ hosts || event.title }}</h1>
+                <h1 data-fx="chars-in" class="text-[16vw] font-black uppercase leading-[0.82] tracking-tighter sm:text-[13vw]">{{ hosts || event.title }}</h1>
                 <p v-if="tagline" class="gl-enter gl-d2 mt-6 max-w-xl text-lg font-medium text-neutral-600 sm:text-2xl">{{ tagline }}</p>
             </div>
 
@@ -48,18 +48,18 @@ useScrollFx(root);
         <section v-if="event.description" class="px-6 py-28 sm:px-10">
             <div class="mx-auto grid max-w-6xl gap-8 sm:grid-cols-[0.3fr_1fr]">
                 <p data-reveal class="text-xs font-bold uppercase tracking-[0.3em] text-neutral-500">Story / 01</p>
-                <p data-fx="words" class="max-w-3xl whitespace-pre-line text-3xl font-medium leading-tight tracking-tight sm:text-4xl">{{ event.description }}</p>
+                <p data-fx="words" class="min-w-0 max-w-3xl whitespace-pre-line text-3xl font-medium leading-tight tracking-tight sm:text-4xl">{{ event.description }}</p>
             </div>
         </section>
 
         <!-- DETAILS -->
         <section class="border-t-2 border-neutral-950 px-6 py-20 sm:px-10">
-            <div data-fx="batch" class="mx-auto grid max-w-6xl gap-0 sm:grid-cols-2">
-                <div class="border-neutral-950 p-8 sm:border-r-2">
+            <div data-fx="rise3d" class="mx-auto grid max-w-6xl gap-0 sm:grid-cols-2">
+                <div data-fx="tilt3d" class="border-neutral-950 p-8 sm:border-r-2">
                     <p class="text-xs font-bold uppercase tracking-[0.3em] text-neutral-500">When</p>
                     <p class="mt-3 text-2xl font-bold">{{ fmtFull(event.starts_at) || 'To be announced' }}</p>
                 </div>
-                <div class="p-8">
+                <div data-fx="tilt3d" class="p-8">
                     <p class="text-xs font-bold uppercase tracking-[0.3em] text-neutral-500">Where</p>
                     <p class="mt-3 text-2xl font-bold">{{ location || 'To be announced' }}</p>
                 </div>
@@ -101,7 +101,7 @@ useScrollFx(root);
                 <h2 data-fx="chars" class="mt-3 text-5xl font-black uppercase tracking-tighter sm:text-7xl">{{ event.venue || location }}</h2>
                 <p v-if="venueNote" data-fx="words" class="mt-6 max-w-2xl text-xl font-medium leading-8 text-neutral-600">{{ venueNote }}</p>
                 <div v-if="venuePhoto" data-fx="img-reveal" class="mt-10 overflow-hidden border-2 border-neutral-950">
-                    <img :src="venuePhoto" alt="" loading="lazy" class="aspect-[16/9] w-full object-cover grayscale" />
+                    <img :src="venuePhoto" alt="" loading="lazy" decoding="async" class="aspect-[16/9] w-full object-cover grayscale" />
                 </div>
                 <div data-fx="batch" class="mt-10 grid gap-0 sm:grid-cols-2">
                     <div v-if="travel" class="border-neutral-950 p-7 sm:border-r-2">
@@ -123,7 +123,7 @@ useScrollFx(root);
         <section v-if="gallery.length" class="border-t-2 border-neutral-950">
             <div class="grid grid-cols-2 sm:grid-cols-3">
                 <div v-for="(p,i) in gallery" :key="i" class="gl-photo group overflow-hidden border-neutral-950 [&:not(:nth-child(3n))]:border-r-2 [&:nth-child(n+4)]:border-t-2">
-                    <img :src="p" alt="" loading="lazy" class="aspect-square w-full object-cover grayscale transition duration-700 group-hover:grayscale-0 group-hover:scale-105" />
+                    <img :src="p" alt="" loading="lazy" decoding="async" class="aspect-square w-full object-cover grayscale transition duration-700 group-hover:grayscale-0 group-hover:scale-105" />
                 </div>
             </div>
         </section>

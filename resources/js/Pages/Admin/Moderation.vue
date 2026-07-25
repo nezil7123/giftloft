@@ -73,7 +73,7 @@ const isLive = (e) => e.status === 'published' && e.is_public;
                                     </span>
                                 </td>
                                 <td class="px-6 py-3.5 text-right">
-                                    <a v-if="e.share_code" :href="`/e/${e.share_code}`" target="_blank" class="rounded-full px-3 py-1.5 text-xs font-semibold text-neutral-500 transition hover:bg-neutral-100">View ↗</a>
+                                    <a v-if="e.share_code" :href="`/e/${e.share_code}`" target="_blank" rel="noopener" class="rounded-full px-3 py-1.5 text-xs font-semibold text-neutral-500 transition hover:bg-neutral-100">View ↗</a>
                                     <button v-if="isLive(e)" type="button" @click="takedown(e)" class="rounded-full px-3 py-1.5 text-xs font-semibold text-rose-600 transition hover:bg-rose-50">Take down</button>
                                     <button v-else type="button" @click="restore(e)" class="rounded-full px-3 py-1.5 text-xs font-semibold text-emerald-600 transition hover:bg-emerald-50">Restore</button>
                                 </td>
@@ -115,7 +115,7 @@ const isLive = (e) => e.status === 'published' && e.is_public;
                                     </span>
                                 </td>
                                 <td class="px-6 py-3.5 text-right">
-                                    <a v-if="w.slug && w.active" :href="`/r/${w.slug}`" target="_blank" class="rounded-full px-3 py-1.5 text-xs font-semibold text-neutral-500 transition hover:bg-neutral-100">View ↗</a>
+                                    <a v-if="w.slug && w.active" :href="`/r/${w.slug}`" target="_blank" rel="noopener" class="rounded-full px-3 py-1.5 text-xs font-semibold text-neutral-500 transition hover:bg-neutral-100">View ↗</a>
                                     <button type="button" @click="toggleWishlist(w)" class="rounded-full px-3 py-1.5 text-xs font-semibold transition" :class="w.active ? 'text-rose-600 hover:bg-rose-50' : 'text-emerald-600 hover:bg-emerald-50'">
                                         {{ w.active ? 'Deactivate' : 'Reactivate' }}
                                     </button>

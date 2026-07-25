@@ -15,7 +15,11 @@ useCardFx(card);
             <div data-card-shine class="pointer-events-none absolute inset-[-40%] bg-[radial-gradient(circle,rgba(255,255,255,0.6),transparent_45%)]"></div>
             <div class="relative">
                 <p data-card class="text-xs font-semibold uppercase tracking-[0.4em] text-violet-500/80">{{ typeLabel }}</p>
-                <p data-card class="mt-5 text-3xl">🎀</p>
+                <svg data-card viewBox="0 0 40 40" fill="none" class="mx-auto mt-5 h-7 w-7 text-violet-400/80">
+                    <path d="M20 20 C20 20 8 14 8 8 C8 4 12 3 15 6 C18 9 20 16 20 20 Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                    <path d="M20 20 C20 20 32 14 32 8 C32 4 28 3 25 6 C22 9 20 16 20 20 Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                    <circle cx="20" cy="21" r="2.4" fill="currentColor"/>
+                </svg>
                 <h1 data-card class="mt-4 font-serif text-5xl font-medium leading-[0.95]">
                     <span class="bg-gradient-to-r from-rose-400 via-violet-400 to-sky-400 bg-clip-text text-transparent">{{ hosts || event.title }}</span>
                 </h1>

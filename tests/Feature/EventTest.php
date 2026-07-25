@@ -256,4 +256,29 @@ class EventTest extends TestCase
         $this->get('/e/draftcode')->assertNotFound();
         $this->get('/e/privcode1')->assertNotFound();
     }
+
+    public function test_owner_can_preview_their_own_draft_event_by_share_code(): void
+    {
+        $owner = User::factory()->create();
+        $draft = Event::create(['user_id' => $owner->id, 'title' => 'D', 'type' => 'wedding', 'is_public' => true, 'status' => 'draft', 'share_code' => 'ownerpreview']);
+
+        $this->actingAs($owner)
+            ->get('/e/ownerpreview')
+            ->assertOk();
+
+        $this->actingAs($owner)
+            ->get('/e/ownerpreview/invitation')
+            ->assertOk();
+    }
+
+    public function test_other_users_still_cannot_preview_someone_elses_draft_event(): void
+    {
+        $owner = User::factory()->create();
+        $stranger = User::factory()->create();
+        $draft = Event::create(['user_id' => $owner->id, 'title' => 'D', 'type' => 'wedding', 'is_public' => true, 'status' => 'draft', 'share_code' => 'notyours']);
+
+        $this->actingAs($stranger)
+            ->get('/e/notyours')
+            ->assertNotFound();
+    }
 }

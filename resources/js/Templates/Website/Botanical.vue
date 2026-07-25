@@ -130,7 +130,7 @@ const marquee = computed(() => [hosts.value || props.event.title, '❧', fmtDate
                 <h2 data-fx="chars" class="mt-4 text-center font-serif text-4xl text-emerald-950 sm:text-5xl">{{ event.venue || location }}</h2>
                 <p v-if="venueNote" data-reveal class="mx-auto mt-6 max-w-2xl text-center font-serif text-xl italic leading-8 text-emerald-800/75">{{ venueNote }}</p>
                 <div v-if="venuePhoto" data-reveal class="mx-auto mt-10 max-w-xl overflow-hidden rounded-[2.5rem] border border-emerald-900/10">
-                    <img :src="venuePhoto" alt="" loading="lazy" class="aspect-[16/10] w-full object-cover" />
+                    <img :src="venuePhoto" alt="" loading="lazy" decoding="async" class="aspect-[16/10] w-full object-cover" />
                 </div>
                 <div data-fx="batch" class="mt-10 grid gap-5 sm:grid-cols-2">
                     <div v-if="travel" class="rounded-[2rem] border border-emerald-900/10 bg-white/70 p-7 backdrop-blur-sm">
@@ -158,7 +158,7 @@ const marquee = computed(() => [hosts.value || props.event.title, '❧', fmtDate
                         :class="[
                             i % 3 === 0 ? 'w-56 rounded-t-[7rem] rounded-b-3xl sm:w-64' : i % 3 === 1 ? 'w-44 rounded-full sm:w-52' : 'w-52 rounded-[2.5rem] sm:w-60',
                         ]">
-                        <img :src="p" alt="" loading="lazy" class="w-full object-cover" :class="i % 3 === 1 ? 'aspect-square' : 'aspect-[3/4]'" />
+                        <img :src="p" alt="" loading="lazy" decoding="async" class="w-full object-cover" :class="i % 3 === 1 ? 'aspect-square' : 'aspect-[3/4]'" />
                     </div>
                 </div>
             </div>

@@ -27,8 +27,10 @@ useScrollFx(root);
                     <span class="text-amber-600">✦</span>
                     <span class="h-px w-16 bg-gradient-to-l from-transparent to-amber-500/60"></span>
                 </div>
-                <h1 data-fx="chars" class="gl-display mt-8 font-serif font-medium leading-[0.9]">
-                    <span class="gl-shimmer" style="--gl-shimmer-color:#a67c2e">{{ hosts || event.title }}</span>
+                <h1 class="mt-8 overflow-hidden">
+                    <span class="gl-clip gl-display block font-serif font-medium leading-[0.9]">
+                        <span class="gl-shimmer" style="--gl-shimmer-color:#a67c2e">{{ hosts || event.title }}</span>
+                    </span>
                 </h1>
                 <p v-if="tagline" class="gl-enter gl-d2 mt-6 font-serif text-xl italic text-amber-800/80 sm:text-2xl">{{ tagline }}</p>
                 <p class="gl-enter gl-d3 mt-6 text-sm uppercase tracking-[0.35em] text-[#7a6a4a]">{{ fmtDate(event.starts_at) }}<span v-if="location"> · {{ location }}</span></p>
@@ -49,24 +51,36 @@ useScrollFx(root);
             </div>
         </section>
 
-        <!-- STORY -->
+        <!-- STORY: magazine editorial with drop cap -->
         <section v-if="event.description" class="px-6 py-28 sm:px-10">
-            <div class="mx-auto max-w-3xl text-center">
-                <p data-reveal class="text-xs font-semibold uppercase tracking-[0.5em] text-amber-700/80">Our story</p>
-                <p data-fx="words" class="mt-8 whitespace-pre-line font-serif text-2xl font-light leading-relaxed text-[#4a3f28] sm:text-3xl">{{ event.description }}</p>
+            <div class="mx-auto grid max-w-5xl gap-8 sm:grid-cols-[0.3fr_1fr]">
+                <div data-reveal>
+                    <svg data-fx="draw" viewBox="0 0 120 60" fill="none" class="h-9 w-24 text-amber-600/70" aria-hidden="true">
+                        <path d="M60 58 C60 40 60 30 60 14" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                        <path d="M60 20 C50 14 44 6 50 2 C56 -2 62 6 60 14" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                        <path d="M60 20 C70 14 76 6 70 2 C64 -2 58 6 60 14" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                        <path d="M60 30 C48 28 40 34 42 40 C44 46 54 44 60 36" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                        <path d="M60 30 C72 28 80 34 78 40 C76 46 66 44 60 36" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                    </svg>
+                    <p class="mt-4 text-xs font-semibold uppercase tracking-[0.5em] text-amber-700/80">Our story</p>
+                </div>
+                <p data-fx="words" class="whitespace-pre-line font-serif text-2xl font-light leading-relaxed text-[#4a3f28] first-letter:float-left first-letter:mr-3 first-letter:font-serif first-letter:text-7xl first-letter:font-medium first-letter:leading-[0.8] first-letter:text-amber-700 sm:text-3xl">{{ event.description }}</p>
             </div>
         </section>
 
         <!-- DETAILS -->
         <section class="px-6 pb-10 sm:px-10">
-            <div data-fx="batch" class="mx-auto grid max-w-5xl gap-5 sm:grid-cols-2">
-                <div class="rounded-3xl border border-amber-500/20 bg-white/50 p-8 backdrop-blur-sm">
-                    <p class="text-xs font-semibold uppercase tracking-[0.3em] text-amber-700/80">When</p>
-                    <p class="mt-3 font-serif text-2xl text-[#3a2f1c]">{{ fmtFull(event.starts_at) || 'To be announced' }}</p>
+            <!-- Ledger-style program -->
+            <div data-fx="rise3d" class="mx-auto max-w-2xl divide-y divide-amber-500/20 rounded-[2rem] border border-amber-500/20 bg-white/50 px-8">
+                <div data-fx="tilt3d" class="flex flex-col gap-1 py-6 sm:flex-row sm:items-baseline sm:gap-4">
+                    <span class="shrink-0 text-xs font-semibold uppercase tracking-[0.3em] text-amber-700/80">When</span>
+                    <span class="hidden flex-1 border-b border-dotted border-amber-500/40 sm:mb-1 sm:block"></span>
+                    <span class="shrink-0 break-words font-serif text-xl text-[#3a2f1c]">{{ fmtFull(event.starts_at) || 'To be announced' }}</span>
                 </div>
-                <div class="rounded-3xl border border-amber-500/20 bg-white/50 p-8 backdrop-blur-sm">
-                    <p class="text-xs font-semibold uppercase tracking-[0.3em] text-amber-700/80">Where</p>
-                    <p class="mt-3 font-serif text-2xl text-[#3a2f1c]">{{ location || 'To be announced' }}</p>
+                <div data-fx="tilt3d" class="flex flex-col gap-1 py-6 sm:flex-row sm:items-baseline sm:gap-4">
+                    <span class="shrink-0 text-xs font-semibold uppercase tracking-[0.3em] text-amber-700/80">Where</span>
+                    <span class="hidden flex-1 border-b border-dotted border-amber-500/40 sm:mb-1 sm:block"></span>
+                    <span class="shrink-0 break-words font-serif text-xl text-[#3a2f1c]">{{ location || 'To be announced' }}</span>
                 </div>
             </div>
 
@@ -106,7 +120,7 @@ useScrollFx(root);
                 <h2 data-fx="chars" class="mt-4 text-center font-serif text-4xl text-[#3a2f1c] sm:text-5xl">{{ event.venue || location }}</h2>
                 <p v-if="venueNote" data-fx="words" class="mx-auto mt-6 max-w-2xl text-center font-serif text-xl font-light italic leading-8 text-[#6a5c3e]">{{ venueNote }}</p>
                 <div v-if="venuePhoto" data-fx="img-reveal" class="mx-auto mt-10 max-w-xl overflow-hidden rounded-[2rem] ring-1 ring-amber-500/20">
-                    <img :src="venuePhoto" alt="" loading="lazy" class="aspect-[16/10] w-full object-cover" />
+                    <img :src="venuePhoto" alt="" loading="lazy" decoding="async" class="aspect-[16/10] w-full object-cover" />
                 </div>
                 <div data-fx="batch" class="mt-10 grid gap-5 sm:grid-cols-2">
                     <div v-if="travel" class="rounded-3xl border border-amber-500/20 bg-white/50 p-7">
@@ -129,7 +143,7 @@ useScrollFx(root);
             <p data-reveal class="text-center text-xs font-semibold uppercase tracking-[0.5em] text-amber-700/80">Moments</p>
             <div class="mx-auto mt-10 grid max-w-5xl grid-cols-2 gap-4 sm:grid-cols-3">
                 <div v-for="(p,i) in gallery" :key="i" data-fx="parallax" :data-speed="(0.1 + (i % 3) * 0.1).toFixed(2)" class="gl-photo group overflow-hidden rounded-2xl ring-1 ring-amber-500/15">
-                    <img :src="p" alt="" loading="lazy" class="aspect-[3/4] w-full object-cover transition duration-700 group-hover:scale-105" />
+                    <img :src="p" alt="" loading="lazy" decoding="async" class="aspect-[3/4] w-full object-cover transition duration-700 group-hover:scale-105" />
                 </div>
             </div>
         </section>

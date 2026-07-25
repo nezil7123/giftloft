@@ -104,7 +104,7 @@ const acts = ['ACT I', 'ACT II', 'ACT III', 'ACT IV', 'ACT V'];
                         <p class="mt-4 text-xs text-neutral-500">Keep scrolling →</p>
                     </div>
                     <figure v-for="(p,i) in gallery" :key="i" class="gl-photo group relative w-[70vw] shrink-0 sm:w-[42vw]">
-                        <img :src="p" alt="" loading="lazy" class="aspect-[3/2] w-full object-cover grayscale transition duration-700 group-hover:grayscale-0" />
+                        <img :src="p" alt="" loading="lazy" decoding="async" class="aspect-[3/2] w-full object-cover grayscale transition duration-700 group-hover:grayscale-0" />
                         <figcaption class="mt-3 flex justify-between text-[10px] uppercase tracking-[0.3em] text-neutral-500">
                             <span>Frame {{ String(i+1).padStart(2,'0') }}</span>
                             <span>{{ hosts || event.title }}</span>
@@ -121,7 +121,7 @@ const acts = ['ACT I', 'ACT II', 'ACT III', 'ACT IV', 'ACT V'];
                 <h2 data-fx="chars" class="mt-6 font-serif text-5xl uppercase text-white sm:text-6xl">{{ event.venue || location }}</h2>
                 <div class="mt-12 grid gap-10 sm:grid-cols-2">
                     <div v-if="venuePhoto" data-fx="img-reveal" class="overflow-hidden">
-                        <img :src="venuePhoto" alt="" loading="lazy" class="aspect-[4/3] w-full object-cover grayscale" />
+                        <img :src="venuePhoto" alt="" loading="lazy" decoding="async" class="aspect-[4/3] w-full object-cover grayscale" />
                     </div>
                     <div class="space-y-8">
                         <p v-if="venueNote" data-fx="words" class="font-serif text-2xl font-light leading-relaxed text-neutral-200">{{ venueNote }}</p>

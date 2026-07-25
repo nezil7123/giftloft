@@ -79,7 +79,7 @@ const strip = computed(() => [coverPhoto.value, ...gallery.value].filter(Boolean
         <section v-if="event.description" class="px-6 py-28 sm:px-10">
             <div class="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[0.4fr_1fr]">
                 <p data-reveal="left" class="text-xs font-bold uppercase tracking-[0.4em] text-neutral-400">About</p>
-                <p data-reveal="right" class="whitespace-pre-line text-3xl font-light leading-snug text-neutral-900 sm:text-4xl">{{ event.description }}</p>
+                <p data-reveal="right" class="min-w-0 whitespace-pre-line text-3xl font-light leading-snug text-neutral-900 sm:text-4xl">{{ event.description }}</p>
             </div>
         </section>
 
@@ -87,10 +87,10 @@ const strip = computed(() => [coverPhoto.value, ...gallery.value].filter(Boolean
         <section v-if="gallery.length >= 2" class="overflow-hidden px-6 pb-6 sm:px-10">
             <div class="mx-auto grid max-w-6xl grid-cols-2 items-start gap-4 sm:gap-6">
                 <div class="overflow-hidden rounded-2xl">
-                    <img :src="gallery[0]" alt="" loading="lazy" data-fx="parallax" data-speed="0.14" class="aspect-[3/4] w-full scale-125 object-cover" />
+                    <img :src="gallery[0]" alt="" loading="lazy" decoding="async" data-fx="parallax" data-speed="0.14" class="aspect-[3/4] w-full scale-125 object-cover" />
                 </div>
                 <div class="mt-12 overflow-hidden rounded-2xl sm:mt-20">
-                    <img :src="gallery[1]" alt="" loading="lazy" data-fx="parallax" data-speed="-0.14" class="aspect-[3/4] w-full scale-125 object-cover" />
+                    <img :src="gallery[1]" alt="" loading="lazy" decoding="async" data-fx="parallax" data-speed="-0.14" class="aspect-[3/4] w-full scale-125 object-cover" />
                 </div>
             </div>
         </section>
@@ -105,7 +105,7 @@ const strip = computed(() => [coverPhoto.value, ...gallery.value].filter(Boolean
                         <p v-if="venueNote" data-reveal class="mt-6 max-w-2xl text-xl font-light leading-8 text-neutral-600">{{ venueNote }}</p>
                         <a v-if="mapUrl" :href="mapUrl" target="_blank" rel="noopener" class="mt-6 inline-flex items-center gap-2 border-b-2 border-neutral-950 pb-1 text-sm font-bold uppercase tracking-widest transition-all hover:gap-4">Open in maps →</a>
                         <div v-if="venuePhoto" class="mt-8 overflow-hidden rounded-2xl">
-                            <img :src="venuePhoto" alt="" loading="lazy" class="aspect-[16/9] w-full object-cover" />
+                            <img :src="venuePhoto" alt="" loading="lazy" decoding="async" class="aspect-[16/9] w-full object-cover" />
                         </div>
                         <div data-fx="batch" class="mt-10 grid gap-8 sm:grid-cols-2">
                             <div v-if="travel" class="border-t-2 border-neutral-950 pt-4">
@@ -166,7 +166,7 @@ const strip = computed(() => [coverPhoto.value, ...gallery.value].filter(Boolean
                         <p class="mt-6 text-sm text-neutral-500">{{ String(strip.length).padStart(2,'0') }} frames →</p>
                     </div>
                     <div v-for="(p,i) in strip" :key="i" class="relative w-[78vw] shrink-0 overflow-hidden rounded-3xl bg-neutral-200 sm:w-[44vw]">
-                        <img :src="p" alt="" loading="lazy" class="aspect-[4/3] w-full object-cover grayscale transition duration-700 hover:grayscale-0" />
+                        <img :src="p" alt="" loading="lazy" decoding="async" class="aspect-[4/3] w-full object-cover grayscale transition duration-700 hover:grayscale-0" />
                         <span class="absolute left-5 top-5 text-5xl font-black text-white mix-blend-difference">{{ String(i+1).padStart(2,'0') }}</span>
                     </div>
                     <div class="flex w-[60vw] shrink-0 flex-col items-center justify-center gap-6 sm:w-[30vw]">

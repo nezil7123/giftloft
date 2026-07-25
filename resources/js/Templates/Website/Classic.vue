@@ -52,7 +52,7 @@ const marquee = computed(() => [hosts.value || props.event.title, '✦', typeLab
         </section>
 
         <!-- MARQUEE -->
-        <div class="gl-grain border-y border-amber-300/20 bg-[#0d0b14] py-5">
+        <div class="gl-grain overflow-hidden border-y border-amber-300/20 bg-[#0d0b14] py-5">
             <div class="gl-marquee">
                 <span v-for="g in 2" :key="g" class="flex items-center">
                     <span v-for="(m,i) in marquee" :key="i" class="mx-5 font-serif text-2xl tracking-tight" :class="m === '✦' ? 'text-amber-300/70' : 'text-white/85'">{{ m }}</span>
@@ -64,7 +64,7 @@ const marquee = computed(() => [hosts.value || props.event.title, '✦', typeLab
         <section v-if="event.description" class="relative px-6 py-28 sm:px-10">
             <div class="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-[0.9fr_1.1fr]">
                 <div v-if="gallery.length" data-reveal="left" class="gl-photo gl-tilt relative overflow-hidden rounded-[2rem] border border-amber-300/15">
-                    <img :src="gallery[0]" alt="" class="aspect-[4/5] w-full object-cover" loading="lazy" />
+                    <img :src="gallery[0]" alt="" class="aspect-[4/5] w-full object-cover" loading="lazy" decoding="async" />
                     <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#0d0b14]/60 to-transparent"></div>
                     <p class="absolute bottom-5 left-6 font-serif text-sm italic text-amber-100/80">{{ fmtDate(event.starts_at) }}</p>
                 </div>
@@ -126,7 +126,7 @@ const marquee = computed(() => [hosts.value || props.event.title, '✦', typeLab
                 <div class="mt-14 grid items-start gap-6 lg:grid-cols-[1.1fr_0.9fr]">
                     <div v-if="venuePhoto || gallery[1] || coverPhoto" class="relative">
                         <div class="overflow-hidden rounded-[2rem] border border-amber-300/15">
-                            <img :src="venuePhoto || gallery[1] || coverPhoto" alt="" data-fx="parallax" data-speed="0.12" loading="lazy" class="aspect-[16/11] w-full scale-125 object-cover" />
+                            <img :src="venuePhoto || gallery[1] || coverPhoto" alt="" data-fx="parallax" data-speed="0.12" loading="lazy" decoding="async" class="aspect-[16/11] w-full scale-125 object-cover" />
                         </div>
                         <div data-fx="rotate" data-turns="0.6" class="pointer-events-none absolute -right-8 -top-8 h-28 w-28 rounded-full border border-dashed border-amber-300/40"></div>
                     </div>
@@ -159,7 +159,7 @@ const marquee = computed(() => [hosts.value || props.event.title, '✦', typeLab
                     <div v-for="(p,i) in gallery.slice(1)" :key="i" data-reveal
                         class="gl-photo group relative overflow-hidden rounded-2xl border border-white/10 transition hover:border-amber-300/40"
                         :class="i % 5 === 0 ? 'col-span-2 row-span-2 aspect-square' : 'aspect-square'">
-                        <img :src="p" alt="" loading="lazy" class="h-full w-full object-cover" />
+                        <img :src="p" alt="" loading="lazy" decoding="async" class="h-full w-full object-cover" />
                         <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 transition group-hover:opacity-100"></div>
                     </div>
                 </div>

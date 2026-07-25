@@ -88,7 +88,7 @@ const photoStrip = computed(() => {
             <div class="gl-marquee gl-marquee-rev">
                 <span v-for="g in 2" :key="g" class="flex items-center gap-5 pr-5">
                     <span v-for="(p,i) in photoStrip" :key="i" class="gl-photo block w-52 shrink-0 overflow-hidden rounded-2xl border border-white/10" :class="i % 2 ? 'rotate-1' : '-rotate-1'">
-                        <img :src="p" alt="" loading="lazy" class="aspect-[4/3] w-full object-cover" />
+                        <img :src="p" alt="" loading="lazy" decoding="async" class="aspect-[4/3] w-full object-cover" />
                     </span>
                 </span>
             </div>
@@ -121,7 +121,7 @@ const photoStrip = computed(() => {
                     <p class="mt-1 text-sm font-semibold text-white/40">{{ event.venue }}<span v-if="event.venue && event.location"> · </span>{{ event.location }}</p>
                     <p v-if="venueNote" class="mt-4 text-lg leading-8 text-white/75">{{ venueNote }}</p>
                     <div v-if="venuePhoto" class="mt-6 overflow-hidden rounded-[1.5rem]">
-                        <img :src="venuePhoto" alt="" loading="lazy" class="aspect-[16/9] w-full object-cover" />
+                        <img :src="venuePhoto" alt="" loading="lazy" decoding="async" class="aspect-[16/9] w-full object-cover" />
                     </div>
                     <div data-fx="batch" class="mt-6 grid gap-4 sm:grid-cols-2">
                         <div v-if="travel" class="rounded-2xl bg-white/5 p-5">

@@ -108,8 +108,8 @@ const inviteUrl = props.event.share_code ? `/e/${props.event.share_code}/invitat
                     <h2 class="mt-1 text-xl font-bold text-neutral-900">Design — {{ event.title }}</h2>
                 </div>
                 <div class="flex gap-2">
-                    <a v-if="previewUrl" :href="previewUrl" target="_blank" class="rounded-full border border-neutral-300 px-4 py-2 text-sm font-semibold text-neutral-700 transition hover:bg-neutral-100">Preview site ↗</a>
-                    <a v-if="inviteUrl" :href="inviteUrl" target="_blank" class="rounded-full border border-neutral-300 px-4 py-2 text-sm font-semibold text-neutral-700 transition hover:bg-neutral-100">Preview invite ↗</a>
+                    <a v-if="previewUrl" :href="previewUrl" target="_blank" rel="noopener" class="rounded-full border border-neutral-300 px-4 py-2 text-sm font-semibold text-neutral-700 transition hover:bg-neutral-100">Preview site ↗</a>
+                    <a v-if="inviteUrl" :href="inviteUrl" target="_blank" rel="noopener" class="rounded-full border border-neutral-300 px-4 py-2 text-sm font-semibold text-neutral-700 transition hover:bg-neutral-100">Preview invite ↗</a>
                 </div>
             </div>
         </template>

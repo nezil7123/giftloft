@@ -10,20 +10,40 @@ const { typeLabel, hosts, tagline, dressCode, rsvpNote, schedule, faqs, location
 useReveal();
 const root = ref(null);
 useScrollFx(root);
+
+const petals = Array.from({ length: 14 }, (_, i) => ({ left: (i * 67) % 100, delay: (i % 8) * 1.0, dur: 8 + (i % 5), size: 9 + (i % 4) * 3 }));
 </script>
 
 <template>
     <div ref="root" class="bg-[#0c1f14] text-emerald-50">
-        <!-- HERO -->
-        <section class="gl-grain relative flex min-h-screen items-center justify-center overflow-hidden py-24">
-            <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_10%,rgba(52,211,153,0.22),transparent_60%)]"></div>
-            <div data-fx="parallax" data-speed="0.4" class="gl-float pointer-events-none absolute -left-16 top-10 text-[9rem] opacity-20">🌿</div>
-            <div data-fx="parallax" data-speed="0.6" class="gl-float pointer-events-none absolute -right-12 bottom-16 text-[8rem] opacity-20" style="animation-delay:-3s">🌴</div>
+        <!-- HERO: postcard — full-bleed photo, text anchored at the bottom -->
+        <section class="gl-grain relative flex min-h-screen items-end overflow-hidden">
+            <img v-if="coverPhoto" data-fx="parallax" data-speed="0.15" :src="coverPhoto" alt="" class="absolute inset-0 h-[130%] w-full object-cover" />
+            <div v-else class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_10%,rgba(52,211,153,0.22),transparent_60%)]"></div>
+            <div class="pointer-events-none absolute inset-0" :class="coverPhoto ? 'bg-gradient-to-t from-[#0c1f14] via-[#0c1f14]/50 to-[#0c1f14]/10' : ''"></div>
+            <div class="pointer-events-none absolute inset-4 rounded-[1.5rem] border border-lime-200/20 sm:inset-8"></div>
 
-            <div data-fx="hero-exit" class="relative z-10 px-6 text-center">
+            <div class="pointer-events-none absolute inset-0 z-0">
+                <span v-for="(p,i) in petals" :key="i" class="gl-fall absolute top-[-5%] rounded-[50%_0_50%_0] bg-lime-300/50"
+                    :style="`left:${p.left}%;width:${p.size}px;height:${p.size}px;animation-delay:${p.delay}s;animation-duration:${p.dur}s`"></span>
+            </div>
+            <svg v-if="!coverPhoto" data-fx="parallax" data-speed="0.4" viewBox="0 0 100 100" fill="none" class="pointer-events-none absolute -left-10 top-6 h-56 w-56 text-lime-300/25">
+                <path d="M50 95 C50 60 50 40 50 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <path d="M50 30 C30 24 14 30 12 46 C10 60 26 62 50 44" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <path d="M50 55 C70 50 86 56 88 70 C90 82 74 84 50 68" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <svg v-if="!coverPhoto" data-fx="parallax" data-speed="0.6" viewBox="0 0 100 100" fill="none" class="pointer-events-none absolute -right-8 bottom-8 h-48 w-48 text-emerald-300/20">
+                <path d="M50 95 C50 60 50 40 50 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <path d="M50 30 C68 24 82 32 82 46 C82 58 66 60 50 42" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <path d="M50 55 C32 50 18 58 18 70 C18 80 32 82 50 66" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+
+            <div data-fx="hero-exit" class="relative z-10 w-full px-6 pb-16 pt-24 text-center sm:px-10 sm:pb-20">
                 <p class="gl-enter text-xs font-semibold uppercase tracking-[0.6em] text-lime-300/90">{{ typeLabel }}</p>
-                <h1 data-fx="chars" class="gl-display mt-8 font-serif font-medium">
-                    <span class="bg-gradient-to-r from-lime-200 via-emerald-200 to-teal-200 bg-clip-text text-transparent">{{ hosts || event.title }}</span>
+                <h1 class="mt-8 overflow-hidden">
+                    <span class="gl-clip gl-display block font-serif font-medium">
+                        <span class="bg-gradient-to-r from-lime-200 via-emerald-200 to-teal-200 bg-clip-text text-transparent">{{ hosts || event.title }}</span>
+                    </span>
                 </h1>
                 <p v-if="tagline" class="gl-enter gl-d2 mt-6 text-lg font-light tracking-wide text-emerald-100/85 sm:text-2xl">{{ tagline }}</p>
                 <p class="gl-enter gl-d3 mt-4 text-sm uppercase tracking-[0.3em] text-emerald-300/70">{{ fmtDate(event.starts_at) }}<span v-if="location"> · {{ location }}</span></p>
@@ -34,14 +54,6 @@ useScrollFx(root);
                         <span class="mt-1 text-[9px] uppercase tracking-[0.25em] text-emerald-300/70">{{ u.l }}</span>
                     </div>
                 </div>
-            </div>
-            <div class="absolute bottom-8 left-1/2 -translate-x-1/2 text-[10px] uppercase tracking-[0.4em] text-emerald-400/50">Scroll</div>
-        </section>
-
-        <!-- COVER -->
-        <section v-if="coverPhoto" class="px-6 pb-8 sm:px-10">
-            <div data-fx="img-reveal" class="mx-auto max-w-5xl overflow-hidden rounded-3xl ring-1 ring-lime-300/20">
-                <img :src="coverPhoto" alt="" class="aspect-[16/8] w-full object-cover" />
             </div>
         </section>
 
@@ -56,12 +68,12 @@ useScrollFx(root);
 
         <!-- DETAILS -->
         <section class="px-6 pb-10 sm:px-10">
-            <div data-fx="batch" class="mx-auto grid max-w-5xl gap-5 sm:grid-cols-2">
-                <div class="rounded-3xl border border-lime-300/15 bg-emerald-500/[0.06] p-8 backdrop-blur-sm">
+            <div data-fx="rise3d" class="mx-auto grid max-w-5xl gap-5 sm:grid-cols-2">
+                <div data-fx="tilt3d" class="rounded-3xl border border-lime-300/15 bg-emerald-500/[0.06] p-8 backdrop-blur-sm">
                     <p class="text-xs font-semibold uppercase tracking-[0.3em] text-lime-300/80">When</p>
                     <p class="mt-3 font-serif text-2xl text-white">{{ fmtFull(event.starts_at) || 'To be announced' }}</p>
                 </div>
-                <div class="rounded-3xl border border-lime-300/15 bg-emerald-500/[0.06] p-8 backdrop-blur-sm">
+                <div data-fx="tilt3d" class="rounded-3xl border border-lime-300/15 bg-emerald-500/[0.06] p-8 backdrop-blur-sm">
                     <p class="text-xs font-semibold uppercase tracking-[0.3em] text-lime-300/80">Where</p>
                     <p class="mt-3 font-serif text-2xl text-white">{{ location || 'To be announced' }}</p>
                 </div>
@@ -103,7 +115,7 @@ useScrollFx(root);
                 <h2 data-fx="chars" class="mt-4 text-center font-serif text-4xl text-white sm:text-5xl">{{ event.venue || location }}</h2>
                 <p v-if="venueNote" data-fx="words" class="mx-auto mt-6 max-w-2xl text-center font-serif text-xl font-light italic leading-8 text-emerald-100/70">{{ venueNote }}</p>
                 <div v-if="venuePhoto" data-fx="img-reveal" class="mx-auto mt-10 max-w-xl overflow-hidden rounded-3xl ring-1 ring-lime-300/20">
-                    <img :src="venuePhoto" alt="" loading="lazy" class="aspect-[16/10] w-full object-cover" />
+                    <img :src="venuePhoto" alt="" loading="lazy" decoding="async" class="aspect-[16/10] w-full object-cover" />
                 </div>
                 <div data-fx="batch" class="mt-10 grid gap-5 sm:grid-cols-2">
                     <div v-if="travel" class="rounded-3xl border border-lime-300/15 bg-emerald-500/[0.06] p-7 backdrop-blur-sm">
@@ -126,7 +138,7 @@ useScrollFx(root);
             <p data-reveal class="text-center text-xs font-semibold uppercase tracking-[0.5em] text-lime-300/90">Moments</p>
             <div class="mx-auto mt-10 grid max-w-5xl grid-cols-2 gap-4 sm:grid-cols-3">
                 <div v-for="(p,i) in gallery" :key="i" data-fx="parallax" :data-speed="(0.12 + (i % 3) * 0.12).toFixed(2)" class="gl-photo group overflow-hidden rounded-2xl border border-lime-300/15">
-                    <img :src="p" alt="" loading="lazy" class="aspect-[3/4] w-full object-cover transition duration-700 group-hover:scale-105" />
+                    <img :src="p" alt="" loading="lazy" decoding="async" class="aspect-[3/4] w-full object-cover transition duration-700 group-hover:scale-105" />
                 </div>
             </div>
         </section>

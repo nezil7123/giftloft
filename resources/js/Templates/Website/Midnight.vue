@@ -130,7 +130,7 @@ const marquee = computed(() => [hosts.value || props.event.title, '✦', fmtDate
                 <h2 data-fx="chars" class="mt-4 text-center font-serif text-4xl text-white sm:text-5xl">{{ event.venue || location }}</h2>
                 <p v-if="venueNote" data-reveal class="mx-auto mt-6 max-w-2xl text-center font-serif text-xl font-light italic leading-8 text-amber-100/70">{{ venueNote }}</p>
                 <div v-if="venuePhoto" data-reveal class="mx-auto mt-10 max-w-xl overflow-hidden rounded-[2rem] border border-amber-300/15">
-                    <img :src="venuePhoto" alt="" loading="lazy" class="aspect-[16/10] w-full object-cover" />
+                    <img :src="venuePhoto" alt="" loading="lazy" decoding="async" class="aspect-[16/10] w-full object-cover" />
                 </div>
                 <div data-fx="batch" class="mt-10 grid gap-5 sm:grid-cols-2">
                     <div v-if="travel" class="rounded-3xl border border-white/10 bg-white/[0.03] p-7 transition hover:border-amber-300/30">
@@ -156,7 +156,7 @@ const marquee = computed(() => [hosts.value || props.event.title, '✦', fmtDate
                     <div v-for="(p,i) in gallery" :key="i" data-reveal
                         class="gl-photo group relative overflow-hidden rounded-2xl border border-amber-300/15 transition duration-500 hover:border-amber-300/50 hover:shadow-[0_0_40px_-8px_rgba(251,191,36,0.35)]"
                         :class="i % 5 === 0 ? 'col-span-2 row-span-2 aspect-square' : 'aspect-square'">
-                        <img :src="p" alt="" loading="lazy" class="h-full w-full object-cover" />
+                        <img :src="p" alt="" loading="lazy" decoding="async" class="h-full w-full object-cover" />
                         <div class="absolute inset-0 bg-gradient-to-t from-[#080611]/70 to-transparent opacity-60 transition group-hover:opacity-10"></div>
                     </div>
                 </div>

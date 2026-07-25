@@ -8,20 +8,26 @@ const { typeLabel, hosts, tagline, location, fmtFull } = useEventDisplay(() => p
 const card = ref(null);
 useCardFx(card);
 
-const stars = Array.from({ length: 40 }, (_, i) => ({ top: (i * 37) % 100, left: (i * 53) % 100, delay: (i % 9) * 0.4, size: i % 5 === 0 ? 2 : 1 }));
+const stars = Array.from({ length: 30 }, (_, i) => ({ top: (i * 37) % 100, left: (i * 53) % 100, delay: (i % 9) * 0.4, size: i % 5 === 0 ? 2 : 1 }));
 </script>
 
 <template>
-    <div ref="card" class="gl-grain relative w-full max-w-md overflow-hidden rounded-[2rem] bg-[#0b0a1e] p-10 text-center shadow-2xl ring-1 ring-indigo-300/20">
-        <div class="pointer-events-none absolute inset-0">
-            <span v-for="(s,i) in stars" :key="i" class="gl-twinkle absolute rounded-full bg-white" :style="`top:${s.top}%;left:${s.left}%;height:${s.size}px;width:${s.size}px;animation-delay:${s.delay}s`"></span>
+    <div ref="card" class="gl-grain relative w-full max-w-md overflow-hidden rounded-[2rem] bg-[#0b0a1e] pb-10 text-center shadow-2xl ring-1 ring-indigo-300/20">
+        <!-- arched night-sky window -->
+        <div class="relative mx-8 mt-8 overflow-hidden rounded-t-[100px] rounded-b-xl bg-gradient-to-b from-indigo-900/70 to-indigo-900/0 pb-10 pt-12">
+            <div class="pointer-events-none absolute inset-0">
+                <span v-for="(s,i) in stars" :key="i" class="gl-twinkle absolute rounded-full bg-white" :style="`top:${s.top}%;left:${s.left}%;height:${s.size}px;width:${s.size}px;animation-delay:${s.delay}s`"></span>
+            </div>
+            <svg data-card viewBox="0 0 40 40" fill="none" class="relative mx-auto h-10 w-10 text-violet-200/90">
+                <path d="M24 6 A14 14 0 1 0 24 34 A11 11 0 0 1 24 6 Z" fill="currentColor" opacity="0.9"/>
+            </svg>
+            <p data-card class="relative mt-3 text-xs font-semibold uppercase tracking-[0.4em] text-violet-300/90">{{ typeLabel }}</p>
         </div>
+
         <div data-card-shine class="pointer-events-none absolute inset-[-40%] bg-[radial-gradient(circle,rgba(139,92,246,0.3),transparent_45%)]"></div>
 
-        <div class="relative">
-            <p data-card class="text-xs font-semibold uppercase tracking-[0.4em] text-violet-300/90">{{ typeLabel }}</p>
-            <p data-card class="mt-5 text-3xl">🌙</p>
-            <h1 data-card class="mt-4 font-serif text-5xl font-medium leading-[0.95]">
+        <div class="relative px-10">
+            <h1 data-card class="mt-6 font-serif text-5xl font-medium leading-[0.95]">
                 <span class="bg-gradient-to-r from-indigo-200 via-violet-200 to-fuchsia-200 bg-clip-text text-transparent">{{ hosts || event.title }}</span>
             </h1>
             <p v-if="tagline" data-card class="mt-3 font-serif text-lg italic text-indigo-200/80">{{ tagline }}</p>

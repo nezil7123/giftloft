@@ -22,8 +22,10 @@ useScrollFx(root);
 
             <div data-fx="hero-exit" class="relative z-10">
                 <p class="gl-enter text-xs font-semibold uppercase tracking-[0.6em] text-cyan-700/80">{{ typeLabel }}</p>
-                <h1 data-fx="chars" class="gl-display mt-8 font-serif font-medium leading-[0.9]">
-                    <span class="bg-gradient-to-r from-cyan-700 via-sky-600 to-teal-600 bg-clip-text text-transparent">{{ hosts || event.title }}</span>
+                <h1 class="mt-8 overflow-hidden">
+                    <span class="gl-clip gl-display block font-serif font-medium leading-[0.9]">
+                        <span class="bg-gradient-to-r from-cyan-700 via-sky-600 to-teal-600 bg-clip-text text-transparent">{{ hosts || event.title }}</span>
+                    </span>
                 </h1>
                 <p v-if="tagline" class="gl-enter gl-d2 mt-6 text-lg font-light tracking-wide text-sky-800/80 sm:text-2xl">{{ tagline }}</p>
                 <p class="gl-enter gl-d3 mt-6 text-sm uppercase tracking-[0.35em] text-[#5a7a82]">{{ fmtDate(event.starts_at) }}<span v-if="location"> · {{ location }}</span></p>
@@ -48,6 +50,13 @@ useScrollFx(root);
         <!-- STORY -->
         <section v-if="event.description" class="px-6 py-28 sm:px-10">
             <div class="mx-auto max-w-3xl text-center">
+                <svg data-fx="draw" viewBox="0 0 120 60" fill="none" class="mx-auto mb-8 h-9 w-24 text-cyan-600/70" aria-hidden="true">
+                    <path d="M60 58 C60 40 60 30 60 14" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                    <path d="M60 20 C50 14 44 6 50 2 C56 -2 62 6 60 14" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                    <path d="M60 20 C70 14 76 6 70 2 C64 -2 58 6 60 14" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                    <path d="M60 30 C48 28 40 34 42 40 C44 46 54 44 60 36" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                    <path d="M60 30 C72 28 80 34 78 40 C76 46 66 44 60 36" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                </svg>
                 <p data-reveal class="text-xs font-semibold uppercase tracking-[0.5em] text-cyan-700/80">Our story</p>
                 <p data-fx="words" class="mt-8 whitespace-pre-line font-serif text-2xl font-light leading-relaxed text-[#274d57] sm:text-3xl">{{ event.description }}</p>
             </div>
@@ -55,14 +64,17 @@ useScrollFx(root);
 
         <!-- DETAILS -->
         <section class="px-6 pb-10 sm:px-10">
-            <div data-fx="batch" class="mx-auto grid max-w-5xl gap-5 sm:grid-cols-2">
-                <div class="rounded-3xl bg-white/70 p-8 ring-1 ring-cyan-500/15 backdrop-blur-sm">
-                    <p class="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-700/80">When</p>
-                    <p class="mt-3 font-serif text-2xl text-[#1c3a44]">{{ fmtFull(event.starts_at) || 'To be announced' }}</p>
-                </div>
-                <div class="rounded-3xl bg-white/70 p-8 ring-1 ring-cyan-500/15 backdrop-blur-sm">
-                    <p class="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-700/80">Where</p>
-                    <p class="mt-3 font-serif text-2xl text-[#1c3a44]">{{ location || 'To be announced' }}</p>
+            <!-- Boarding-pass style info bar -->
+            <div data-fx="rise3d" class="mx-auto max-w-5xl overflow-hidden rounded-[2rem] bg-white/70 ring-1 ring-cyan-500/15 backdrop-blur-sm">
+                <div class="grid divide-y divide-dashed divide-cyan-500/25 sm:grid-cols-2 sm:divide-x sm:divide-y-0">
+                    <div data-fx="tilt3d" class="p-8 text-center">
+                        <p class="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-700/80">When</p>
+                        <p class="mt-3 font-serif text-2xl text-[#1c3a44]">{{ fmtFull(event.starts_at) || 'To be announced' }}</p>
+                    </div>
+                    <div data-fx="tilt3d" class="p-8 text-center">
+                        <p class="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-700/80">Where</p>
+                        <p class="mt-3 font-serif text-2xl text-[#1c3a44]">{{ location || 'To be announced' }}</p>
+                    </div>
                 </div>
             </div>
 
@@ -102,7 +114,7 @@ useScrollFx(root);
                 <h2 data-fx="chars" class="mt-4 text-center font-serif text-4xl text-[#1c3a44] sm:text-5xl">{{ event.venue || location }}</h2>
                 <p v-if="venueNote" data-fx="words" class="mx-auto mt-6 max-w-2xl text-center font-serif text-xl font-light italic leading-8 text-[#4a6a72]">{{ venueNote }}</p>
                 <div v-if="venuePhoto" data-fx="img-reveal" class="mx-auto mt-10 max-w-xl overflow-hidden rounded-[2rem] shadow-xl shadow-cyan-900/5">
-                    <img :src="venuePhoto" alt="" loading="lazy" class="aspect-[16/10] w-full object-cover" />
+                    <img :src="venuePhoto" alt="" loading="lazy" decoding="async" class="aspect-[16/10] w-full object-cover" />
                 </div>
                 <div data-fx="batch" class="mt-10 grid gap-5 sm:grid-cols-2">
                     <div v-if="travel" class="rounded-3xl bg-white/70 p-7 ring-1 ring-cyan-500/15">
@@ -120,12 +132,12 @@ useScrollFx(root);
             </div>
         </section>
 
-        <!-- GALLERY -->
-        <section v-if="gallery.length" class="px-6 pb-16 sm:px-10">
-            <p data-reveal class="text-center text-xs font-semibold uppercase tracking-[0.5em] text-cyan-700/80">Moments</p>
-            <div class="mx-auto mt-10 grid max-w-5xl grid-cols-2 gap-4 sm:grid-cols-3">
-                <div v-for="(p,i) in gallery" :key="i" data-fx="parallax" :data-speed="(0.1 + (i % 3) * 0.1).toFixed(2)" class="gl-photo group overflow-hidden rounded-2xl">
-                    <img :src="p" alt="" loading="lazy" class="aspect-[3/4] w-full object-cover transition duration-700 group-hover:scale-105" />
+        <!-- GALLERY: pinned horizontal scroll -->
+        <section v-if="gallery.length" data-fx="hscroll" class="relative overflow-hidden py-16">
+            <p data-reveal class="px-6 text-center text-xs font-semibold uppercase tracking-[0.5em] text-cyan-700/80 sm:px-10">Moments</p>
+            <div data-fx-track class="mt-10 flex gap-5 px-6 sm:px-10" style="width:max-content">
+                <div v-for="(p,i) in gallery" :key="i" class="gl-photo h-[46vh] w-[70vw] shrink-0 overflow-hidden rounded-[2rem] shadow-xl shadow-cyan-900/10 sm:w-[420px]">
+                    <img :src="p" alt="" loading="lazy" decoding="async" class="h-full w-full object-cover" />
                 </div>
             </div>
         </section>

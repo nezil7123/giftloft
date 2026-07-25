@@ -120,7 +120,7 @@ const stripB = computed(() => gallery.value.filter((_, i) => i % 2 === 1));
                 <h2 data-fx="chars" class="mt-4 font-serif text-4xl text-stone-900 sm:text-5xl">{{ event.venue || location }}</h2>
                 <p v-if="venueNote" data-fx="words" class="mx-auto mt-6 max-w-2xl font-serif text-xl font-light italic leading-8 text-stone-600">{{ venueNote }}</p>
                 <div v-if="venuePhoto" data-fx="img-reveal" class="mx-auto mt-10 max-w-xl overflow-hidden rounded-[2.5rem]">
-                    <img :src="venuePhoto" alt="" loading="lazy" class="aspect-[16/10] w-full object-cover" />
+                    <img :src="venuePhoto" alt="" loading="lazy" decoding="async" class="aspect-[16/10] w-full object-cover" />
                 </div>
                 <div data-fx="batch" class="mt-10 grid gap-5 text-left sm:grid-cols-2">
                     <div v-if="travel" class="rounded-3xl bg-white p-7 shadow-lg shadow-orange-200/40 ring-1 ring-orange-100">
@@ -143,14 +143,14 @@ const stripB = computed(() => gallery.value.filter((_, i) => i % 2 === 1));
                 <div class="gl-marquee">
                     <span v-for="g in 2" :key="g" class="flex gap-4 pr-4">
                         <span v-for="(p,i) in (stripA.length ? stripA : gallery)" :key="i" class="gl-photo block w-72 shrink-0 overflow-hidden rounded-2xl border-4 border-white shadow-lg shadow-orange-200/50 sm:w-96">
-                            <img :src="p" alt="" loading="lazy" class="aspect-[3/2] w-full object-cover" />
+                            <img :src="p" alt="" loading="lazy" decoding="async" class="aspect-[3/2] w-full object-cover" />
                         </span>
                     </span>
                 </div>
                 <div v-if="stripB.length" class="gl-marquee gl-marquee-rev">
                     <span v-for="g in 2" :key="g" class="flex gap-4 pr-4">
                         <span v-for="(p,i) in stripB" :key="i" class="gl-photo block w-72 shrink-0 overflow-hidden rounded-2xl border-4 border-white shadow-lg shadow-orange-200/50 sm:w-96">
-                            <img :src="p" alt="" loading="lazy" class="aspect-[3/2] w-full object-cover" />
+                            <img :src="p" alt="" loading="lazy" decoding="async" class="aspect-[3/2] w-full object-cover" />
                         </span>
                     </span>
                 </div>

@@ -14,19 +14,30 @@ useCardFx(card);
         <div data-card-shine class="pointer-events-none absolute inset-[-40%] bg-[radial-gradient(circle,rgba(255,255,255,0.5),transparent_45%)]"></div>
 
         <!-- botanical corners -->
-        <span class="pointer-events-none absolute left-4 top-4 text-2xl opacity-40">🌿</span>
-        <span class="pointer-events-none absolute right-4 top-4 -scale-x-100 text-2xl opacity-40">🌿</span>
-        <span class="pointer-events-none absolute bottom-4 left-4 -scale-y-100 text-2xl opacity-40">🌿</span>
-        <span class="pointer-events-none absolute bottom-4 right-4 -scale-100 text-2xl opacity-40">🌿</span>
+        <svg viewBox="0 0 40 40" fill="none" class="pointer-events-none absolute left-4 top-4 h-9 w-9 text-emerald-700/50">
+            <path d="M4 4 C4 14 6 22 16 26 M8 10 C13 10 16 13 16 18 M8 16 C12 16 15 18 15 22" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+        </svg>
+        <svg viewBox="0 0 40 40" fill="none" class="pointer-events-none absolute right-4 top-4 h-9 w-9 -scale-x-100 text-emerald-700/50">
+            <path d="M4 4 C4 14 6 22 16 26 M8 10 C13 10 16 13 16 18 M8 16 C12 16 15 18 15 22" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+        </svg>
+        <svg viewBox="0 0 40 40" fill="none" class="pointer-events-none absolute bottom-4 left-4 h-9 w-9 -scale-y-100 text-emerald-700/50">
+            <path d="M4 4 C4 14 6 22 16 26 M8 10 C13 10 16 13 16 18 M8 16 C12 16 15 18 15 22" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+        </svg>
+        <svg viewBox="0 0 40 40" fill="none" class="pointer-events-none absolute bottom-4 right-4 h-9 w-9 -scale-100 text-emerald-700/50">
+            <path d="M4 4 C4 14 6 22 16 26 M8 10 C13 10 16 13 16 18 M8 16 C12 16 15 18 15 22" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+        </svg>
 
         <div class="relative">
             <p data-card class="text-xs font-semibold uppercase tracking-[0.4em] text-emerald-700/80">{{ typeLabel }}</p>
             <div data-card class="mx-auto mt-6 h-px w-16 bg-emerald-700/30"></div>
             <h1 data-card class="mt-6 font-serif text-5xl font-medium leading-[0.95] text-emerald-800">{{ hosts || event.title }}</h1>
             <p v-if="tagline" data-card class="mt-3 font-serif text-lg italic text-emerald-700/80">{{ tagline }}</p>
-            <div data-card class="mx-auto mt-7 h-px w-16 bg-emerald-700/30"></div>
-            <p v-if="event.starts_at" data-card class="mt-6 text-sm font-medium text-[#3f5a45]">{{ fmtFull(event.starts_at) }}</p>
-            <p v-if="location" data-card class="mt-1 text-xs uppercase tracking-[0.2em] text-emerald-700/60">{{ location }}</p>
+            <!-- ticket-stub footer -->
+            <div data-card class="relative mt-10 border-t border-dashed border-emerald-700/30 pt-6">
+                <span class="absolute left-1/2 -top-3 -translate-x-1/2 bg-[#f3f6ee] px-2 text-sm text-emerald-700/50">✂</span>
+                <p v-if="event.starts_at" class="text-sm font-medium text-[#3f5a45]">{{ fmtFull(event.starts_at) }}</p>
+                <p v-if="location" class="mt-1 text-xs uppercase tracking-[0.2em] text-emerald-700/60">{{ location }}</p>
+            </div>
             <p data-card class="mt-8 font-serif text-xs italic text-emerald-700/70">With love, {{ event.user?.name }}</p>
         </div>
     </div>

@@ -112,7 +112,7 @@ const marquee = computed(() => [hosts.value || props.event.title, '◆', tagline
                 <h2 data-fx="chars" class="mt-4 text-4xl font-black tracking-tight text-neutral-900 sm:text-6xl">{{ event.venue || location }}</h2>
                 <div class="mt-10 grid items-start gap-8 lg:grid-cols-2">
                     <div v-if="venuePhoto" data-fx="img-reveal" class="overflow-hidden rounded-[2.5rem]">
-                        <img :src="venuePhoto" alt="" loading="lazy" class="aspect-[4/3] w-full object-cover" />
+                        <img :src="venuePhoto" alt="" loading="lazy" decoding="async" class="aspect-[4/3] w-full object-cover" />
                     </div>
                     <div class="space-y-4">
                         <p v-if="venueNote" data-fx="words" class="text-xl font-medium leading-relaxed text-neutral-700">{{ venueNote }}</p>
@@ -139,7 +139,7 @@ const marquee = computed(() => [hosts.value || props.event.title, '◆', tagline
                     :class="i % 5 === 0
                         ? 'rounded-[3rem] aspect-square sm:col-span-2 sm:aspect-[2/1]'
                         : [i % 4 === 1 ? 'rounded-t-[3rem] rounded-b-xl' : i % 4 === 2 ? 'rounded-full' : i % 4 === 3 ? 'rounded-xl' : 'rounded-[3rem]', 'aspect-square']">
-                    <img :src="p" alt="" loading="lazy" class="h-full w-full object-cover" />
+                    <img :src="p" alt="" loading="lazy" decoding="async" class="h-full w-full object-cover" />
                 </div>
             </div>
         </section>

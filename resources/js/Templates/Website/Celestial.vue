@@ -16,30 +16,32 @@ const stars = Array.from({ length: 80 }, (_, i) => ({ top: (i * 37) % 100, left:
 
 <template>
     <div ref="root" class="bg-[#080614] text-indigo-50">
-        <!-- HERO -->
-        <section class="gl-grain relative flex min-h-screen items-center justify-center overflow-hidden py-24">
+        <!-- HERO: asymmetric, text anchored bottom-left, moon top-right -->
+        <section class="gl-grain relative flex min-h-screen flex-col overflow-hidden px-6 py-16 sm:px-10 lg:px-16">
             <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(99,102,241,0.25),transparent_55%)]"></div>
             <div class="pointer-events-none absolute inset-0">
                 <span v-for="(s,i) in stars" :key="i" class="gl-twinkle absolute rounded-full bg-white" :style="`top:${s.top}%;left:${s.left}%;height:${s.size}px;width:${s.size}px;animation-delay:${s.delay}s`"></span>
             </div>
-            <div data-fx="rotate" data-turns="0.2" class="pointer-events-none absolute right-[8%] top-[14%] h-28 w-28 rounded-full bg-gradient-to-br from-indigo-200 to-violet-400 opacity-80 shadow-[0_0_60px_rgba(129,140,248,0.6)]"></div>
+            <div data-fx="rotate" data-turns="0.2" class="pointer-events-none absolute right-[4%] top-[8%] h-48 w-48 rounded-full bg-gradient-to-br from-indigo-200 to-violet-400 opacity-80 shadow-[0_0_80px_rgba(129,140,248,0.6)] sm:h-64 sm:w-64"></div>
 
-            <div data-fx="hero-exit" class="relative z-10 px-6 text-center">
+            <div data-fx="hero-exit" class="relative z-10 mt-auto max-w-xl pb-6">
                 <p class="gl-enter text-xs font-semibold uppercase tracking-[0.6em] text-violet-300/90">{{ typeLabel }}</p>
-                <h1 data-fx="chars" class="gl-display mt-8 font-serif font-medium">
-                    <span class="bg-gradient-to-r from-indigo-200 via-violet-200 to-fuchsia-200 bg-clip-text text-transparent">{{ hosts || event.title }}</span>
+                <h1 class="mt-6 overflow-hidden">
+                    <span class="gl-clip gl-display block font-serif font-medium">
+                        <span class="bg-gradient-to-r from-indigo-200 via-violet-200 to-fuchsia-200 bg-clip-text text-transparent">{{ hosts || event.title }}</span>
+                    </span>
                 </h1>
                 <p v-if="tagline" class="gl-enter gl-d2 mt-6 text-lg font-light tracking-wide text-indigo-100/85 sm:text-2xl">{{ tagline }}</p>
                 <p class="gl-enter gl-d3 mt-4 text-sm uppercase tracking-[0.3em] text-indigo-300/70">{{ fmtDate(event.starts_at) }}<span v-if="location"> · {{ location }}</span></p>
 
-                <div v-if="countdown" class="gl-enter gl-d4 mt-12 flex items-center justify-center gap-3">
+                <div v-if="countdown" class="gl-enter gl-d4 mt-10 flex items-center gap-3">
                     <div v-for="u in [{v:countdown.days,l:'Days'},{v:countdown.hours,l:'Hrs'},{v:countdown.mins,l:'Min'},{v:countdown.secs,l:'Sec'}]" :key="u.l" class="flex h-20 w-20 flex-col items-center justify-center rounded-2xl border border-indigo-300/20 bg-indigo-500/10 backdrop-blur-xl sm:h-24 sm:w-24">
                         <span class="text-2xl font-bold tabular-nums text-violet-100 sm:text-3xl">{{ String(u.v).padStart(2,'0') }}</span>
                         <span class="mt-1 text-[9px] uppercase tracking-[0.25em] text-indigo-300/70">{{ u.l }}</span>
                     </div>
                 </div>
             </div>
-            <div class="absolute bottom-8 left-1/2 -translate-x-1/2 text-[10px] uppercase tracking-[0.4em] text-indigo-400/50">Scroll</div>
+            <div class="relative z-10 text-[10px] uppercase tracking-[0.4em] text-indigo-400/50">Scroll</div>
         </section>
 
         <!-- COVER -->
@@ -53,6 +55,13 @@ const stars = Array.from({ length: 80 }, (_, i) => ({ top: (i * 37) % 100, left:
         <section v-if="event.description" class="relative overflow-hidden px-6 py-28 sm:px-10">
             <div data-fx="parallax" data-speed="0.35" class="pointer-events-none absolute left-[-10%] top-0 h-96 w-96 rounded-full bg-violet-600/10 blur-[100px]"></div>
             <div class="mx-auto max-w-3xl text-center">
+                <svg data-fx="draw" viewBox="0 0 120 60" fill="none" class="mx-auto mb-8 h-9 w-24 text-violet-300/80" aria-hidden="true">
+                    <path d="M60 58 C60 40 60 30 60 14" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                    <path d="M60 20 C50 14 44 6 50 2 C56 -2 62 6 60 14" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                    <path d="M60 20 C70 14 76 6 70 2 C64 -2 58 6 60 14" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                    <path d="M60 30 C48 28 40 34 42 40 C44 46 54 44 60 36" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                    <path d="M60 30 C72 28 80 34 78 40 C76 46 66 44 60 36" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                </svg>
                 <p data-reveal class="text-xs font-semibold uppercase tracking-[0.5em] text-violet-300/90">Written in the stars</p>
                 <p data-fx="words" class="mt-8 whitespace-pre-line font-serif text-2xl font-light leading-relaxed text-indigo-100 sm:text-3xl">{{ event.description }}</p>
             </div>
@@ -60,12 +69,12 @@ const stars = Array.from({ length: 80 }, (_, i) => ({ top: (i * 37) % 100, left:
 
         <!-- DETAILS -->
         <section class="px-6 pb-10 sm:px-10">
-            <div data-fx="batch" class="mx-auto grid max-w-5xl gap-5 sm:grid-cols-2">
-                <div class="rounded-3xl border border-indigo-300/15 bg-indigo-500/[0.06] p-8 backdrop-blur-sm">
+            <div data-fx="rise3d" class="mx-auto grid max-w-5xl gap-5 sm:grid-cols-2">
+                <div data-fx="tilt3d" class="rounded-3xl border border-indigo-300/15 bg-indigo-500/[0.06] p-8 backdrop-blur-sm transition-shadow hover:shadow-xl hover:shadow-violet-500/10">
                     <p class="text-xs font-semibold uppercase tracking-[0.3em] text-violet-300/80">When</p>
                     <p class="mt-3 font-serif text-2xl text-white">{{ fmtFull(event.starts_at) || 'To be announced' }}</p>
                 </div>
-                <div class="rounded-3xl border border-indigo-300/15 bg-indigo-500/[0.06] p-8 backdrop-blur-sm">
+                <div data-fx="tilt3d" class="rounded-3xl border border-indigo-300/15 bg-indigo-500/[0.06] p-8 backdrop-blur-sm transition-shadow hover:shadow-xl hover:shadow-violet-500/10">
                     <p class="text-xs font-semibold uppercase tracking-[0.3em] text-violet-300/80">Where</p>
                     <p class="mt-3 font-serif text-2xl text-white">{{ location || 'To be announced' }}</p>
                 </div>
@@ -107,7 +116,7 @@ const stars = Array.from({ length: 80 }, (_, i) => ({ top: (i * 37) % 100, left:
                 <h2 data-fx="chars" class="mt-4 text-center font-serif text-4xl text-white sm:text-5xl">{{ event.venue || location }}</h2>
                 <p v-if="venueNote" data-fx="words" class="mx-auto mt-6 max-w-2xl text-center font-serif text-xl font-light italic leading-8 text-indigo-100/70">{{ venueNote }}</p>
                 <div v-if="venuePhoto" data-fx="img-reveal" class="mx-auto mt-10 max-w-xl overflow-hidden rounded-3xl ring-1 ring-indigo-300/20">
-                    <img :src="venuePhoto" alt="" loading="lazy" class="aspect-[16/10] w-full object-cover" />
+                    <img :src="venuePhoto" alt="" loading="lazy" decoding="async" class="aspect-[16/10] w-full object-cover" />
                 </div>
                 <div data-fx="batch" class="mt-10 grid gap-5 sm:grid-cols-2">
                     <div v-if="travel" class="rounded-3xl border border-indigo-300/15 bg-indigo-500/[0.06] p-7 backdrop-blur-sm">
@@ -125,12 +134,13 @@ const stars = Array.from({ length: 80 }, (_, i) => ({ top: (i * 37) % 100, left:
             </div>
         </section>
 
-        <!-- GALLERY -->
+        <!-- GALLERY: bento mosaic -->
         <section v-if="gallery.length" class="overflow-hidden px-6 pb-16 sm:px-10">
             <p data-reveal class="text-center text-xs font-semibold uppercase tracking-[0.5em] text-violet-300/90">Moments</p>
-            <div class="mx-auto mt-10 grid max-w-5xl grid-cols-2 gap-4 sm:grid-cols-3">
-                <div v-for="(p,i) in gallery" :key="i" data-fx="parallax" :data-speed="(0.12 + (i % 3) * 0.12).toFixed(2)" class="gl-photo group overflow-hidden rounded-2xl border border-indigo-300/15">
-                    <img :src="p" alt="" loading="lazy" class="aspect-[3/4] w-full object-cover transition duration-700 group-hover:scale-105" />
+            <div class="mx-auto mt-10 grid max-w-5xl auto-rows-[130px] grid-cols-4 gap-4 sm:auto-rows-[160px]">
+                <div v-for="(p,i) in gallery" :key="i" data-fx="parallax" :data-speed="(0.1 + (i % 3) * 0.1).toFixed(2)"
+                    :class="['gl-photo group overflow-hidden rounded-2xl border border-indigo-300/15', i % 4 === 1 ? 'col-span-2 row-span-2' : 'col-span-2 sm:col-span-1']">
+                    <img :src="p" alt="" loading="lazy" decoding="async" class="h-full w-full object-cover transition duration-700 group-hover:scale-105" />
                 </div>
             </div>
         </section>

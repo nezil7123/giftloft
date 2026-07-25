@@ -175,7 +175,7 @@ onUnmounted(() => ctx?.revert());
                 <h2 data-fx="chars" class="mt-5 text-center text-4xl font-black uppercase tracking-tight text-white sm:text-6xl">{{ event.venue || location }}</h2>
                 <p v-if="venueNote" data-fx="words" class="mx-auto mt-6 max-w-2xl text-center text-lg font-light leading-8 text-neutral-300">{{ venueNote }}</p>
                 <div v-if="venuePhoto" data-fx="img-reveal" class="mx-auto mt-12 max-w-2xl overflow-hidden rounded-3xl">
-                    <img :src="venuePhoto" alt="" loading="lazy" class="aspect-[16/9] w-full object-cover" />
+                    <img :src="venuePhoto" alt="" loading="lazy" decoding="async" class="aspect-[16/9] w-full object-cover" />
                 </div>
                 <div data-fx="rise3d" class="mt-10 grid gap-4 sm:grid-cols-2">
                     <div v-if="travel" data-fx="tilt3d" class="nova-hud relative p-7">
@@ -201,7 +201,7 @@ onUnmounted(() => ctx?.revert());
                 <div v-for="(p,i) in gallery" :key="i" data-fx="tilt3d"
                     class="gl-photo group relative overflow-hidden rounded-2xl border border-white/10 transition-colors duration-500 hover:border-cyan-400/50 hover:shadow-[0_0_44px_-10px_rgba(34,211,238,0.45)]"
                     :class="i % 5 === 0 ? 'col-span-2 row-span-2 aspect-square' : 'aspect-square'">
-                    <img :src="p" alt="" loading="lazy" class="h-full w-full object-cover" />
+                    <img :src="p" alt="" loading="lazy" decoding="async" class="h-full w-full object-cover" />
                     <span class="absolute left-3 top-3 font-mono text-[9px] uppercase tracking-widest text-cyan-200/0 transition group-hover:text-cyan-200/90">IMG_{{ String(i+1).padStart(3,'0') }}</span>
                 </div>
             </div>

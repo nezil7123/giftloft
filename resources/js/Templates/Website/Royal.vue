@@ -131,7 +131,7 @@ const monogram = computed(() => {
 
                 <!-- Arched frame -->
                 <div v-if="venuePhoto" data-fx="scale-in" class="mx-auto mt-12 max-w-md overflow-hidden rounded-t-full border border-amber-200/30 p-3">
-                    <img :src="venuePhoto" alt="" loading="lazy" class="aspect-[3/4] w-full rounded-t-full object-cover" />
+                    <img :src="venuePhoto" alt="" loading="lazy" decoding="async" class="aspect-[3/4] w-full rounded-t-full object-cover" />
                 </div>
 
                 <div data-fx="batch" class="mt-12 grid gap-5 text-left sm:grid-cols-2">
@@ -153,7 +153,7 @@ const monogram = computed(() => {
             <p data-reveal class="text-center text-[11px] font-semibold uppercase tracking-[0.5em] text-amber-200/90">The gallery hall</p>
             <div data-fx="batch" class="mx-auto mt-10 grid max-w-5xl grid-cols-2 gap-4 sm:grid-cols-4">
                 <div v-for="(p,i) in gallery" :key="i" class="gl-photo overflow-hidden rounded-t-full border border-amber-200/20 p-2">
-                    <img :src="p" alt="" loading="lazy" class="aspect-[3/4] w-full rounded-t-full object-cover" />
+                    <img :src="p" alt="" loading="lazy" decoding="async" class="aspect-[3/4] w-full rounded-t-full object-cover" />
                 </div>
             </div>
         </section>

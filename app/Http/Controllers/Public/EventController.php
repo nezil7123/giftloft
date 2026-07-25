@@ -35,17 +35,26 @@ class EventController extends Controller
     }
 
     /**
-     * Resolve a public, published event by share code or 404.
+     * Resolve an event by share code, or 404.
+     *
+     * Strangers only see public, published events. The owner can always view
+     * their own event this way too — so the Design page's "Preview" links
+     * and the share-link box work before the event is published.
      */
     protected function publicEvent(string $shareCode): Event
     {
-        return Event::where('share_code', $shareCode)
-            ->where('is_public', true)
-            ->where('status', 'published')
+        $event = Event::where('share_code', $shareCode)
             ->with([
                 'user:id,name',
                 'wishlists' => fn ($q) => $q->where('visibility', 'public')->where('active', true)->select('id', 'event_id', 'name', 'slug'),
             ])
             ->firstOrFail();
+
+        $viewer = auth()->user();
+        $canBypass = $viewer && ($viewer->id === $event->user_id || $viewer->is_admin);
+
+        abort_unless($canBypass || ($event->is_public && $event->status === 'published'), 404);
+
+        return $event;
     }
 }

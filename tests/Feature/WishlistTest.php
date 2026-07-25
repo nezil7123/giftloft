@@ -164,4 +164,21 @@ class WishlistTest extends TestCase
 
         $this->get('/r/priv-reg')->assertNotFound();
     }
+
+    public function test_owner_can_preview_their_own_private_registry_by_slug(): void
+    {
+        $owner = User::factory()->create();
+        $this->makeWishlist($owner, ['slug' => 'owner-priv-reg', 'visibility' => 'private', 'active' => false]);
+
+        $this->actingAs($owner)->get('/r/owner-priv-reg')->assertOk();
+    }
+
+    public function test_other_users_still_cannot_preview_someone_elses_private_registry(): void
+    {
+        $owner = User::factory()->create();
+        $stranger = User::factory()->create();
+        $this->makeWishlist($owner, ['slug' => 'not-yours-reg', 'visibility' => 'private']);
+
+        $this->actingAs($stranger)->get('/r/not-yours-reg')->assertNotFound();
+    }
 }

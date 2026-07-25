@@ -16,6 +16,10 @@ gsap.registerPlugin(ScrollTrigger);
  *   data-fx="hero-exit"                    — fades/lifts out as its <section> scrolls away
  *   data-fx="scale-in"                     — scrubbed scale 0.85→1 + fade as it enters
  *   data-fx="chars"                        — splits text into chars, staggered rise on enter
+ *   data-fx="chars-in"                     — same char-split rise, but plays immediately on
+ *                                             mount (no ScrollTrigger). Use this for above-the-fold
+ *                                             hero headings — "chars" can race image/font layout
+ *                                             and leave the heading permanently at opacity:0.
  *   data-fx="words"                        — splits text into words, softer staggered rise
  *   data-fx="img-reveal"                   — clip-path wipe reveal (put on the image's wrapper)
  *   data-fx="rotate"    data-turns="0.5"   — rotation scrubbed across the viewport pass
@@ -48,15 +52,23 @@ export function useScrollFx(rootRef) {
                     gsap.set(el, { transformPerspective: 800 });
                     const rx = gsap.quickTo(el, 'rotationX', { duration: 0.45, ease: 'power2.out' });
                     const ry = gsap.quickTo(el, 'rotationY', { duration: 0.45, ease: 'power2.out' });
+                    // Read the rect once per hover (pointerenter), not on every
+                    // pointermove — a rect read there forces a synchronous
+                    // layout reflow on each mouse pixel, which is the main
+                    // source of jank on pages with several tilt3d cards.
+                    let r = null;
+                    const enter = () => { r = el.getBoundingClientRect(); };
                     const move = (e) => {
-                        const r = el.getBoundingClientRect();
+                        if (!r) r = el.getBoundingClientRect();
                         rx(((e.clientY - r.top) / r.height - 0.5) * -8);
                         ry(((e.clientX - r.left) / r.width - 0.5) * 10);
                     };
-                    const leave = () => { rx(0); ry(0); };
+                    const leave = () => { rx(0); ry(0); r = null; };
+                    el.addEventListener('pointerenter', enter);
                     el.addEventListener('pointermove', move);
                     el.addEventListener('pointerleave', leave);
                     cleanups.push(() => {
+                        el.removeEventListener('pointerenter', enter);
                         el.removeEventListener('pointermove', move);
                         el.removeEventListener('pointerleave', leave);
                     });
@@ -103,13 +115,31 @@ export function useScrollFx(rootRef) {
                 });
 
                 // ── Parallax drift ──
+                // Elements sharing a parent (e.g. every photo in a gallery
+                // grid) share that parent as their trigger too, so they'd
+                // all track an identical start/end. Rather than one
+                // ScrollTrigger per photo — which multiplies with every
+                // photo an owner adds and was the main source of scroll
+                // jank on photo-heavy pages — group them and drive the
+                // whole group from a single trigger.
+                const parallaxGroups = new Map();
                 root.querySelectorAll('[data-fx="parallax"]').forEach((el) => {
                     const speed = parseFloat(el.dataset.speed ?? '0.25');
-                    gsap.fromTo(el, { y: speed * 220 }, {
-                        y: speed * -220,
-                        ease: 'none',
-                        scrollTrigger: { trigger: el.parentElement, start: 'top bottom', end: 'bottom top', scrub: true },
+                    const parent = el.parentElement;
+                    if (!parallaxGroups.has(parent)) parallaxGroups.set(parent, []);
+                    parallaxGroups.get(parent).push({ setY: gsap.quickSetter(el, 'y', 'px'), speed });
+                });
+                parallaxGroups.forEach((items, parent) => {
+                    const apply = (progress) => items.forEach(({ setY, speed }) => setY(speed * (220 - 440 * progress)));
+                    const st = ScrollTrigger.create({
+                        trigger: parent,
+                        start: 'top bottom',
+                        end: 'bottom top',
+                        scrub: true,
+                        onUpdate: (self) => apply(self.progress),
+                        onRefresh: (self) => apply(self.progress),
                     });
+                    apply(st.progress);
                 });
 
                 // ── Hero content lifts away as you leave the hero ──
@@ -159,6 +189,33 @@ export function useScrollFx(rootRef) {
                         ease: 'back.out(1.6)',
                         stagger: 0.028,
                         scrollTrigger: { trigger: el, start: 'top 88%', once: true },
+                    });
+                });
+
+                // ── Character split reveal, on load (safe for above-the-fold) ──
+                root.querySelectorAll('[data-fx="chars-in"]').forEach((el) => {
+                    while (el.childElementCount === 1 && el.firstElementChild.textContent.trim() === el.textContent.trim()) {
+                        el = el.firstElementChild;
+                    }
+                    if (el.dataset.fxSplit) return;
+                    el.dataset.fxSplit = '1';
+                    const chars = [...el.textContent].map((c) => {
+                        const s = document.createElement('span');
+                        s.textContent = c;
+                        s.style.display = 'inline-block';
+                        s.style.whiteSpace = c === ' ' ? 'pre' : 'normal';
+                        return s;
+                    });
+                    el.textContent = '';
+                    el.append(...chars);
+                    gsap.from(chars, {
+                        yPercent: 130,
+                        opacity: 0,
+                        rotate: 6,
+                        duration: 0.8,
+                        ease: 'back.out(1.6)',
+                        stagger: 0.028,
+                        delay: 0.15,
                     });
                 });
 
@@ -275,8 +332,19 @@ export function useScrollFx(rootRef) {
             });
         }, root);
 
-        // Recalculate after images settle (photo-heavy pages shift layout).
+        // Recalculate after images settle (photo-heavy pages shift layout —
+        // a gallery of 20+ photos can easily still be loading past 600ms,
+        // which otherwise leaves trigger start/end points pinned to a
+        // shorter page and makes effects jump/fire at the wrong scroll
+        // position once the real layout height lands).
         setTimeout(() => ScrollTrigger.refresh(), 600);
+        const imgs = [...root.querySelectorAll('img')].filter((img) => !img.complete);
+        if (imgs.length) {
+            Promise.all(imgs.map((img) => new Promise((resolve) => {
+                img.addEventListener('load', resolve, { once: true });
+                img.addEventListener('error', resolve, { once: true });
+            }))).then(() => ScrollTrigger.refresh());
+        }
     });
 
     onUnmounted(() => ctx?.revert());
