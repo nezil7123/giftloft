@@ -66,7 +66,7 @@ const search = () => {
                     </div>
                     <div class="min-w-0 flex-1">
                         <p class="text-base font-bold text-neutral-900">{{ match.name }}</p>
-                        <p class="text-xs text-neutral-500">{{ match.username ? `@${match.username}` : 'Found on Gift Loft' }}</p>
+                        <p class="text-xs text-neutral-500">{{ match.username ? `@${match.username}` : 'Found on ComeYay' }}</p>
                     </div>
                     <Link :href="route('public.profile', match.username ?? match.id)" class="inline-flex shrink-0 items-center justify-center rounded-full bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-indigo-500">View profile</Link>
                 </div>
@@ -75,7 +75,7 @@ const search = () => {
                 <div v-else-if="searched" class="mt-6 rounded-2xl border border-dashed border-neutral-300 bg-white px-8 py-12 text-center">
                     <p class="text-3xl">🔍</p>
                     <p class="mt-3 text-base font-bold text-neutral-900">No one found</p>
-                    <p class="mt-2 text-sm text-neutral-500">Nobody on Gift Loft matches that exactly — double-check the spelling, or invite them to join!</p>
+                    <p class="mt-2 text-sm text-neutral-500">Nobody on ComeYay matches that exactly — double-check the spelling, or invite them to join!</p>
                 </div>
             </div>
         </div>

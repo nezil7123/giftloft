@@ -21,7 +21,7 @@ const invitationSample = (key) => ({ ...props.samples[selectedType.value], invit
 
 <template>
     <PublicLayout theme="light">
-        <Head title="Templates — Gift Loft" />
+        <Head title="Templates — ComeYay" />
 
         <!-- Hero -->
         <section class="bg-gradient-to-b from-indigo-50 to-white pb-10 pt-32">

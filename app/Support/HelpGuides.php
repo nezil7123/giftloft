@@ -19,7 +19,7 @@ class HelpGuides
                 'slug' => 'wishlist',
                 'emoji' => '🎁',
                 'gradient' => 'from-rose-500 to-orange-500',
-                'mockupLabel' => 'giftloft.app/r/our-wishlist',
+                'mockupLabel' => 'comeyay.app/r/our-wishlist',
                 'title' => 'How wishlists work',
                 'subtitle' => 'Curate exactly what you\'d love to receive, so guests never have to guess — and gifts never get duplicated.',
                 'steps' => [
@@ -55,7 +55,7 @@ class HelpGuides
                 'slug' => 'website',
                 'emoji' => '🌐',
                 'gradient' => 'from-fuchsia-500 to-pink-600',
-                'mockupLabel' => 'giftloft.app/e/our-event',
+                'mockupLabel' => 'comeyay.app/e/our-event',
                 'title' => 'How to create your event website',
                 'subtitle' => 'A full shareable page with your story, schedule, venue and wishlist — live in minutes, no code required.',
                 'steps' => [
@@ -73,7 +73,7 @@ class HelpGuides
                 'slug' => 'invitation',
                 'emoji' => '💌',
                 'gradient' => 'from-violet-500 to-purple-700',
-                'mockupLabel' => 'giftloft.app/e/our-event/invitation',
+                'mockupLabel' => 'comeyay.app/e/our-event/invitation',
                 'title' => 'How to create your invitation',
                 'subtitle' => 'A beautiful, shareable invitation card — perfect for WhatsApp, email or print — designed alongside your event website.',
                 'steps' => [

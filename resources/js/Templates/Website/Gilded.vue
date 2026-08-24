@@ -155,7 +155,7 @@ useScrollFx(root);
                 <p class="mx-auto mt-4 max-w-md text-[#6a5c3e]">{{ rsvpNote || 'Browse our wishlist and send a thoughtful gift.' }}</p>
                 <Link :href="registryUrl" class="gl-btn mt-9 inline-flex items-center justify-center rounded-full bg-gradient-to-r from-amber-600 to-amber-500 px-9 py-4 text-sm font-semibold text-white transition hover:scale-105">View the registry</Link>
             </div>
-            <p class="mt-10 text-center text-xs uppercase tracking-[0.3em] text-[#9a875f]">{{ event.user?.name }} · Gift Loft</p>
+            <p class="mt-10 text-center text-xs uppercase tracking-[0.3em] text-[#9a875f]">{{ event.user?.name }} · ComeYay</p>
         </section>
     </div>
 </template>

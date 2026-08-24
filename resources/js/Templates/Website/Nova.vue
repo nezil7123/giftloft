@@ -216,7 +216,7 @@ onUnmounted(() => ctx?.revert());
                 <p class="relative mx-auto mt-4 max-w-md text-neutral-400">{{ rsvpNote || 'Browse our wishlist and send something unforgettable.' }}</p>
                 <Link :href="registryUrl" class="gl-btn relative mt-9 inline-flex items-center justify-center rounded-full bg-cyan-300 px-9 py-4 text-sm font-black uppercase tracking-[0.2em] text-black transition hover:scale-105">Open the registry</Link>
             </div>
-            <p class="mt-10 text-center text-[10px] uppercase tracking-[0.4em] text-neutral-600">{{ event.user?.name }} · Gift Loft</p>
+            <p class="mt-10 text-center text-[10px] uppercase tracking-[0.4em] text-neutral-600">{{ event.user?.name }} · ComeYay</p>
         </section>
     </div>
 </template>

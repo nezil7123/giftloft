@@ -185,7 +185,7 @@ const strip = computed(() => [coverPhoto.value, ...gallery.value].filter(Boolean
                 <p v-if="rsvpNote" class="relative mx-auto mt-5 max-w-md text-white/60">{{ rsvpNote }}</p>
                 <Link :href="registryUrl" class="gl-btn relative mt-9 inline-flex items-center justify-center rounded-full bg-white px-9 py-4 text-sm font-bold uppercase tracking-widest text-neutral-950 transition hover:scale-105">View wishlist →</Link>
             </div>
-            <p class="mt-10 text-center text-xs uppercase tracking-[0.3em] text-neutral-400">{{ event.user?.name }} · Gift Loft</p>
+            <p class="mt-10 text-center text-xs uppercase tracking-[0.3em] text-neutral-400">{{ event.user?.name }} · ComeYay</p>
         </section>
     </div>
 </template>

@@ -126,7 +126,7 @@ const addToCart = (product) => {
 
 <template>
     <PublicLayout theme="light">
-        <Head title="Gift Shop — Gift Loft" />
+        <Head title="Gift Shop — ComeYay" />
 
         <!-- Toast -->
         <Transition enter-active-class="transition duration-300" enter-from-class="-translate-y-3 opacity-0" leave-active-class="transition duration-300" leave-to-class="-translate-y-3 opacity-0">

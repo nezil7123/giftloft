@@ -167,7 +167,7 @@ const monogram = computed(() => {
                 <p class="mx-auto mt-4 max-w-md text-emerald-100/70">{{ rsvpNote || 'Browse our wishlist and send a thoughtful gift.' }}</p>
                 <Link :href="registryUrl" class="gl-btn mt-9 inline-flex items-center justify-center bg-amber-200 px-10 py-4 text-xs font-semibold uppercase tracking-[0.25em] text-emerald-950 transition hover:scale-105">View the registry</Link>
             </div>
-            <p class="mt-10 text-center text-[10px] uppercase tracking-[0.3em] text-emerald-100/40">{{ event.user?.name }} · Gift Loft</p>
+            <p class="mt-10 text-center text-[10px] uppercase tracking-[0.3em] text-emerald-100/40">{{ event.user?.name }} · ComeYay</p>
         </section>
     </div>
 </template>

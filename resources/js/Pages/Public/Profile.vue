@@ -25,7 +25,7 @@ const joinedYear = props.profile.joined ? new Date(props.profile.joined).getFull
 </script>
 
 <template>
-    <Head :title="`${profile.name} — Gift Loft`" />
+    <Head :title="`${profile.name} — ComeYay`" />
 
     <PublicLayout theme="light">
         <div class="pb-20" style="padding-top: calc(var(--nav-offset, 62px) + 2.5rem)">
@@ -39,7 +39,7 @@ const joinedYear = props.profile.joined ? new Date(props.profile.joined).getFull
                         <h1 class="text-3xl font-black tracking-tight text-neutral-950 sm:text-4xl">{{ profile.name }}</h1>
                         <p v-if="profile.username" class="mt-1 text-sm font-semibold text-indigo-600">@{{ profile.username }}</p>
                         <p class="mt-2 text-sm text-neutral-500">
-                            Celebrating on Gift Loft<span v-if="joinedYear"> since {{ joinedYear }}</span>
+                            Celebrating on ComeYay<span v-if="joinedYear"> since {{ joinedYear }}</span>
                             · {{ events.length }} {{ events.length === 1 ? 'event' : 'events' }}
                             · {{ wishlists.length }} {{ wishlists.length === 1 ? 'wishlist' : 'wishlists' }}
                         </p>

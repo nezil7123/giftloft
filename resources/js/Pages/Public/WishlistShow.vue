@@ -77,7 +77,7 @@ const itemsLeft = computed(() => props.wishlist.items.filter((i) => !isClaimed(i
                     <p class="mt-2 text-sm text-neutral-500">Check back soon — the gift list is on its way.</p>
                 </div>
 
-                <p class="mt-12 text-center text-sm text-neutral-400">Powered by Gift Loft</p>
+                <p class="mt-12 text-center text-sm text-neutral-400">Powered by ComeYay</p>
             </div>
         </section>
     </PublicLayout>

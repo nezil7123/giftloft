@@ -61,7 +61,7 @@ const addToCart = () => {
 
 <template>
     <PublicLayout theme="light">
-        <Head :title="`${product.name} — Gift Loft`" />
+        <Head :title="`${product.name} — ComeYay`" />
 
         <Transition enter-active-class="transition duration-300" enter-from-class="-translate-y-3 opacity-0" leave-active-class="transition duration-300" leave-to-class="-translate-y-3 opacity-0">
             <div v-if="toast" class="fixed inset-x-0 top-24 z-50 mx-auto w-fit rounded-full bg-neutral-900 px-6 py-3 text-sm font-semibold text-white shadow-xl">{{ toast }}</div>

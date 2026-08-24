@@ -158,7 +158,7 @@ const photoStrip = computed(() => {
                     </div>
                 </div>
 
-                <p class="pt-4 text-center text-sm font-medium text-white/40">Hosted by {{ event.user?.name }} · Powered by Gift Loft 🎈</p>
+                <p class="pt-4 text-center text-sm font-medium text-white/40">Hosted by {{ event.user?.name }} · Powered by ComeYay 🎈</p>
             </div>
         </section>
     </div>

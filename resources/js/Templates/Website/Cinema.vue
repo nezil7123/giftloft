@@ -25,7 +25,7 @@ const acts = ['ACT I', 'ACT II', 'ACT III', 'ACT IV', 'ACT V'];
             </div>
 
             <div class="relative z-10 flex items-center justify-between px-6 pt-8 text-[10px] uppercase tracking-[0.4em] text-neutral-400 sm:px-12">
-                <span>Gift Loft présente</span>
+                <span>ComeYay présente</span>
                 <span>{{ typeLabel }}</span>
             </div>
 
@@ -158,7 +158,7 @@ const acts = ['ACT I', 'ACT II', 'ACT III', 'ACT IV', 'ACT V'];
             <h3 data-fx="chars" class="gl-display-sm mt-6 font-serif uppercase text-white">Send a gift</h3>
             <p data-reveal class="mx-auto mt-5 max-w-md text-neutral-400">{{ rsvpNote || 'Browse our wishlist and be part of the story.' }}</p>
             <Link :href="registryUrl" data-reveal class="gl-btn mt-10 inline-flex items-center justify-center bg-white px-10 py-4 text-xs font-semibold uppercase tracking-[0.3em] text-neutral-950 transition hover:scale-105">View the registry</Link>
-            <p class="mt-16 text-[10px] uppercase tracking-[0.4em] text-neutral-600">{{ event.user?.name }} · A Gift Loft production</p>
+            <p class="mt-16 text-[10px] uppercase tracking-[0.4em] text-neutral-600">{{ event.user?.name }} · A ComeYay production</p>
         </section>
     </div>
 </template>

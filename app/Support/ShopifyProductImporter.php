@@ -14,7 +14,7 @@ use Illuminate\Support\Str;
  * Shopify writes one row per variant/image, repeating the Handle and leaving
  * Title/Body/Type blank after the first row of each product — so rows are
  * grouped by Handle and only the first non-empty value per column is used.
- * Gift Loft's catalog has no variants, so only the first price is kept, but
+ * ComeYay's catalog has no variants, so only the first price is kept, but
  * every distinct "Image Src" row for the product is imported as a gallery
  * image (ordered by "Image Position" when present).
  *

@@ -151,7 +151,7 @@ const petals = Array.from({ length: 14 }, (_, i) => ({ left: (i * 67) % 100, del
                 <p class="relative mx-auto mt-4 max-w-md text-emerald-200">{{ rsvpNote || 'Browse our wishlist and send a thoughtful gift.' }}</p>
                 <Link :href="registryUrl" class="gl-btn relative mt-9 inline-flex items-center justify-center rounded-full bg-gradient-to-r from-lime-300 to-emerald-400 px-9 py-4 text-sm font-semibold text-emerald-950 transition hover:scale-105">View the registry</Link>
             </div>
-            <p class="mt-10 text-center text-xs uppercase tracking-[0.3em] text-emerald-400/60">{{ event.user?.name }} · Gift Loft</p>
+            <p class="mt-10 text-center text-xs uppercase tracking-[0.3em] text-emerald-400/60">{{ event.user?.name }} · ComeYay</p>
         </section>
     </div>
 </template>

@@ -11,10 +11,10 @@ import { Head } from '@inertiajs/vue3';
             <div class="legal mx-auto max-w-3xl px-6 sm:px-10">
                 <p class="text-xs font-bold uppercase tracking-[0.3em] text-indigo-600">Legal</p>
                 <h1 class="mt-3 text-4xl font-black tracking-tight text-neutral-950">Privacy Policy</h1>
-                <p class="mt-3 text-sm text-neutral-500">Effective 6 July 2026 · Applies to giftloft.app and all Gift Loft services</p>
+                <p class="mt-3 text-sm text-neutral-500">Effective 6 July 2026 · Applies to comeyay.app and all ComeYay services</p>
 
                 <h2>1. Who we are</h2>
-                <p>Gift Loft ("we", "us") is an event invitation and gifting platform operated from India. This policy explains what personal data we collect, why, and the choices you have. We aim to comply with India's Digital Personal Data Protection Act, 2023 and other applicable law.</p>
+                <p>ComeYay ("we", "us") is an event invitation and gifting platform operated from India. This policy explains what personal data we collect, why, and the choices you have. We aim to comply with India's Digital Personal Data Protection Act, 2023 and other applicable law.</p>
 
                 <h2>2. What we collect</h2>
                 <ul>
@@ -62,10 +62,10 @@ import { Head } from '@inertiajs/vue3';
                 <p>Passwords are hashed, traffic is encrypted in transit, and access to production data is restricted. No system is perfectly secure — if we learn of a breach affecting your data, we will notify you and the authorities as required by law.</p>
 
                 <h2>9. Children</h2>
-                <p>Gift Loft is not intended for children under 18. We do not knowingly process a child's data without verifiable parental consent; if you believe a child has created an account, contact us and we will remove it.</p>
+                <p>ComeYay is not intended for children under 18. We do not knowingly process a child's data without verifiable parental consent; if you believe a child has created an account, contact us and we will remove it.</p>
 
                 <h2>10. Contact & grievances</h2>
-                <p>For privacy questions, data requests, or grievances, email <strong>privacy@giftloft.app</strong>. We respond within the timelines required by applicable law.</p>
+                <p>For privacy questions, data requests, or grievances, email <strong>privacy@comeyay.app</strong>. We respond within the timelines required by applicable law.</p>
 
                 <h2>11. Changes</h2>
                 <p>If we change this policy in a material way, we'll update the effective date above and notify you in the app or by email before the change takes effect.</p>

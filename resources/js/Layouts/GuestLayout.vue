@@ -6,9 +6,8 @@ import { Link } from '@inertiajs/vue3';
     <div class="grid min-h-screen bg-white lg:grid-cols-[1fr_1.05fr]">
         <!-- ── Left: form column ── -->
         <div class="flex flex-col px-6 py-8 sm:px-12">
-            <Link href="/" class="gl-enter flex w-fit items-center gap-2.5">
-                <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-600 text-sm font-bold text-white shadow-sm">G</div>
-                <span class="text-base font-semibold tracking-tight text-neutral-950">Gift Loft</span>
+            <Link href="/" class="gl-enter flex w-fit items-center">
+                <img src="/brand/comeyay-full.png" alt="ComeYay" class="h-8 w-auto" />
             </Link>
 
             <div class="flex flex-1 items-center justify-center py-10">
@@ -17,7 +16,7 @@ import { Link } from '@inertiajs/vue3';
                 </div>
             </div>
 
-            <p class="gl-fade text-center text-xs text-neutral-400">© 2026 Gift Loft · Made with love in India 🇮🇳</p>
+            <p class="gl-fade text-center text-xs text-neutral-400">© 2026 ComeYay · Made with love in India 🇮🇳</p>
         </div>
 
         <!-- ── Right: brand panel (lg+) ── -->

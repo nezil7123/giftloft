@@ -12,7 +12,7 @@ const stagger = ['gl-d1', 'gl-d2', 'gl-d3', 'gl-d4'];
 </script>
 
 <template>
-    <Head title="How it works — Gift Loft" />
+    <Head title="How it works — ComeYay" />
 
     <PublicLayout theme="light">
         <div class="mx-auto max-w-5xl px-6 pb-20 pt-28 sm:px-8 sm:pt-32">
@@ -20,11 +20,11 @@ const stagger = ['gl-d1', 'gl-d2', 'gl-d3', 'gl-d4'];
             <div class="max-w-2xl">
                 <p class="gl-enter text-xs font-semibold uppercase tracking-[0.35em] text-indigo-600">Getting started</p>
                 <h1 class="gl-enter gl-d1 mt-4 text-4xl font-semibold leading-[0.95] tracking-tight text-neutral-950 sm:text-6xl">
-                    How Gift Loft works
+                    How ComeYay works
                 </h1>
                 <p class="gl-enter gl-d2 mt-5 max-w-xl text-base leading-7 text-neutral-500 sm:text-lg">
-                    Four short, illustrated guides — from building a wishlist to sending a gift and
-                    designing an invitation. Everything you can do here, in a couple of minutes.
+                    Short, illustrated guides to designing your event website and invitation —
+                    everything you can do here, in a couple of minutes.
                 </p>
             </div>
 
@@ -54,7 +54,7 @@ const stagger = ['gl-d1', 'gl-d2', 'gl-d3', 'gl-d4'];
             <div class="mt-16 flex flex-col items-start gap-4 rounded-3xl bg-neutral-950 p-8 text-white sm:flex-row sm:items-center sm:justify-between sm:p-10">
                 <div>
                     <p class="text-xl font-semibold tracking-tight">Ready to try it yourself?</p>
-                    <p class="mt-1 text-sm text-white/60">Create your first event or wishlist — it's free.</p>
+                    <p class="mt-1 text-sm text-white/60">Create your first event — it's free.</p>
                 </div>
                 <Link href="/register" class="gl-btn inline-flex shrink-0 items-center justify-center rounded-full bg-white px-6 py-3 text-sm font-semibold text-neutral-950 transition hover:scale-105">
                     Get started

@@ -8,7 +8,7 @@ const props = defineProps({
 </script>
 
 <template>
-    <Head :title="`${guide.title} — Gift Loft`" />
+    <Head :title="`${guide.title} — ComeYay`" />
 
     <PublicLayout theme="light">
         <div class="pb-20 pt-28 sm:pt-32">

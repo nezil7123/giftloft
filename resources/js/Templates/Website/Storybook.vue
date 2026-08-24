@@ -137,7 +137,7 @@ const stack = computed(() => [coverPhoto.value, ...gallery.value].filter(Boolean
                 <Link :href="registryUrl" class="gl-btn mt-7 inline-flex rounded-full bg-white px-8 py-3.5 text-sm font-semibold text-rose-600 transition hover:scale-105">Open the wishlist</Link>
             </div>
 
-            <p class="text-center font-serif text-base italic text-neutral-400">Made with love by {{ event.user?.name }} · Gift Loft</p>
+            <p class="text-center font-serif text-base italic text-neutral-400">Made with love by {{ event.user?.name }} · ComeYay</p>
         </section>
     </div>
 </template>

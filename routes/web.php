@@ -56,7 +56,7 @@ Route::get('/templates', [PublicTemplateController::class, 'index'])->name('publ
 Route::get('/templates/website/{key}', [PublicTemplateController::class, 'website'])->name('public.templates.website');
 
 // "How it works" onboarding guides — public so prospective users can learn
-// how Gift Loft works before signing up.
+// how ComeYay works before signing up.
 Route::get('/help', [HelpController::class, 'index'])->name('help.index');
 Route::get('/help/{guide}', [HelpController::class, 'show'])->name('help.show');
 

@@ -76,7 +76,7 @@ onUnmounted(() => {
 
 <template>
     <PublicLayout>
-        <Head title="Gift Loft — The most beautiful way to celebrate & gift" />
+        <Head title="ComeYay — The most beautiful way to celebrate & gift" />
 
         <!-- ╔══════════════════════════════════════════╗ -->
         <!-- ║  HERO — cinematic mesh + grain           ║ -->
@@ -96,133 +96,121 @@ onUnmounted(() => {
                     :style="`top:${s.top}%;left:${s.left}%;height:${s.size}px;width:${s.size}px;animation-delay:${s.delay}s`"></span>
             </div>
 
-            <div class="relative mx-auto w-full max-w-7xl px-6 py-8 sm:px-10 sm:py-10 lg:px-12">
-                <div class="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-14">
-
-                    <!-- Left: copy -->
-                    <div class="space-y-5 sm:space-y-6">
-                        <div class="gl-enter inline-flex items-center gap-2.5 rounded-full border border-white/15 bg-white/5 px-4 py-2 backdrop-blur-sm">
-                            <span class="gl-pulse h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_3px_rgba(52,211,153,0.5)]"></span>
-                            <span class="text-[11px] font-semibold uppercase tracking-[0.28em] text-white/70">Celebrating love, life & every moment</span>
-                        </div>
-
-                        <h1 class="text-[clamp(2.5rem,5.5vw,4.75rem)] font-extrabold leading-[0.98] tracking-[-0.03em] text-white">
-                            <span class="gl-clip block">Create a</span>
-                            <span class="gl-clip block" style="animation-delay:.12s">
-                                <span class="gl-pan bg-gradient-to-r from-indigo-300 via-violet-300 to-rose-300 bg-clip-text text-transparent">celebration</span>
-                            </span>
-                            <span class="gl-clip block" style="animation-delay:.24s">they'll never<br class="hidden sm:block"/> forget.</span>
-                        </h1>
-
-                        <p class="gl-enter gl-d2 max-w-[440px] text-base leading-7 text-white/55 sm:text-lg sm:leading-8">
-                            Beautiful event websites, curated wishlists, and a guest-friendly shop — all in one elegant platform.
-                        </p>
-
-                        <div class="gl-enter gl-d3 flex flex-col gap-3 sm:flex-row sm:items-center">
-                            <Link href="/register" class="gl-btn inline-flex items-center justify-center gap-2 rounded-full bg-white px-7 py-3 text-sm font-bold text-neutral-900 shadow-xl shadow-black/30 transition hover:scale-105">
-                                Get Started Free
-                                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                                </svg>
-                            </Link>
-                            <Link href="/templates" class="inline-flex items-center justify-center rounded-full border border-white/25 px-7 py-3 text-sm font-semibold text-white/80 backdrop-blur-sm transition hover:border-white/50 hover:text-white">
-                                Explore the designs
-                            </Link>
-                        </div>
-
-                        <!-- Social proof -->
-                        <div class="gl-enter gl-d4 hidden items-center gap-4 pt-1 sm:flex">
-                            <div class="flex -space-x-2.5">
-                                <div class="h-8 w-8 rounded-full ring-2 ring-neutral-950 bg-gradient-to-br from-rose-400 to-pink-600"></div>
-                                <div class="h-8 w-8 rounded-full ring-2 ring-neutral-950 bg-gradient-to-br from-violet-400 to-purple-600"></div>
-                                <div class="h-8 w-8 rounded-full ring-2 ring-neutral-950 bg-gradient-to-br from-amber-400 to-orange-500"></div>
-                                <div class="h-8 w-8 rounded-full ring-2 ring-neutral-950 bg-gradient-to-br from-emerald-400 to-teal-500"></div>
+            <!-- Flanking glass mockups (xl+) — sit behind the centered copy -->
+            <div class="pointer-events-none absolute inset-0 hidden xl:block" aria-hidden="true">
+                <!-- Left: live event card -->
+                <div class="gl-float-soft gl-pop absolute left-10 top-[24%] w-[270px] -rotate-6 overflow-hidden rounded-3xl border border-white/15 bg-white/5 shadow-2xl backdrop-blur-xl 2xl:left-24">
+                    <div class="bg-gradient-to-r from-rose-600/40 to-pink-600/30 px-5 py-3.5">
+                        <div class="flex items-center gap-3">
+                            <span class="text-xl">💍</span>
+                            <div>
+                                <p class="text-[10px] uppercase tracking-widest text-white/50">Wedding</p>
+                                <p class="text-sm font-semibold text-white">Sarah & James</p>
                             </div>
-                            <p class="text-sm text-white/45"><span class="font-semibold text-white/75">10,000+</span> events celebrated</p>
+                            <span class="gl-pulse ml-auto rounded-full bg-emerald-500/30 px-2.5 py-1 text-[10px] font-semibold text-emerald-300">Live</span>
                         </div>
                     </div>
-
-                    <!-- Right: floating glass UI mockup -->
-                    <div class="relative hidden h-[400px] lg:block xl:h-[460px]">
-                        <!-- Main event card -->
-                        <div class="gl-float-soft gl-pop absolute right-0 top-4 w-[290px] overflow-hidden rounded-3xl border border-white/15 bg-white/5 shadow-2xl backdrop-blur-xl">
-                            <div class="bg-gradient-to-r from-rose-600/40 to-pink-600/30 px-6 py-4">
-                                <div class="flex items-center gap-3">
-                                    <span class="text-2xl">💍</span>
-                                    <div>
-                                        <p class="text-[10px] uppercase tracking-widest text-white/50">Wedding Event</p>
-                                        <p class="font-semibold text-white">Sarah & James</p>
-                                    </div>
-                                    <span class="ml-auto rounded-full bg-emerald-500/30 px-2.5 py-1 text-[10px] font-semibold text-emerald-300">Live</span>
-                                </div>
-                            </div>
-                            <div class="px-6 py-4 space-y-4">
-                                <div class="flex gap-2 text-sm text-white/60">
-                                    <span>📅 March 15, 2025</span>
-                                    <span>·</span>
-                                    <span>Mumbai</span>
-                                </div>
-                                <div class="flex gap-2">
-                                    <span class="rounded-full bg-white/10 px-3 py-1 text-xs text-white/65">124 guests</span>
-                                    <span class="rounded-full bg-emerald-500/20 px-3 py-1 text-xs text-emerald-300">82 RSVP'd</span>
-                                </div>
-                                <div>
-                                    <div class="mb-1.5 flex justify-between text-[10px] text-white/35">
-                                        <span>RSVP progress</span><span>66%</span>
-                                    </div>
-                                    <div class="h-1.5 w-full rounded-full bg-white/10">
-                                        <div class="h-1.5 rounded-full bg-gradient-to-r from-emerald-400 to-teal-400" style="width:66%"></div>
-                                    </div>
-                                </div>
-                            </div>
+                    <div class="space-y-3 px-5 py-4">
+                        <div class="flex gap-2 text-xs text-white/60">
+                            <span>📅 March 15</span><span>·</span><span>Mumbai</span>
                         </div>
-
-                        <!-- Wishlist card -->
-                        <div class="gl-float-soft gl-pop gl-d2 absolute left-0 top-56 w-[240px] rounded-3xl border border-white/15 bg-white/5 p-5 shadow-2xl backdrop-blur-xl" style="animation-delay:2s,.3s">
-                            <p class="text-[10px] uppercase tracking-widest text-white/45">Wishlist</p>
-                            <div class="mt-3 space-y-2.5">
-                                <div class="flex items-center justify-between text-sm">
-                                    <span class="text-white/70">🍽 Dinner set</span>
-                                    <span class="font-semibold text-white">₹2,499</span>
-                                </div>
-                                <div class="flex items-center justify-between text-sm">
-                                    <span class="text-white/70">✈️ Weekend trip</span>
-                                    <span class="font-semibold text-white">₹8,000</span>
-                                </div>
-                                <div class="flex items-center justify-between text-sm">
-                                    <span class="text-white/70">📷 Camera</span>
-                                    <span class="font-semibold text-white">₹45,000</span>
-                                </div>
+                        <div>
+                            <div class="mb-1.5 flex justify-between text-[10px] text-white/35">
+                                <span>RSVP progress</span><span>82 of 124</span>
                             </div>
-                            <div class="mt-4 rounded-full bg-indigo-600/50 py-2 text-center text-xs font-semibold text-white">View wishlist →</div>
-                        </div>
-
-                        <!-- Gift purchased -->
-                        <div class="gl-float-soft gl-pop gl-d3 absolute bottom-24 right-4 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 px-5 py-3 shadow-xl shadow-emerald-900/40" style="animation-delay:1s,.45s">
-                            <div class="flex items-center gap-2.5">
-                                <span class="text-xl">🎁</span>
-                                <div>
-                                    <p class="text-sm font-semibold text-white">Gift purchased!</p>
-                                    <p class="text-xs text-emerald-200">Priya sent ₹1,200</p>
-                                </div>
+                            <div class="h-1.5 w-full rounded-full bg-white/10">
+                                <div class="h-1.5 rounded-full bg-gradient-to-r from-emerald-400 to-teal-400" style="width:66%"></div>
                             </div>
-                        </div>
-
-                        <!-- Invite sent -->
-                        <div class="gl-float gl-pop gl-d4 absolute bottom-48 right-16 rounded-2xl border border-violet-400/20 bg-violet-600/20 px-4 py-2.5 backdrop-blur-md" style="animation-delay:1.5s,.6s">
-                            <p class="text-xs text-violet-200">✉️ Invite sent to 24 guests</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Scroll hint -->
-                <div class="absolute bottom-8 left-1/2 flex -translate-x-1/2 flex-col items-center gap-2">
-                    <p class="text-[10px] uppercase tracking-[0.2em] text-white/25">Scroll</p>
-                    <div class="gl-float-soft text-white/25">
-                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                        </svg>
+                <!-- Left: invitations sent chip -->
+                <div class="gl-float gl-pop gl-d3 absolute left-24 top-[58%] -rotate-3 rounded-2xl border border-violet-400/20 bg-violet-600/20 px-4 py-2.5 backdrop-blur-md 2xl:left-40" style="animation-delay:1.2s,.45s">
+                    <p class="text-xs text-violet-200">✉️ Invitations sent to 124 guests</p>
+                </div>
+
+                <!-- Right: RSVP feed card -->
+                <div class="gl-float-soft gl-pop gl-d2 absolute right-10 top-[30%] w-[250px] rotate-6 rounded-3xl border border-white/15 bg-white/5 p-5 shadow-2xl backdrop-blur-xl 2xl:right-24" style="animation-delay:1.8s,.3s">
+                    <p class="text-[10px] uppercase tracking-widest text-white/45">Guest replies</p>
+                    <div class="mt-3 space-y-3">
+                        <div class="flex items-center gap-2.5">
+                            <div class="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-rose-400 to-pink-600 text-[10px] font-bold text-white">P</div>
+                            <p class="text-xs text-white/70">Priya — attending <span class="text-white/40">· +2 guests</span></p>
+                        </div>
+                        <div class="flex items-center gap-2.5">
+                            <div class="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-amber-400 to-orange-500 text-[10px] font-bold text-white">A</div>
+                            <p class="text-xs text-white/70">Arjun — attending</p>
+                        </div>
+                        <div class="flex items-center gap-2.5">
+                            <div class="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-violet-400 to-purple-600 text-[10px] font-bold text-white">M</div>
+                            <p class="text-xs text-white/70">Meera — can't make it 💔</p>
+                        </div>
                     </div>
+                </div>
+
+                <!-- Right: new RSVP toast -->
+                <div class="gl-float-soft gl-pop gl-d4 absolute right-20 top-[62%] rotate-3 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 px-5 py-3 shadow-xl shadow-emerald-900/40 2xl:right-36" style="animation-delay:.8s,.6s">
+                    <div class="flex items-center gap-2.5">
+                        <span class="text-xl">🎉</span>
+                        <div>
+                            <p class="text-sm font-semibold text-white">New RSVP!</p>
+                            <p class="text-xs text-emerald-200">Priya is coming — party of 3</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Centered copy — minimal, airy -->
+            <div class="relative mx-auto flex w-full max-w-2xl flex-col items-center px-6 py-8 text-center sm:px-10">
+
+                <!-- Brand moment: big logo + tagline -->
+                <img src="/brand/comeyay-logo-white.png?v=2" alt="ComeYay" class="gl-enter h-14 w-auto sm:h-20 lg:h-24" />
+                <p class="gl-enter gl-d1 mt-5 text-[10px] font-semibold uppercase tracking-[0.55em] text-white/40 sm:text-[11px]">
+                    Invite <span class="mx-1.5 text-rose-400">•</span> Plan <span class="mx-1.5 text-amber-400">•</span> Celebrate
+                </p>
+
+                <h1 class="mt-12 text-[clamp(1.7rem,3.2vw,2.6rem)] font-bold leading-[1.15] tracking-[-0.02em] text-white/95 sm:mt-14">
+                    <span class="gl-clip block">Every celebration</span>
+                    <span class="gl-clip block" style="animation-delay:.14s">deserves a
+                        <span class="gl-pan bg-gradient-to-r from-rose-400 via-amber-300 to-violet-400 bg-clip-text font-extrabold text-transparent">Yay!</span>
+                    </span>
+                </h1>
+
+                <p class="gl-enter gl-d2 mt-4 text-sm leading-6 text-white/45 sm:text-base sm:leading-7">
+                    Beautiful event websites &amp; invitations — live in minutes.
+                </p>
+
+                <div class="gl-enter gl-d3 mt-10 flex w-full flex-col gap-3 sm:mt-11 sm:w-auto sm:flex-row sm:items-center">
+                    <Link href="/register" class="gl-btn inline-flex items-center justify-center gap-2 rounded-full bg-white px-8 py-3 text-sm font-bold text-neutral-900 shadow-xl shadow-black/30 transition hover:scale-105">
+                        Get started free
+                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                        </svg>
+                    </Link>
+                    <Link href="/templates" class="inline-flex items-center justify-center rounded-full border border-white/20 px-8 py-3 text-sm font-semibold text-white/70 backdrop-blur-sm transition hover:border-white/50 hover:text-white">
+                        See designs
+                    </Link>
+                </div>
+
+                <!-- Social proof — one quiet line -->
+                <div class="gl-enter gl-d4 mt-10 hidden items-center gap-3 sm:flex">
+                    <div class="flex -space-x-2">
+                        <div class="h-6 w-6 rounded-full ring-2 ring-neutral-950 bg-gradient-to-br from-rose-400 to-pink-600"></div>
+                        <div class="h-6 w-6 rounded-full ring-2 ring-neutral-950 bg-gradient-to-br from-violet-400 to-purple-600"></div>
+                        <div class="h-6 w-6 rounded-full ring-2 ring-neutral-950 bg-gradient-to-br from-amber-400 to-orange-500"></div>
+                    </div>
+                    <p class="text-xs text-white/40"><span class="font-semibold text-white/70">10,000+</span> celebrations</p>
+                </div>
+            </div>
+
+            <!-- Scroll hint — anchored to the section, well clear of the copy -->
+            <div class="absolute bottom-5 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-1.5 lg:flex">
+                <p class="text-[10px] uppercase tracking-[0.2em] text-white/25">Scroll</p>
+                <div class="gl-float-soft text-white/25">
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
                 </div>
             </div>
         </section>
@@ -459,7 +447,7 @@ onUnmounted(() => {
             <div class="relative mx-auto max-w-7xl px-6 sm:px-10 lg:px-12">
                 <div data-animate class="mx-auto max-w-xl text-center">
                     <p class="text-xs font-semibold uppercase tracking-[0.35em] text-violet-400">Plan · Design · Wish · Celebrate</p>
-                    <h2 class="mt-4 text-4xl font-extrabold tracking-tight text-white sm:text-6xl">How Gift Loft works.</h2>
+                    <h2 class="mt-4 text-4xl font-extrabold tracking-tight text-white sm:text-6xl">How ComeYay works.</h2>
                     <p class="mt-5 text-sm leading-7 text-white/50">One link does it all — your invitation, your event website, your wishlist, and gifting for every guest.</p>
                 </div>
 
@@ -554,7 +542,7 @@ onUnmounted(() => {
                     </div>
                     <div data-animate class="rounded-[1.75rem] bg-neutral-50 p-8 ring-1 ring-neutral-200/60 transition hover:-translate-y-1 hover:bg-white hover:shadow-xl" style="transition-delay:.12s">
                         <div class="flex text-base text-amber-400">★★★★★</div>
-                        <p class="mt-5 font-serif text-lg italic leading-8 text-neutral-700">"The proposal page I built on Gift Loft was stunning. She said yes and immediately wanted to show everyone the site!"</p>
+                        <p class="mt-5 font-serif text-lg italic leading-8 text-neutral-700">"The proposal page I built on ComeYay was stunning. She said yes and immediately wanted to show everyone the site!"</p>
                         <div class="mt-6 flex items-center gap-3">
                             <div class="h-10 w-10 rounded-full bg-gradient-to-br from-violet-400 to-purple-600 shadow-sm"></div>
                             <div>
@@ -580,7 +568,7 @@ onUnmounted(() => {
                 <div class="relative px-8 py-24 text-center sm:py-28">
                     <div class="gl-float-soft mb-6 inline-block text-6xl">🎊</div>
                     <h2 class="gl-display-sm font-extrabold text-white">Your celebration<br/>starts here.</h2>
-                    <p class="mx-auto mt-6 max-w-lg text-lg leading-8 text-white/60">Join thousands of couples and families who've made their special moments unforgettable with Gift Loft.</p>
+                    <p class="mx-auto mt-6 max-w-lg text-lg leading-8 text-white/60">Join thousands of couples and families who've made their special moments unforgettable with ComeYay.</p>
                     <div class="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
                         <Link href="/register" class="gl-btn inline-flex items-center justify-center gap-2 rounded-full bg-white px-9 py-4 text-sm font-bold text-neutral-900 shadow-2xl shadow-black/30 transition hover:scale-105">
                             Get Started — It's Free
@@ -588,8 +576,8 @@ onUnmounted(() => {
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7l5 5m0 0l-5 5m5-5H6" />
                             </svg>
                         </Link>
-                        <Link href="/shop" class="inline-flex items-center justify-center rounded-full border border-white/25 px-9 py-4 text-sm font-semibold text-white/80 backdrop-blur-sm transition hover:border-white/50 hover:text-white">
-                            Browse the Shop
+                        <Link href="/templates" class="inline-flex items-center justify-center rounded-full border border-white/25 px-9 py-4 text-sm font-semibold text-white/80 backdrop-blur-sm transition hover:border-white/50 hover:text-white">
+                            See Templates
                         </Link>
                     </div>
                 </div>

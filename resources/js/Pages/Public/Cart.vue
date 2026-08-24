@@ -30,7 +30,7 @@ const remove = (product) => {
 
 <template>
     <PublicLayout theme="light">
-        <Head title="Your Cart — Gift Loft" />
+        <Head title="Your Cart — ComeYay" />
 
         <div class="mx-auto max-w-5xl px-6 pb-20 pt-24 sm:px-8 lg:px-10">
             <h1 class="text-3xl font-bold tracking-tight text-neutral-950 sm:text-4xl">Your cart</h1>

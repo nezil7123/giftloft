@@ -11,10 +11,10 @@ import { Head, Link } from '@inertiajs/vue3';
             <div class="legal mx-auto max-w-3xl px-6 sm:px-10">
                 <p class="text-xs font-bold uppercase tracking-[0.3em] text-indigo-600">Legal</p>
                 <h1 class="mt-3 text-4xl font-black tracking-tight text-neutral-950">Terms &amp; Conditions</h1>
-                <p class="mt-3 text-sm text-neutral-500">Effective 6 July 2026 · Please read before using Gift Loft</p>
+                <p class="mt-3 text-sm text-neutral-500">Effective 6 July 2026 · Please read before using ComeYay</p>
 
                 <h2>1. Agreement</h2>
-                <p>By creating an account or using giftloft.app ("Gift Loft", the "Service"), you agree to these Terms and our <Link href="/privacy" class="font-semibold text-indigo-600 hover:text-indigo-500">Privacy Policy</Link>. If you do not agree, please do not use the Service.</p>
+                <p>By creating an account or using comeyay.app ("ComeYay", the "Service"), you agree to these Terms and our <Link href="/privacy" class="font-semibold text-indigo-600 hover:text-indigo-500">Privacy Policy</Link>. If you do not agree, please do not use the Service.</p>
 
                 <h2>2. Eligibility & your account</h2>
                 <ul>
@@ -59,7 +59,7 @@ import { Head, Link } from '@inertiajs/vue3';
                 <p>You agree not to: scrape or enumerate user data; probe or disrupt the Service; use it to send spam or unsolicited invitations; misrepresent your identity; or use the people-search to harass anyone. We may rate-limit, suspend, or terminate accounts that do.</p>
 
                 <h2>8. Our IP</h2>
-                <p>The Gift Loft name, design, templates, and software are ours or our licensors'. Using the Service gives you no rights in them beyond using the Service as intended. Website and invitation templates may be used only for events created on Gift Loft.</p>
+                <p>The ComeYay name, design, templates, and software are ours or our licensors'. Using the Service gives you no rights in them beyond using the Service as intended. Website and invitation templates may be used only for events created on ComeYay.</p>
 
                 <h2>9. Disclaimers & liability</h2>
                 <ul>
@@ -78,7 +78,7 @@ import { Head, Link } from '@inertiajs/vue3';
                 <p>These Terms are governed by the laws of India. Subject to any mandatory consumer-protection rights you hold, courts at Kochi, Kerala have exclusive jurisdiction.</p>
 
                 <h2>13. Changes & contact</h2>
-                <p>We may update these Terms; material changes will be notified in the app or by email before they take effect, and the effective date above will change. Questions: <strong>support@giftloft.app</strong>.</p>
+                <p>We may update these Terms; material changes will be notified in the app or by email before they take effect, and the effective date above will change. Questions: <strong>support@comeyay.app</strong>.</p>
             </div>
         </div>
     </PublicLayout>

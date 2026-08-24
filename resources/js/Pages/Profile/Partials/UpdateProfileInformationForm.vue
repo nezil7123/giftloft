@@ -72,7 +72,7 @@ const form = useForm({
 
                 <p class="mt-1.5 text-xs text-gray-500">
                     Optional — friends can find you with it, and your public profile becomes
-                    <span class="font-semibold text-gray-700">giftloft.app/u/{{ form.username || 'your-username' }}</span>
+                    <span class="font-semibold text-gray-700">comeyay.app/u/{{ form.username || 'your-username' }}</span>
                 </p>
                 <InputError class="mt-2" :message="form.errors.username" />
             </div>

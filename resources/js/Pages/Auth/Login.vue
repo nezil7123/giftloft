@@ -113,7 +113,7 @@ const inputClass =
         </form>
 
         <p class="gl-enter gl-d3 mt-8 text-center text-sm text-neutral-500">
-            New to Gift Loft?
+            New to ComeYay?
             <Link :href="route('register')" class="font-semibold text-indigo-600 transition hover:text-indigo-500">Create an account</Link>
         </p>
     </GuestLayout>

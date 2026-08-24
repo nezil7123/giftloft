@@ -118,7 +118,7 @@ const pay = async () => {
         await openRazorpay({
             key: data.key,
             order: data.order,
-            description: 'Gift Loft order',
+            description: 'ComeYay order',
             prefill: { name: form.recipient_name || undefined, email: form.recipient_email || undefined, contact: form.recipient_phone || undefined },
             onSuccess: (r) => {
                 form.razorpay_order_id = r.razorpay_order_id;

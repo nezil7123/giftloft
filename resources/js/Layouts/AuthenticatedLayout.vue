@@ -32,9 +32,8 @@ watch(
                     <div class="flex items-center">
                         <!-- Logo -->
                         <div class="flex shrink-0 items-center">
-                            <Link :href="route('dashboard')" class="flex items-center gap-2.5">
-                                <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-600 text-sm font-bold text-white shadow-sm">G</div>
-                                <span class="hidden text-sm font-semibold tracking-tight text-slate-950 sm:block">Gift Loft</span>
+                            <Link :href="route('dashboard')" class="flex items-center">
+                                <img src="/brand/comeyay-full.png" alt="ComeYay" class="h-8 w-auto" />
                             </Link>
                         </div>
 
@@ -42,9 +41,6 @@ watch(
                         <div class="hidden space-x-1 sm:ms-8 sm:flex">
                             <NavLink :href="route('dashboard')" :active="route().current('dashboard')">Dashboard</NavLink>
                             <NavLink :href="route('events.index')" :active="route().current('events.*')">Events</NavLink>
-                            <NavLink :href="route('wishlists.index')" :active="route().current('wishlists.*')">Wishlists</NavLink>
-                            <NavLink :href="route('gifts.index')" :active="route().current('gifts.*')">Gifts</NavLink>
-                            <NavLink :href="route('orders.index')" :active="route().current('orders.*')">Orders</NavLink>
                             <template v-if="$page.props.auth.user.is_admin">
                                 <NavLink :href="route('admin.dashboard')" :active="route().current('admin.*')">Admin</NavLink>
                             </template>
@@ -94,9 +90,6 @@ watch(
                 <div class="space-y-1 pb-3 pt-2">
                     <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">Dashboard</ResponsiveNavLink>
                     <ResponsiveNavLink :href="route('events.index')" :active="route().current('events.*')">Events</ResponsiveNavLink>
-                    <ResponsiveNavLink :href="route('wishlists.index')" :active="route().current('wishlists.*')">Wishlists</ResponsiveNavLink>
-                    <ResponsiveNavLink :href="route('gifts.index')" :active="route().current('gifts.*')">Gifts</ResponsiveNavLink>
-                    <ResponsiveNavLink :href="route('orders.index')" :active="route().current('orders.*')">Orders</ResponsiveNavLink>
                     <template v-if="$page.props.auth.user.is_admin">
                         <ResponsiveNavLink :href="route('admin.dashboard')" :active="route().current('admin.*')">Admin</ResponsiveNavLink>
                     </template>

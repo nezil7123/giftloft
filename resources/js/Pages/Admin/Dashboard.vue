@@ -20,7 +20,7 @@ const fmtDate = (iso) => (iso ? new Date(iso).toLocaleDateString(undefined, { da
         <template #header>
             <div>
                 <h2 class="text-xl font-bold text-neutral-900">Super Admin</h2>
-                <p class="text-sm text-neutral-500">Everything happening on Gift Loft, at a glance.</p>
+                <p class="text-sm text-neutral-500">Everything happening on ComeYay, at a glance.</p>
             </div>
         </template>
 
