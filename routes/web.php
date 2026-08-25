@@ -15,6 +15,7 @@ use App\Http\Controllers\GiftController;
 use App\Http\Controllers\HelpController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SeoController;
 use App\Http\Controllers\RazorpayWebhookController;
 use App\Http\Controllers\UserSearchController;
 use App\Http\Controllers\Public\CartController;
@@ -39,6 +40,9 @@ Route::get('/', function () {
 
 // Signature-authenticated (see RazorpayWebhookController); CSRF-exempt.
 Route::post('/webhooks/razorpay', RazorpayWebhookController::class)->name('webhooks.razorpay');
+
+Route::get('/robots.txt', [SeoController::class, 'robots'])->name('seo.robots');
+Route::get('/sitemap.xml', [SeoController::class, 'sitemap'])->name('seo.sitemap');
 
 Route::get('/privacy', fn () => Inertia::render('Public/Legal/Privacy'))->name('legal.privacy');
 Route::get('/terms', fn () => Inertia::render('Public/Legal/Terms'))->name('legal.terms');

@@ -10,6 +10,25 @@ namespace App\Support;
 class HelpGuides
 {
     /**
+     * Guides for features that ship in phase 2. They stay reachable directly at
+     * /help/{slug}, but are kept out of the hub listing and the sitemap while
+     * gifting is hidden. Empty this array to bring them back.
+     *
+     * @var list<string>
+     */
+    public const PHASE_TWO = ['wishlist', 'gifting'];
+
+    /**
+     * Guides shown publicly right now — the hub listing and sitemap use this.
+     *
+     * @return array<string, array<string, mixed>>
+     */
+    public static function visible(): array
+    {
+        return collect(self::all())->except(self::PHASE_TWO)->all();
+    }
+
+    /**
      * @return array<string, array<string, mixed>>
      */
     public static function all(): array

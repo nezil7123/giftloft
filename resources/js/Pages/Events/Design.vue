@@ -1,5 +1,6 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import { SHOW_REGISTRY } from '@/Templates/useEventDisplay';
 import { Head, Link, router, useForm } from '@inertiajs/vue3';
 import { computed, ref } from 'vue';
 
@@ -228,7 +229,9 @@ const inviteUrl = props.event.share_code ? `/e/${props.event.share_code}/invitat
                             <label class="text-sm font-semibold text-neutral-800">Dress code</label>
                             <input v-model="form.template_data.dress_code" type="text" :class="inputClass" placeholder="e.g. Cocktail / Black tie" />
                         </div>
-                        <div>
+                        <!-- The note only renders inside the templates' wishlist block, which is
+                             hidden until gifting ships — so the field is hidden with it. -->
+                        <div v-if="SHOW_REGISTRY">
                             <label class="text-sm font-semibold text-neutral-800">Wishlist / RSVP note</label>
                             <input v-model="form.template_data.rsvp_note" type="text" :class="inputClass" placeholder="A short note for the gifts section" />
                         </div>

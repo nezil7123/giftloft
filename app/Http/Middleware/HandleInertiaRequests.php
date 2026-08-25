@@ -40,6 +40,13 @@ class HandleInertiaRequests extends Middleware
                 'error' => fn () => $request->session()->get('error'),
             ],
             'cartCount' => fn () => Cart::count(),
+            // Canonical URL + site root for the <Seo> component's meta tags.
+            // Both are built from APP_URL so the canonical always points at the
+            // real domain, never whichever host happened to serve the request.
+            'seo' => [
+                'canonical' => rtrim(config('app.url'), '/').$request->getPathInfo(),
+                'appUrl' => rtrim(config('app.url'), '/'),
+            ],
         ];
     }
 }

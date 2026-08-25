@@ -33,7 +33,7 @@ watch(
                         <!-- Logo -->
                         <div class="flex shrink-0 items-center">
                             <Link :href="route('dashboard')" class="flex items-center">
-                                <img src="/brand/comeyay-full.png" alt="ComeYay" class="h-8 w-auto" />
+                                <img src="/brand/comeyay-logo.png?v=2" alt="ComeYay" class="h-8 w-auto" />
                             </Link>
                         </div>
 

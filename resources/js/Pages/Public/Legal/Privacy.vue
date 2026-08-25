@@ -1,10 +1,13 @@
 <script setup>
+import Seo from '@/Components/Seo.vue';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
-import { Head } from '@inertiajs/vue3';
 </script>
 
 <template>
-    <Head title="Privacy Policy" />
+    <Seo
+        title="Privacy Policy"
+        description="How ComeYay collects, uses and protects your personal information when you create an event website or send digital invitations."
+    />
 
     <PublicLayout theme="light">
         <div class="pb-20" style="padding-top: calc(var(--nav-offset, 62px) + 3rem)">

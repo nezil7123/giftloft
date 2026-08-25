@@ -1,5 +1,6 @@
 <script setup>
-import { Head, Link } from '@inertiajs/vue3';
+import { Link } from '@inertiajs/vue3';
+import Seo from '@/Components/Seo.vue';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
 import IframeThumb from './IframeThumb.vue';
 import { resolveInvitationTemplate } from '@/Templates/registry.js';
@@ -21,7 +22,10 @@ const invitationSample = (key) => ({ ...props.samples[selectedType.value], invit
 
 <template>
     <PublicLayout theme="light">
-        <Head title="Templates — ComeYay" />
+        <Seo
+            title="Event Website &amp; Invitation Templates"
+            description="Browse 22 animated event website designs and 21 digital invitation cards for weddings, birthdays, baby showers and more. Preview any template free — no code required."
+        />
 
         <!-- Hero -->
         <section class="bg-gradient-to-b from-indigo-50 to-white pb-10 pt-32">
@@ -68,7 +72,7 @@ const invitationSample = (key) => ({ ...props.samples[selectedType.value], invit
                 <div class="mb-8 flex items-end justify-between">
                     <div>
                         <h2 class="text-2xl font-extrabold tracking-tight text-neutral-950 sm:text-3xl">{{ eventTypes[selectedType] }} website templates</h2>
-                        <p class="mt-1 text-sm text-neutral-500">A full celebration page with countdown, schedule and wishlist.</p>
+                        <p class="mt-1 text-sm text-neutral-500">A full celebration page with countdown, schedule, travel details and photo gallery.</p>
                     </div>
                     <span class="hidden rounded-full bg-indigo-50 px-3 py-1 text-xs font-bold text-indigo-600 sm:inline">{{ websiteTemplates.length }} designs</span>
                 </div>

@@ -1,5 +1,6 @@
 <script setup>
-import { Head, Link } from '@inertiajs/vue3';
+import { Link } from '@inertiajs/vue3';
+import Seo from '@/Components/Seo.vue';
 import { resolveWebsiteTemplate } from '@/Templates/registry.js';
 import { computed } from 'vue';
 
@@ -13,7 +14,10 @@ const template = computed(() => resolveWebsiteTemplate(props.templateKey));
 </script>
 
 <template>
-    <Head :title="`Template preview — ${templateKey}`" />
+    <Seo
+        :title="`${templateKey.charAt(0).toUpperCase() + templateKey.slice(1)} — Event Website Template`"
+        :description="`Preview the ${templateKey} event website design on ComeYay — a free, fully animated template for weddings, birthdays and every celebration.`"
+    />
 
     <!-- Embed mode: bare design only (used inside gallery iframes) -->
     <component :is="template" v-if="embed" :event="event" />

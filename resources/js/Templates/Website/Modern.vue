@@ -6,7 +6,7 @@ import { useReveal } from '../useReveal.js';
 import { useScrollFx } from '../useScrollFx.js';
 
 const props = defineProps({ event: { type: Object, required: true } });
-const { typeLabel, hosts, tagline, dressCode, rsvpNote, schedule, faqs, location, venueNote, venuePhoto, travel, stay, mapUrl, gallery, coverPhoto, registryUrl, countdown, fmtFull, fmtDate } = useEventDisplay(() => props.event);
+const { showRegistry, typeLabel, hosts, tagline, dressCode, rsvpNote, schedule, faqs, location, venueNote, venuePhoto, travel, stay, mapUrl, gallery, coverPhoto, registryUrl, countdown, fmtFull, fmtDate } = useEventDisplay(() => props.event);
 useReveal();
 const root = ref(null);
 useScrollFx(root);
@@ -171,7 +171,7 @@ const strip = computed(() => [coverPhoto.value, ...gallery.value].filter(Boolean
                     </div>
                     <div class="flex w-[60vw] shrink-0 flex-col items-center justify-center gap-6 sm:w-[30vw]">
                         <p class="text-center text-3xl font-black uppercase tracking-tight">See you<br/>there.</p>
-                        <Link :href="registryUrl" class="gl-btn inline-flex rounded-full bg-neutral-950 px-8 py-4 text-sm font-bold uppercase tracking-widest text-white transition hover:scale-105">Send a gift →</Link>
+                        <Link v-if="showRegistry" :href="registryUrl" class="gl-btn inline-flex rounded-full bg-neutral-950 px-8 py-4 text-sm font-bold uppercase tracking-widest text-white transition hover:scale-105">Send a gift →</Link>
                     </div>
                 </div>
             </div>
@@ -179,7 +179,7 @@ const strip = computed(() => [coverPhoto.value, ...gallery.value].filter(Boolean
 
         <!-- CTA -->
         <section class="px-6 py-28 sm:px-10">
-            <div data-reveal="zoom" class="gl-grain relative mx-auto max-w-6xl overflow-hidden rounded-[2.5rem] bg-neutral-950 px-8 py-20 text-center text-white">
+            <div v-if="showRegistry" data-reveal="zoom" class="gl-grain relative mx-auto max-w-6xl overflow-hidden rounded-[2.5rem] bg-neutral-950 px-8 py-20 text-center text-white">
                 <div class="gl-aurora opacity-20"></div>
                 <h3 class="gl-display-sm relative font-black uppercase">Send a gift</h3>
                 <p v-if="rsvpNote" class="relative mx-auto mt-5 max-w-md text-white/60">{{ rsvpNote }}</p>

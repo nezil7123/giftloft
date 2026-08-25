@@ -6,7 +6,7 @@ import { useReveal } from '../useReveal.js';
 import { useScrollFx } from '../useScrollFx.js';
 
 const props = defineProps({ event: { type: Object, required: true } });
-const { typeLabel, hosts, tagline, dressCode, rsvpNote, schedule, faqs, location, venueNote, venuePhoto, travel, stay, mapUrl, gallery, coverPhoto, registryUrl, countdown, fmtFull, fmtDate } = useEventDisplay(() => props.event);
+const { showRegistry, typeLabel, hosts, tagline, dressCode, rsvpNote, schedule, faqs, location, venueNote, venuePhoto, travel, stay, mapUrl, gallery, coverPhoto, registryUrl, countdown, fmtFull, fmtDate } = useEventDisplay(() => props.event);
 useReveal();
 const root = ref(null);
 useScrollFx(root);
@@ -131,7 +131,7 @@ const stack = computed(() => [coverPhoto.value, ...gallery.value].filter(Boolean
                 </div>
             </div>
 
-            <div data-reveal="zoom" class="rounded-2xl bg-rose-500 p-8 text-center text-white shadow-xl sm:p-12">
+            <div v-if="showRegistry" data-reveal="zoom" class="rounded-2xl bg-rose-500 p-8 text-center text-white shadow-xl sm:p-12">
                 <p class="font-serif text-4xl">Our Wishlist 🎁</p>
                 <p class="mx-auto mt-3 max-w-md text-rose-100">{{ rsvpNote || 'A few things that would make us smile.' }}</p>
                 <Link :href="registryUrl" class="gl-btn mt-7 inline-flex rounded-full bg-white px-8 py-3.5 text-sm font-semibold text-rose-600 transition hover:scale-105">Open the wishlist</Link>

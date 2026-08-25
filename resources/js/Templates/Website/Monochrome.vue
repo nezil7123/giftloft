@@ -6,7 +6,7 @@ import { useReveal } from '../useReveal.js';
 import { useScrollFx } from '../useScrollFx.js';
 
 const props = defineProps({ event: { type: Object, required: true } });
-const { typeLabel, hosts, tagline, dressCode, rsvpNote, schedule, faqs, location, venueNote, venuePhoto, travel, stay, mapUrl, gallery, coverPhoto, registryUrl, countdown, fmtFull, fmtDate } = useEventDisplay(() => props.event);
+const { showRegistry, typeLabel, hosts, tagline, dressCode, rsvpNote, schedule, faqs, location, venueNote, venuePhoto, travel, stay, mapUrl, gallery, coverPhoto, registryUrl, countdown, fmtFull, fmtDate } = useEventDisplay(() => props.event);
 useReveal();
 const root = ref(null);
 useScrollFx(root);
@@ -131,9 +131,11 @@ useScrollFx(root);
         <!-- CTA -->
         <section class="border-t-2 border-neutral-950 bg-neutral-950 px-6 py-28 text-white sm:px-10">
             <div data-reveal="zoom" class="mx-auto max-w-6xl text-center">
-                <h3 class="text-6xl font-black uppercase tracking-tighter sm:text-8xl">Wishlist</h3>
-                <p class="mx-auto mt-4 max-w-md text-neutral-400">{{ rsvpNote || 'Browse our wishlist and send a thoughtful gift.' }}</p>
-                <Link :href="registryUrl" class="mt-9 inline-flex items-center justify-center bg-white px-9 py-4 text-sm font-bold uppercase tracking-widest text-neutral-950 transition hover:scale-105">View the registry</Link>
+                <template v-if="showRegistry">
+                    <h3 class="text-6xl font-black uppercase tracking-tighter sm:text-8xl">Wishlist</h3>
+                    <p class="mx-auto mt-4 max-w-md text-neutral-400">{{ rsvpNote || 'Browse our wishlist and send a thoughtful gift.' }}</p>
+                    <Link :href="registryUrl" class="mt-9 inline-flex items-center justify-center bg-white px-9 py-4 text-sm font-bold uppercase tracking-widest text-neutral-950 transition hover:scale-105">View the registry</Link>
+                </template>
                 <p class="mt-14 text-xs font-bold uppercase tracking-[0.3em] text-neutral-600">{{ event.user?.name }} · ComeYay</p>
             </div>
         </section>

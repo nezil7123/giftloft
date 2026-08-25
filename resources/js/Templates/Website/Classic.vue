@@ -6,7 +6,7 @@ import { useReveal } from '../useReveal.js';
 import { useScrollFx } from '../useScrollFx.js';
 
 const props = defineProps({ event: { type: Object, required: true } });
-const { typeLabel, hosts, tagline, dressCode, rsvpNote, schedule, faqs, location, venueNote, venuePhoto, travel, stay, mapUrl, gallery, coverPhoto, registryUrl, countdown, fmtFull, fmtDate } = useEventDisplay(() => props.event);
+const { showRegistry, typeLabel, hosts, tagline, dressCode, rsvpNote, schedule, faqs, location, venueNote, venuePhoto, travel, stay, mapUrl, gallery, coverPhoto, registryUrl, countdown, fmtFull, fmtDate } = useEventDisplay(() => props.event);
 useReveal();
 const root = ref(null);
 useScrollFx(root);
@@ -168,7 +168,7 @@ const marquee = computed(() => [hosts.value || props.event.title, '✦', typeLab
 
         <!-- WISHLIST CTA -->
         <section class="px-6 py-28 sm:px-10">
-            <div data-reveal="zoom" class="gl-border-glow gl-grain relative mx-auto max-w-5xl overflow-hidden rounded-[2.5rem]" style="--gl-bg:#12101c">
+            <div v-if="showRegistry" data-reveal="zoom" class="gl-border-glow gl-grain relative mx-auto max-w-5xl overflow-hidden rounded-[2.5rem]" style="--gl-bg:#12101c">
                 <div class="gl-aurora opacity-30"></div>
                 <div class="relative px-8 py-20 text-center">
                     <p class="text-[11px] font-semibold uppercase tracking-[0.4em] text-white/70">With love</p>

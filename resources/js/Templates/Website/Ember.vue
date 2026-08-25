@@ -6,7 +6,7 @@ import { useReveal } from '../useReveal.js';
 import { useScrollFx } from '../useScrollFx.js';
 
 const props = defineProps({ event: { type: Object, required: true } });
-const { typeLabel, hosts, tagline, dressCode, rsvpNote, schedule, faqs, location, venueNote, venuePhoto, travel, stay, mapUrl, gallery, coverPhoto, registryUrl, countdown, fmtFull, fmtDate } = useEventDisplay(() => props.event);
+const { showRegistry, typeLabel, hosts, tagline, dressCode, rsvpNote, schedule, faqs, location, venueNote, venuePhoto, travel, stay, mapUrl, gallery, coverPhoto, registryUrl, countdown, fmtFull, fmtDate } = useEventDisplay(() => props.event);
 useReveal();
 const root = ref(null);
 useScrollFx(root);
@@ -159,7 +159,7 @@ const stripB = computed(() => gallery.value.filter((_, i) => i % 2 === 1));
 
         <!-- CTA -->
         <section class="px-6 py-24 sm:px-10">
-            <div data-reveal="zoom" class="gl-grain relative mx-auto max-w-5xl overflow-hidden rounded-[3rem] bg-gradient-to-br from-amber-500 via-orange-500 to-rose-500 px-8 py-20 text-center text-white">
+            <div v-if="showRegistry" data-reveal="zoom" class="gl-grain relative mx-auto max-w-5xl overflow-hidden rounded-[3rem] bg-gradient-to-br from-amber-500 via-orange-500 to-rose-500 px-8 py-20 text-center text-white">
                 <div class="gl-pan pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.25),transparent_55%)]"></div>
                 <h3 class="relative font-serif text-4xl sm:text-5xl">Warm their heart</h3>
                 <p class="relative mx-auto mt-4 max-w-md text-white/85">{{ rsvpNote || 'Browse our wishlist and send a thoughtful gift.' }}</p>

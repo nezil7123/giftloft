@@ -1,6 +1,7 @@
 <script setup>
 import PublicLayout from '@/Layouts/PublicLayout.vue';
-import { Head, Link } from '@inertiajs/vue3';
+import { Link } from '@inertiajs/vue3';
+import Seo from '@/Components/Seo.vue';
 import { computed } from 'vue';
 
 const props = defineProps({
@@ -12,7 +13,10 @@ const stagger = ['gl-d1', 'gl-d2', 'gl-d3', 'gl-d4'];
 </script>
 
 <template>
-    <Head title="How it works — ComeYay" />
+    <Seo
+        title="How ComeYay Works"
+        description="Step-by-step guides for building your event website and sending digital invitations with ComeYay — from picking a design to sharing the link with your guests."
+    />
 
     <PublicLayout theme="light">
         <div class="mx-auto max-w-5xl px-6 pb-20 pt-28 sm:px-8 sm:pt-32">

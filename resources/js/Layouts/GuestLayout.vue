@@ -7,7 +7,7 @@ import { Link } from '@inertiajs/vue3';
         <!-- ── Left: form column ── -->
         <div class="flex flex-col px-6 py-8 sm:px-12">
             <Link href="/" class="gl-enter flex w-fit items-center">
-                <img src="/brand/comeyay-full.png" alt="ComeYay" class="h-8 w-auto" />
+                <img src="/brand/comeyay-logo.png?v=2" alt="ComeYay" class="h-8 w-auto" />
             </Link>
 
             <div class="flex flex-1 items-center justify-center py-10">

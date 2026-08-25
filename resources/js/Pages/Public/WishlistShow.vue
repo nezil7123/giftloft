@@ -1,5 +1,6 @@
 <script setup>
-import { Head, Link } from '@inertiajs/vue3';
+import { Link } from '@inertiajs/vue3';
+import Seo from '@/Components/Seo.vue';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
 import { computed } from 'vue';
 
@@ -19,7 +20,7 @@ const itemsLeft = computed(() => props.wishlist.items.filter((i) => !isClaimed(i
 
 <template>
     <PublicLayout>
-        <Head :title="`${wishlist.name} — Wishlist`" />
+        <Seo :title="`${wishlist.name} — Wishlist`" noindex />
 
         <!-- Header -->
         <section class="bg-gradient-to-br from-indigo-700 via-violet-700 to-purple-800 pb-16 pt-32">

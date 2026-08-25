@@ -1,6 +1,7 @@
 <script setup>
 import PublicLayout from '@/Layouts/PublicLayout.vue';
-import { Head, Link } from '@inertiajs/vue3';
+import Seo from '@/Components/Seo.vue';
+import { Link } from '@inertiajs/vue3';
 
 const props = defineProps({
     guide: { type: Object, required: true },
@@ -8,7 +9,7 @@ const props = defineProps({
 </script>
 
 <template>
-    <Head :title="`${guide.title} — ComeYay`" />
+    <Seo :title="guide.title" :description="guide.subtitle" />
 
     <PublicLayout theme="light">
         <div class="pb-20 pt-28 sm:pt-32">

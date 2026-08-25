@@ -1,5 +1,6 @@
 <script setup>
-import { Head, Link } from '@inertiajs/vue3';
+import { Link } from '@inertiajs/vue3';
+import Seo from '@/Components/Seo.vue';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
 import { ref, onMounted, onUnmounted } from 'vue';
 
@@ -20,7 +21,7 @@ const categories = [
     { name: 'Wedding',     emoji: '💍', blurb: 'Celebrate your love story with a site your guests will adore.', bg: 'from-rose-50 via-white to-white',    ring: 'ring-rose-100/80',    glow: 'shadow-[0_24px_60px_-24px_rgba(244,63,94,0.35)]',   blob: 'bg-rose-200/40',    tile: 'bg-rose-100 ring-rose-200/70',       accent: 'text-rose-500' },
     { name: 'Birthday',    emoji: '🎂', blurb: 'Make every birthday legendary with your own party page.',       bg: 'from-amber-50 via-white to-white',   ring: 'ring-amber-100/80',   glow: 'shadow-[0_24px_60px_-24px_rgba(245,158,11,0.35)]',  blob: 'bg-amber-200/40',   tile: 'bg-amber-100 ring-amber-200/70',     accent: 'text-amber-500' },
     { name: 'Engagement',  emoji: '💞', blurb: 'Announce the big yes and let everyone share the joy.',           bg: 'from-fuchsia-50 via-white to-white', ring: 'ring-fuchsia-100/80', glow: 'shadow-[0_24px_60px_-24px_rgba(217,70,239,0.35)]',  blob: 'bg-fuchsia-200/40', tile: 'bg-fuchsia-100 ring-fuchsia-200/70', accent: 'text-fuchsia-500' },
-    { name: 'Baby Shower', emoji: '👶', blurb: 'Welcome your little one with a sweet wishlist and page.',         bg: 'from-sky-50 via-white to-white',     ring: 'ring-sky-100/80',     glow: 'shadow-[0_24px_60px_-24px_rgba(14,165,233,0.35)]',  blob: 'bg-sky-200/40',     tile: 'bg-sky-100 ring-sky-200/70',         accent: 'text-sky-500' },
+    { name: 'Baby Shower', emoji: '👶', blurb: 'Welcome your little one with a page as sweet as they are.',         bg: 'from-sky-50 via-white to-white',     ring: 'ring-sky-100/80',     glow: 'shadow-[0_24px_60px_-24px_rgba(14,165,233,0.35)]',  blob: 'bg-sky-200/40',     tile: 'bg-sky-100 ring-sky-200/70',         accent: 'text-sky-500' },
     { name: 'Anniversary', emoji: '💕', blurb: 'Mark the years together with a page full of memories.',          bg: 'from-red-50 via-white to-white',     ring: 'ring-red-100/80',     glow: 'shadow-[0_24px_60px_-24px_rgba(239,68,68,0.35)]',   blob: 'bg-red-200/40',     tile: 'bg-red-100 ring-red-200/70',         accent: 'text-red-500' },
     { name: 'Proposal',    emoji: '💜', blurb: 'Plan the perfect moment and share it beautifully.',              bg: 'from-violet-50 via-white to-white',  ring: 'ring-violet-100/80',  glow: 'shadow-[0_24px_60px_-24px_rgba(139,92,246,0.35)]',  blob: 'bg-violet-200/40',  tile: 'bg-violet-100 ring-violet-200/70',   accent: 'text-violet-500' },
     { name: 'Graduation',  emoji: '🎓', blurb: 'Celebrate the milestone and gather everyone to cheer.',          bg: 'from-indigo-50 via-white to-white',  ring: 'ring-indigo-100/80',  glow: 'shadow-[0_24px_60px_-24px_rgba(99,102,241,0.35)]',  blob: 'bg-indigo-200/40',  tile: 'bg-indigo-100 ring-indigo-200/70',   accent: 'text-indigo-500' },
@@ -75,19 +76,22 @@ onUnmounted(() => {
 </script>
 
 <template>
-    <PublicLayout>
-        <Head title="ComeYay — The most beautiful way to celebrate & gift" />
+    <PublicLayout hero-brand>
+        <Seo
+            title="ComeYay — Free Event Websites &amp; Digital Invitations"
+            description="Create a free event website and digital invitations for your wedding, birthday, baby shower or party. 22 premium designs, schedule, travel details and photo gallery — live in minutes."
+        />
 
         <!-- ╔══════════════════════════════════════════╗ -->
         <!-- ║  HERO — cinematic mesh + grain           ║ -->
         <!-- ╚══════════════════════════════════════════╝ -->
-        <section class="gl-grain relative flex h-[100svh] items-center overflow-hidden bg-[#0d0b14] pt-[var(--nav-offset,62px)]">
-            <!-- Animated mesh + blobs -->
+        <section class="gl-grain relative flex h-[100svh] items-center overflow-hidden bg-[#070b16] pt-[var(--nav-offset,62px)]">
+            <!-- Animated mesh + blobs — deep midnight navy so the logo's coral/orange/purple carry the color -->
             <div class="pointer-events-none absolute inset-0">
-                <div class="gl-mesh-dark gl-mesh-anim absolute inset-0 opacity-80"></div>
-                <div class="gl-blob absolute -left-48 top-0 h-[600px] w-[600px] rounded-full bg-indigo-800/25 blur-3xl"></div>
-                <div class="gl-blob absolute -right-32 bottom-0 h-[500px] w-[500px] rounded-full bg-violet-700/20 blur-3xl" style="animation-delay:5s"></div>
-                <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#0d0b14]"></div>
+                <div class="gl-mesh-midnight gl-mesh-anim absolute inset-0 opacity-90"></div>
+                <div class="gl-blob absolute -left-48 top-0 h-[600px] w-[600px] rounded-full bg-indigo-900/30 blur-3xl"></div>
+                <div class="gl-blob absolute -right-32 bottom-0 h-[500px] w-[500px] rounded-full bg-blue-900/25 blur-3xl" style="animation-delay:5s"></div>
+                <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#070b16]"></div>
             </div>
 
             <!-- Starfield -->
@@ -114,48 +118,45 @@ onUnmounted(() => {
                         <div class="flex gap-2 text-xs text-white/60">
                             <span>📅 March 15</span><span>·</span><span>Mumbai</span>
                         </div>
-                        <div>
-                            <div class="mb-1.5 flex justify-between text-[10px] text-white/35">
-                                <span>RSVP progress</span><span>82 of 124</span>
-                            </div>
-                            <div class="h-1.5 w-full rounded-full bg-white/10">
-                                <div class="h-1.5 rounded-full bg-gradient-to-r from-emerald-400 to-teal-400" style="width:66%"></div>
-                            </div>
+                        <div class="flex gap-2">
+                            <span class="rounded-full bg-white/10 px-2.5 py-1 text-[10px] text-white/65">Schedule</span>
+                            <span class="rounded-full bg-white/10 px-2.5 py-1 text-[10px] text-white/65">Travel &amp; stay</span>
+                            <span class="rounded-full bg-white/10 px-2.5 py-1 text-[10px] text-white/65">FAQs</span>
                         </div>
                     </div>
                 </div>
 
-                <!-- Left: invitations sent chip -->
+                <!-- Left: share-link chip -->
                 <div class="gl-float gl-pop gl-d3 absolute left-24 top-[58%] -rotate-3 rounded-2xl border border-violet-400/20 bg-violet-600/20 px-4 py-2.5 backdrop-blur-md 2xl:left-40" style="animation-delay:1.2s,.45s">
-                    <p class="text-xs text-violet-200">✉️ Invitations sent to 124 guests</p>
+                    <p class="text-xs text-violet-200">🔗 comeyay.app/e/sarah-james</p>
                 </div>
 
-                <!-- Right: RSVP feed card -->
+                <!-- Right: schedule card -->
                 <div class="gl-float-soft gl-pop gl-d2 absolute right-10 top-[30%] w-[250px] rotate-6 rounded-3xl border border-white/15 bg-white/5 p-5 shadow-2xl backdrop-blur-xl 2xl:right-24" style="animation-delay:1.8s,.3s">
-                    <p class="text-[10px] uppercase tracking-widest text-white/45">Guest replies</p>
+                    <p class="text-[10px] uppercase tracking-widest text-white/45">The day</p>
                     <div class="mt-3 space-y-3">
-                        <div class="flex items-center gap-2.5">
-                            <div class="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-rose-400 to-pink-600 text-[10px] font-bold text-white">P</div>
-                            <p class="text-xs text-white/70">Priya — attending <span class="text-white/40">· +2 guests</span></p>
+                        <div class="flex items-baseline gap-3">
+                            <span class="w-14 shrink-0 text-[10px] tabular-nums text-white/40">4:00 PM</span>
+                            <p class="text-xs text-white/70">Mehndi by the garden</p>
                         </div>
-                        <div class="flex items-center gap-2.5">
-                            <div class="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-amber-400 to-orange-500 text-[10px] font-bold text-white">A</div>
-                            <p class="text-xs text-white/70">Arjun — attending</p>
+                        <div class="flex items-baseline gap-3">
+                            <span class="w-14 shrink-0 text-[10px] tabular-nums text-white/40">6:30 PM</span>
+                            <p class="text-xs text-white/70">Ceremony &amp; vows</p>
                         </div>
-                        <div class="flex items-center gap-2.5">
-                            <div class="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-violet-400 to-purple-600 text-[10px] font-bold text-white">M</div>
-                            <p class="text-xs text-white/70">Meera — can't make it 💔</p>
+                        <div class="flex items-baseline gap-3">
+                            <span class="w-14 shrink-0 text-[10px] tabular-nums text-white/40">8:00 PM</span>
+                            <p class="text-xs text-white/70">Dinner &amp; dancing</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Right: new RSVP toast -->
+                <!-- Right: countdown toast -->
                 <div class="gl-float-soft gl-pop gl-d4 absolute right-20 top-[62%] rotate-3 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 px-5 py-3 shadow-xl shadow-emerald-900/40 2xl:right-36" style="animation-delay:.8s,.6s">
                     <div class="flex items-center gap-2.5">
                         <span class="text-xl">🎉</span>
                         <div>
-                            <p class="text-sm font-semibold text-white">New RSVP!</p>
-                            <p class="text-xs text-emerald-200">Priya is coming — party of 3</p>
+                            <p class="text-sm font-semibold text-white">12 days to go!</p>
+                            <p class="text-xs text-emerald-200">Live countdown on your page</p>
                         </div>
                     </div>
                 </div>
@@ -239,15 +240,15 @@ onUnmounted(() => {
                     <div data-animate class="lg:sticky lg:top-28">
                         <p class="text-xs font-semibold uppercase tracking-[0.35em] text-indigo-500">Everything you need</p>
                         <h2 class="mt-4 text-4xl font-extrabold tracking-tight text-neutral-950 sm:text-6xl">One platform,<br/>endless<br/><span class="font-serif font-medium italic text-indigo-600">celebration.</span></h2>
-                        <p class="mt-6 max-w-md text-lg leading-8 text-neutral-500">Beautiful, free, and uniquely yours — with clever features for every step from the first invite to the very last gift.</p>
+                        <p class="mt-6 max-w-md text-lg leading-8 text-neutral-500">Beautiful, free, and uniquely yours — everything your guests need to know, gathered on one page they'll actually enjoy opening.</p>
 
                         <div class="mt-8 flex flex-wrap gap-2.5">
-                            <span class="rounded-full bg-rose-50 px-3.5 py-1.5 text-xs font-semibold text-rose-600 ring-1 ring-rose-100">Events</span>
-                            <span class="rounded-full bg-indigo-50 px-3.5 py-1.5 text-xs font-semibold text-indigo-600 ring-1 ring-indigo-100">Wishlist</span>
-                            <span class="rounded-full bg-amber-50 px-3.5 py-1.5 text-xs font-semibold text-amber-600 ring-1 ring-amber-100">Shopping</span>
-                            <span class="rounded-full bg-violet-50 px-3.5 py-1.5 text-xs font-semibold text-violet-600 ring-1 ring-violet-100">Surprises</span>
-                            <span class="rounded-full bg-fuchsia-50 px-3.5 py-1.5 text-xs font-semibold text-fuchsia-600 ring-1 ring-fuchsia-100">Secrets</span>
-                            <span class="rounded-full bg-emerald-50 px-3.5 py-1.5 text-xs font-semibold text-emerald-600 ring-1 ring-emerald-100">Collections</span>
+                            <span class="rounded-full bg-rose-50 px-3.5 py-1.5 text-xs font-semibold text-rose-600 ring-1 ring-rose-100">Event websites</span>
+                            <span class="rounded-full bg-violet-50 px-3.5 py-1.5 text-xs font-semibold text-violet-600 ring-1 ring-violet-100">Invitations</span>
+                            <span class="rounded-full bg-amber-50 px-3.5 py-1.5 text-xs font-semibold text-amber-600 ring-1 ring-amber-100">22 designs</span>
+                            <span class="rounded-full bg-indigo-50 px-3.5 py-1.5 text-xs font-semibold text-indigo-600 ring-1 ring-indigo-100">Schedule</span>
+                            <span class="rounded-full bg-emerald-50 px-3.5 py-1.5 text-xs font-semibold text-emerald-600 ring-1 ring-emerald-100">Travel &amp; stay</span>
+                            <span class="rounded-full bg-fuchsia-50 px-3.5 py-1.5 text-xs font-semibold text-fuchsia-600 ring-1 ring-fuchsia-100">Photo gallery</span>
                         </div>
 
                         <Link href="/register" class="gl-btn mt-10 inline-flex items-center gap-2 rounded-full bg-neutral-950 px-7 py-3.5 text-sm font-semibold text-white transition hover:bg-neutral-800">
@@ -274,27 +275,27 @@ onUnmounted(() => {
                                 </div>
                             </div>
 
-                            <!-- 3 · Direct Gift Shopping (amber) -->
+                            <!-- 3 · 22 Premium Designs (amber) -->
                             <div data-animate class="pcard pcard-up" style="transition-delay:.18s">
                                 <div class="group rotate-[1.5deg] overflow-hidden rounded-3xl bg-gradient-to-br from-amber-50 via-white to-white p-6 shadow-[0_24px_60px_-24px_rgba(245,158,11,0.35)] ring-1 ring-amber-100/80 transition-all duration-500 hover:rotate-0 hover:-translate-y-1">
                                     <div class="absolute -right-8 -top-8 h-24 w-24 rounded-full bg-amber-200/40 blur-2xl transition-transform duration-700 group-hover:scale-150"></div>
                                     <div class="relative flex h-12 w-12 items-center justify-center rounded-2xl bg-amber-100 text-amber-500 ring-1 ring-amber-200/70 transition-transform duration-500 group-hover:scale-110 group-hover:-rotate-6">
                                         <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" /></svg>
                                     </div>
-                                    <p class="relative mt-5 text-[10px] font-bold uppercase tracking-[0.16em] text-amber-500">Direct Gift Shopping</p>
-                                    <h3 class="relative mt-1.5 text-lg font-bold tracking-tight text-neutral-900">Shop the Feeling</h3>
+                                    <p class="relative mt-5 text-[10px] font-bold uppercase tracking-[0.16em] text-amber-500">22 Premium Designs</p>
+                                    <h3 class="relative mt-1.5 text-lg font-bold tracking-tight text-neutral-900">A Look for Every Love</h3>
                                 </div>
                             </div>
 
-                            <!-- 5 · Ciphered Messages (fuchsia) -->
+                            <!-- 5 · Photos & Countdown (fuchsia) -->
                             <div data-animate class="pcard pcard-up" style="transition-delay:.3s">
                                 <div class="group rotate-[-1deg] overflow-hidden rounded-3xl bg-gradient-to-br from-fuchsia-50 via-white to-white p-6 shadow-[0_24px_60px_-24px_rgba(217,70,239,0.35)] ring-1 ring-fuchsia-100/80 transition-all duration-500 hover:rotate-0 hover:-translate-y-1">
                                     <div class="absolute -right-8 -top-8 h-24 w-24 rounded-full bg-fuchsia-200/40 blur-2xl transition-transform duration-700 group-hover:scale-150"></div>
                                     <div class="relative flex h-12 w-12 items-center justify-center rounded-2xl bg-fuchsia-100 text-fuchsia-500 ring-1 ring-fuchsia-200/70 transition-transform duration-500 group-hover:scale-110 group-hover:-rotate-6">
                                         <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" /></svg>
                                     </div>
-                                    <p class="relative mt-5 text-[10px] font-bold uppercase tracking-[0.16em] text-fuchsia-500">Ciphered Messages &amp; Proposals</p>
-                                    <h3 class="relative mt-1.5 text-lg font-bold tracking-tight text-neutral-900">Speak in Secrets</h3>
+                                    <p class="relative mt-5 text-[10px] font-bold uppercase tracking-[0.16em] text-fuchsia-500">Photos &amp; Countdown</p>
+                                    <h3 class="relative mt-1.5 text-lg font-bold tracking-tight text-neutral-900">Build the Excitement</h3>
                                 </div>
                             </div>
                         </div>
@@ -302,39 +303,39 @@ onUnmounted(() => {
                         <!-- Track B (drifts down, offset start) -->
                         <div ref="trackB" class="space-y-4 pt-10 will-change-transform sm:space-y-5 sm:pt-16">
 
-                            <!-- 2 · Wishlist (indigo) -->
+                            <!-- 2 · Digital Invitations (indigo) -->
                             <div data-animate class="pcard pcard-down" style="transition-delay:.1s">
                                 <div class="group rotate-[2deg] overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-50 via-white to-white p-6 shadow-[0_24px_60px_-24px_rgba(99,102,241,0.35)] ring-1 ring-indigo-100/80 transition-all duration-500 hover:rotate-0 hover:-translate-y-1">
                                     <div class="absolute -right-8 -top-8 h-24 w-24 rounded-full bg-indigo-200/40 blur-2xl transition-transform duration-700 group-hover:scale-150"></div>
                                     <div class="relative flex h-12 w-12 items-center justify-center rounded-2xl bg-indigo-100 text-indigo-500 ring-1 ring-indigo-200/70 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6">
                                         <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 11.25v8.25a1.5 1.5 0 01-1.5 1.5H5.25a1.5 1.5 0 01-1.5-1.5v-8.25M12 4.875A2.625 2.625 0 109.375 7.5H12m0-2.625V7.5m0-2.625A2.625 2.625 0 1114.625 7.5H12M3.75 7.5h16.5a1.5 1.5 0 011.5 1.5v.75H2.25V9a1.5 1.5 0 011.5-1.5zM12 7.5v12" /></svg>
                                     </div>
-                                    <p class="relative mt-5 text-[10px] font-bold uppercase tracking-[0.16em] text-indigo-500">Wishlist</p>
-                                    <h3 class="relative mt-1.5 text-lg font-bold tracking-tight text-neutral-900">Wish It. List It. Get It.</h3>
+                                    <p class="relative mt-5 text-[10px] font-bold uppercase tracking-[0.16em] text-indigo-500">Digital Invitations</p>
+                                    <h3 class="relative mt-1.5 text-lg font-bold tracking-tight text-neutral-900">Invites Worth Sharing</h3>
                                 </div>
                             </div>
 
-                            <!-- 4 · Surprise Gifting (violet) -->
+                            <!-- 4 · Schedule & FAQs (violet) -->
                             <div data-animate class="pcard pcard-down" style="transition-delay:.22s">
                                 <div class="group rotate-[-1.5deg] overflow-hidden rounded-3xl bg-gradient-to-br from-violet-50 via-white to-white p-6 shadow-[0_24px_60px_-24px_rgba(139,92,246,0.35)] ring-1 ring-violet-100/80 transition-all duration-500 hover:rotate-0 hover:-translate-y-1">
                                     <div class="absolute -right-8 -top-8 h-24 w-24 rounded-full bg-violet-200/40 blur-2xl transition-transform duration-700 group-hover:scale-150"></div>
                                     <div class="relative flex h-12 w-12 items-center justify-center rounded-2xl bg-violet-100 text-violet-500 ring-1 ring-violet-200/70 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6">
                                         <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456z" /></svg>
                                     </div>
-                                    <p class="relative mt-5 text-[10px] font-bold uppercase tracking-[0.16em] text-violet-500">Surprise Gifting</p>
-                                    <h3 class="relative mt-1.5 text-lg font-bold tracking-tight text-neutral-900">The Art of the Surprise</h3>
+                                    <p class="relative mt-5 text-[10px] font-bold uppercase tracking-[0.16em] text-violet-500">Schedule &amp; FAQs</p>
+                                    <h3 class="relative mt-1.5 text-lg font-bold tracking-tight text-neutral-900">Every Detail, Answered</h3>
                                 </div>
                             </div>
 
-                            <!-- 6 · Curated Gift Collections (emerald) -->
+                            <!-- 6 · Travel & Stay (emerald) -->
                             <div data-animate class="pcard pcard-down" style="transition-delay:.34s">
                                 <div class="group rotate-[1deg] overflow-hidden rounded-3xl bg-gradient-to-br from-emerald-50 via-white to-white p-6 shadow-[0_24px_60px_-24px_rgba(16,185,129,0.35)] ring-1 ring-emerald-100/80 transition-all duration-500 hover:rotate-0 hover:-translate-y-1">
                                     <div class="absolute -right-8 -top-8 h-24 w-24 rounded-full bg-emerald-200/40 blur-2xl transition-transform duration-700 group-hover:scale-150"></div>
                                     <div class="relative flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-100 text-emerald-500 ring-1 ring-emerald-200/70 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6">
                                         <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.25 7.125C2.25 6.504 2.754 6 3.375 6h6c.621 0 1.125.504 1.125 1.125v3.75c0 .621-.504 1.125-1.125 1.125h-6a1.125 1.125 0 01-1.125-1.125v-3.75zM14.25 8.625c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v8.25c0 .621-.504 1.125-1.125 1.125h-5.25a1.125 1.125 0 01-1.125-1.125v-8.25zM3.75 16.125c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v2.25c0 .621-.504 1.125-1.125 1.125h-5.25a1.125 1.125 0 01-1.125-1.125v-2.25z" /></svg>
                                     </div>
-                                    <p class="relative mt-5 text-[10px] font-bold uppercase tracking-[0.16em] text-emerald-500">Curated Gift Collections</p>
-                                    <h3 class="relative mt-1.5 text-lg font-bold tracking-tight text-neutral-900">Gifts, Handpicked for Them</h3>
+                                    <p class="relative mt-5 text-[10px] font-bold uppercase tracking-[0.16em] text-emerald-500">Travel &amp; Stay</p>
+                                    <h3 class="relative mt-1.5 text-lg font-bold tracking-tight text-neutral-900">Get Everyone There</h3>
                                 </div>
                             </div>
                         </div>
@@ -435,7 +436,7 @@ onUnmounted(() => {
                     </Link>
                 </div>
 
-                <p data-animate class="mt-10 text-center text-sm text-neutral-400">12 website designs · 11 invitation cards · every event type, beautifully themed</p>
+                <p data-animate class="mt-10 text-center text-sm text-neutral-400">22 website designs · 21 invitation cards · every event type, beautifully themed</p>
             </div>
         </section>
 
@@ -446,9 +447,9 @@ onUnmounted(() => {
             <div class="gl-mesh-dark gl-mesh-anim pointer-events-none absolute inset-0 opacity-30"></div>
             <div class="relative mx-auto max-w-7xl px-6 sm:px-10 lg:px-12">
                 <div data-animate class="mx-auto max-w-xl text-center">
-                    <p class="text-xs font-semibold uppercase tracking-[0.35em] text-violet-400">Plan · Design · Wish · Celebrate</p>
+                    <p class="text-xs font-semibold uppercase tracking-[0.35em] text-violet-400">Create · Design · Share · Celebrate</p>
                     <h2 class="mt-4 text-4xl font-extrabold tracking-tight text-white sm:text-6xl">How ComeYay works.</h2>
-                    <p class="mt-5 text-sm leading-7 text-white/50">One link does it all — your invitation, your event website, your wishlist, and gifting for every guest.</p>
+                    <p class="mt-5 text-sm leading-7 text-white/50">One link does it all — your invitation, your event website, and every detail your guests need.</p>
                 </div>
 
                 <div class="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
@@ -468,7 +469,7 @@ onUnmounted(() => {
                     <div data-animate class="group relative overflow-hidden rounded-[1.75rem] border border-white/10 bg-white/[0.04] p-8 backdrop-blur-sm transition hover:border-white/20 hover:bg-white/[0.06]" style="transition-delay:.1s">
                         <p class="bg-gradient-to-br from-fuchsia-400 to-pink-600 bg-clip-text text-7xl font-black leading-none text-transparent">02</p>
                         <h3 class="mt-5 text-xl font-bold text-white">Design website & invitation</h3>
-                        <p class="mt-3 text-sm leading-7 text-white/50">Pick from 12 animated website templates and 11 invitation cards, then make them yours — no code, ever.</p>
+                        <p class="mt-3 text-sm leading-7 text-white/50">Pick from 22 animated website designs and 21 invitation cards, then make them yours — no code, ever.</p>
                         <ul class="mt-4 space-y-1.5 text-xs leading-5 text-white/40">
                             <li><span class="text-fuchsia-400">✓</span> Your story, schedule, FAQs & photo gallery</li>
                             <li><span class="text-fuchsia-400">✓</span> Shareable invitation card for WhatsApp & email</li>
@@ -480,25 +481,25 @@ onUnmounted(() => {
 
                     <div data-animate class="group relative overflow-hidden rounded-[1.75rem] border border-white/10 bg-white/[0.04] p-8 backdrop-blur-sm transition hover:border-white/20 hover:bg-white/[0.06]" style="transition-delay:.15s">
                         <p class="bg-gradient-to-br from-rose-400 to-pink-600 bg-clip-text text-7xl font-black leading-none text-transparent">03</p>
-                        <h3 class="mt-5 text-xl font-bold text-white">Build your wishlist</h3>
-                        <p class="mt-3 text-sm leading-7 text-white/50">Curate exactly what you'd love from our shop or anywhere else. Claimed gifts are marked instantly — no duplicates.</p>
+                        <h3 class="mt-5 text-xl font-bold text-white">Add every detail</h3>
+                        <p class="mt-3 text-sm leading-7 text-white/50">The schedule, the dress code, how to get there, where to stay — all the questions guests would otherwise text you.</p>
                         <ul class="mt-4 space-y-1.5 text-xs leading-5 text-white/40">
-                            <li><span class="text-rose-400">✓</span> Add from our curated shop or any link</li>
-                            <li><span class="text-rose-400">✓</span> Save a delivery address — guests never need it</li>
-                            <li><span class="text-rose-400">✓</span> Link it to your event or keep it standalone</li>
+                            <li><span class="text-rose-400">✓</span> Hour-by-hour schedule for every function</li>
+                            <li><span class="text-rose-400">✓</span> Travel directions, hotels & a map link</li>
+                            <li><span class="text-rose-400">✓</span> Dress code, FAQs & a note from the hosts</li>
                         </ul>
-                        <div class="gl-float absolute right-6 top-6 text-4xl opacity-10 transition group-hover:opacity-25" style="animation-delay:2s">🎁</div>
+                        <div class="gl-float absolute right-6 top-6 text-4xl opacity-10 transition group-hover:opacity-25" style="animation-delay:2s">📍</div>
                         <div class="absolute -bottom-10 -right-10 h-36 w-36 rounded-full bg-rose-600/10 transition-all duration-500 group-hover:scale-[2]"></div>
                     </div>
 
                     <div data-animate class="group relative overflow-hidden rounded-[1.75rem] border border-white/10 bg-white/[0.04] p-8 backdrop-blur-sm transition hover:border-white/20 hover:bg-white/[0.06]" style="transition-delay:.2s">
                         <p class="bg-gradient-to-br from-amber-400 to-orange-500 bg-clip-text text-7xl font-black leading-none text-transparent">04</p>
-                        <h3 class="mt-5 text-xl font-bold text-white">Share, gift & celebrate</h3>
-                        <p class="mt-3 text-sm leading-7 text-white/50">Send one link. Guests see everything, gift in a few taps, and can even wrap it up beautifully.</p>
+                        <h3 class="mt-5 text-xl font-bold text-white">Share & celebrate</h3>
+                        <p class="mt-3 text-sm leading-7 text-white/50">Send one link on WhatsApp, or save your invitation as an image and post it anywhere. Guests just tap and see everything.</p>
                         <ul class="mt-4 space-y-1.5 text-xs leading-5 text-white/40">
-                            <li><span class="text-amber-400">✓</span> Premium boxes, message stickers & custom cards</li>
-                            <li><span class="text-amber-400">✓</span> Gifts ship straight to the celebrant</li>
-                            <li><span class="text-amber-400">✓</span> Track every order & gift in one place</li>
+                            <li><span class="text-amber-400">✓</span> One short link to your whole event</li>
+                            <li><span class="text-amber-400">✓</span> Download your invitation as a JPG to share</li>
+                            <li><span class="text-amber-400">✓</span> Keep it public or private — your call</li>
                         </ul>
                         <div class="gl-float absolute right-6 top-6 text-4xl opacity-10 transition group-hover:opacity-25" style="animation-delay:3s">✨</div>
                         <div class="absolute -bottom-10 -right-10 h-36 w-36 rounded-full bg-amber-600/10 transition-all duration-500 group-hover:scale-[2]"></div>
@@ -520,7 +521,7 @@ onUnmounted(() => {
                 <div class="mt-14 grid gap-5 sm:grid-cols-3">
                     <div data-animate class="rounded-[1.75rem] bg-neutral-50 p-8 ring-1 ring-neutral-200/60 transition hover:-translate-y-1 hover:bg-white hover:shadow-xl" style="transition-delay:.04s">
                         <div class="flex text-base text-amber-400">★★★★★</div>
-                        <p class="mt-5 font-serif text-lg italic leading-8 text-neutral-700">"Our guests couldn't stop complimenting our event page. The wishlist was so easy to share and everyone loved shopping from it!"</p>
+                        <p class="mt-5 font-serif text-lg italic leading-8 text-neutral-700">"Our guests couldn't stop complimenting our event page. Sharing one link meant nobody had to ask us for directions or timings."</p>
                         <div class="mt-6 flex items-center gap-3">
                             <div class="h-10 w-10 rounded-full bg-gradient-to-br from-rose-400 to-pink-600 shadow-sm"></div>
                             <div>
@@ -531,7 +532,7 @@ onUnmounted(() => {
                     </div>
                     <div data-animate class="rounded-[1.75rem] bg-neutral-50 p-8 ring-1 ring-neutral-200/60 transition hover:-translate-y-1 hover:bg-white hover:shadow-xl" style="transition-delay:.08s">
                         <div class="flex text-base text-amber-400">★★★★★</div>
-                        <p class="mt-5 font-serif text-lg italic leading-8 text-neutral-700">"Setting up our baby shower wishlist took 15 minutes. The design looked so professional and our family found it super easy to use."</p>
+                        <p class="mt-5 font-serif text-lg italic leading-8 text-neutral-700">"Setting up our baby shower page took 15 minutes. The design looked so professional and our family found it super easy to use."</p>
                         <div class="mt-6 flex items-center gap-3">
                             <div class="h-10 w-10 rounded-full bg-gradient-to-br from-sky-400 to-blue-600 shadow-sm"></div>
                             <div>

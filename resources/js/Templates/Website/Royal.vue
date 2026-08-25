@@ -6,7 +6,7 @@ import { useReveal } from '../useReveal.js';
 import { useScrollFx } from '../useScrollFx.js';
 
 const props = defineProps({ event: { type: Object, required: true } });
-const { typeLabel, hosts, tagline, dressCode, rsvpNote, schedule, faqs, location, venueNote, venuePhoto, travel, stay, mapUrl, gallery, coverPhoto, registryUrl, countdown, fmtFull, fmtDate } = useEventDisplay(() => props.event);
+const { showRegistry, typeLabel, hosts, tagline, dressCode, rsvpNote, schedule, faqs, location, venueNote, venuePhoto, travel, stay, mapUrl, gallery, coverPhoto, registryUrl, countdown, fmtFull, fmtDate } = useEventDisplay(() => props.event);
 useReveal();
 const root = ref(null);
 useScrollFx(root);
@@ -160,7 +160,7 @@ const monogram = computed(() => {
 
         <!-- CTA -->
         <section class="px-6 py-28 sm:px-10">
-            <div data-reveal="zoom" class="gl-grain relative mx-auto max-w-4xl border border-amber-200/30 px-8 py-20 text-center">
+            <div v-if="showRegistry" data-reveal="zoom" class="gl-grain relative mx-auto max-w-4xl border border-amber-200/30 px-8 py-20 text-center">
                 <div class="pointer-events-none absolute inset-3 border border-amber-200/15"></div>
                 <p class="text-[11px] font-semibold uppercase tracking-[0.5em] text-amber-200/90">With gratitude</p>
                 <h3 class="mt-5 font-serif text-4xl text-amber-50 sm:text-5xl">The wishlist</h3>

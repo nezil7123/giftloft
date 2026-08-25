@@ -4,7 +4,12 @@ import { Link, usePage } from '@inertiajs/vue3';
 
 // theme: 'dark' for pages that open on a dark hero (white nav text),
 // 'light' for pages that open on a light background (dark nav text).
-const props = defineProps({ theme: { type: String, default: 'dark' } });
+// heroBrand: pages whose hero shows the big logo pass this so the nav shows an
+// animated brand spark instead of a second wordmark until the hero scrolls away.
+const props = defineProps({
+    theme: { type: String, default: 'dark' },
+    heroBrand: { type: Boolean, default: false },
+});
 
 const page = usePage();
 const user = computed(() => page.props.auth?.user ?? null);
@@ -12,6 +17,8 @@ const user = computed(() => page.props.auth?.user ?? null);
 const mobileOpen = ref(false);
 const hidden     = ref(false);
 const scrolled   = ref(false);
+const pastHero   = ref(false);
+const showLogo   = computed(() => !props.heroBrand || pastHero.value);
 
 let ticking = false;
 let lastY = 0;
@@ -21,6 +28,7 @@ function onScroll() {
     requestAnimationFrame(() => {
         const y = window.scrollY;
         scrolled.value = y > 24;
+        pastHero.value = y > window.innerHeight * 0.8;
         // hide while scrolling down past the fold; reappear the moment you scroll up
         if (y > lastY + 2 && y > 320) hidden.value = true;
         else if (y < lastY - 2 || y <= 320) hidden.value = false;
@@ -30,7 +38,10 @@ function onScroll() {
     });
 }
 
-onMounted(() => window.addEventListener('scroll', onScroll, { passive: true }));
+onMounted(() => {
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+});
 onUnmounted(() => window.removeEventListener('scroll', onScroll));
 
 // Deliberately minimal: a few high-intent destinations, everything else lives
@@ -54,9 +65,25 @@ const navLinks = [
             <div class="mx-auto max-w-7xl px-6 sm:px-10 lg:px-12">
                 <div class="flex h-[62px] items-center justify-between gap-8">
 
-                    <!-- Logo — white wordmark on dark theme, navy on light -->
-                    <Link href="/" class="flex shrink-0 items-center">
-                        <img :src="theme === 'light' ? '/brand/comeyay-logo.png?v=2' : '/brand/comeyay-logo-white.png?v=2'" alt="ComeYay" class="h-7 w-auto" />
+                    <!-- Logo — white wordmark on dark theme, navy on light. With heroBrand,
+                         an animated brand spark stands in until the hero's big logo scrolls away. -->
+                    <Link href="/" class="relative flex h-7 shrink-0 items-center" aria-label="ComeYay home">
+                        <img
+                            :src="theme === 'light' ? '/brand/comeyay-logo.png?v=2' : '/brand/comeyay-logo-white.png?v=2'"
+                            alt="ComeYay"
+                            class="h-7 w-auto transition-opacity duration-500"
+                            :class="showLogo ? 'opacity-100' : 'opacity-0'"
+                        />
+                        <svg
+                            v-if="heroBrand"
+                            viewBox="0 0 34 28" fill="none"
+                            class="gl-spark absolute left-1 top-1/2 h-6 w-auto -translate-y-1/2 transition-opacity duration-500"
+                            :class="showLogo ? 'pointer-events-none opacity-0' : 'opacity-100'"
+                        >
+                            <path d="M8.5 23 C7 19.5 6.5 16.5 6 13" stroke="#F84860" stroke-width="5" stroke-linecap="round" />
+                            <path d="M17 21.5 C17 16.5 17.3 11.5 18 5.5" stroke="#F8A028" stroke-width="5" stroke-linecap="round" />
+                            <path d="M25.5 23 C27 20 28.6 17.2 30 14.5" stroke="#6838F0" stroke-width="5" stroke-linecap="round" />
+                        </svg>
                     </Link>
 
                     <!-- Desktop links — flat, no dropdowns -->

@@ -6,7 +6,7 @@ import { useReveal } from '../useReveal.js';
 import { useScrollFx } from '../useScrollFx.js';
 
 const props = defineProps({ event: { type: Object, required: true } });
-const { typeLabel, hosts, tagline, dressCode, rsvpNote, schedule, faqs, location, venueNote, venuePhoto, travel, stay, mapUrl, gallery, coverPhoto, registryUrl, countdown, fmtFull, fmtDate } = useEventDisplay(() => props.event);
+const { showRegistry, typeLabel, hosts, tagline, dressCode, rsvpNote, schedule, faqs, location, venueNote, venuePhoto, travel, stay, mapUrl, gallery, coverPhoto, registryUrl, countdown, fmtFull, fmtDate } = useEventDisplay(() => props.event);
 useReveal();
 const root = ref(null);
 useScrollFx(root);
@@ -135,7 +135,7 @@ useScrollFx(root);
 
         <!-- CTA -->
         <section class="px-6 py-28 sm:px-10">
-            <div data-reveal="zoom" class="mx-auto max-w-4xl border border-[#2b2a27]/20 px-8 py-20 text-center">
+            <div v-if="showRegistry" data-reveal="zoom" class="mx-auto max-w-4xl border border-[#2b2a27]/20 px-8 py-20 text-center">
                 <h3 class="font-serif text-4xl font-normal text-[#2b2a27] sm:text-5xl">With gratitude</h3>
                 <p class="mx-auto mt-4 max-w-md text-[#5a564d]">{{ rsvpNote || 'Browse our wishlist and send a thoughtful gift.' }}</p>
                 <Link :href="registryUrl" class="mt-9 inline-flex items-center justify-center bg-[#2b2a27] px-9 py-4 text-sm font-semibold uppercase tracking-widest text-[#f4f1ea] transition hover:scale-105">View the registry</Link>

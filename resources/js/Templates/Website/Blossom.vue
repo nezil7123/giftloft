@@ -6,7 +6,7 @@ import { useReveal } from '../useReveal.js';
 import { useScrollFx } from '../useScrollFx.js';
 
 const props = defineProps({ event: { type: Object, required: true } });
-const { typeLabel, hosts, tagline, dressCode, rsvpNote, schedule, faqs, location, venueNote, venuePhoto, travel, stay, mapUrl, gallery, coverPhoto, registryUrl, countdown, fmtFull, fmtDate } = useEventDisplay(() => props.event);
+const { showRegistry, typeLabel, hosts, tagline, dressCode, rsvpNote, schedule, faqs, location, venueNote, venuePhoto, travel, stay, mapUrl, gallery, coverPhoto, registryUrl, countdown, fmtFull, fmtDate } = useEventDisplay(() => props.event);
 useReveal();
 const root = ref(null);
 useScrollFx(root);
@@ -141,7 +141,7 @@ const petals = Array.from({ length: 10 }, (_, i) => ({ left: (i * 61) % 100, del
 
         <!-- CTA -->
         <section class="px-6 py-28 sm:px-10">
-            <div data-reveal="zoom" class="mx-auto max-w-5xl overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-rose-400 to-fuchsia-500 px-8 py-20 text-center text-white">
+            <div v-if="showRegistry" data-reveal="zoom" class="mx-auto max-w-5xl overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-rose-400 to-fuchsia-500 px-8 py-20 text-center text-white">
                 <h3 class="font-serif text-4xl sm:text-5xl">Wishlist</h3>
                 <p class="mx-auto mt-4 max-w-md text-rose-50/90">{{ rsvpNote || 'Browse our wishlist and send a thoughtful gift.' }}</p>
                 <Link :href="registryUrl" class="gl-btn mt-9 inline-flex items-center justify-center rounded-full bg-white px-9 py-4 text-sm font-semibold text-rose-600 transition hover:scale-105">View the registry</Link>

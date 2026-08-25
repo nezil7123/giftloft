@@ -1,6 +1,6 @@
 <script setup>
-import { Head } from '@inertiajs/vue3';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
+import Seo from '@/Components/Seo.vue';
 import { resolveWebsiteTemplate } from '@/Templates/registry.js';
 import { computed } from 'vue';
 
@@ -18,7 +18,7 @@ const navTheme = computed(() => (LIGHT_TEMPLATES.includes(props.event.template) 
 
 <template>
     <PublicLayout :theme="navTheme">
-        <Head :title="event.title" />
+        <Seo :title="event.title" noindex />
         <component :is="template" :event="event" />
     </PublicLayout>
 </template>

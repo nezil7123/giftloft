@@ -1,10 +1,14 @@
 <script setup>
 import PublicLayout from '@/Layouts/PublicLayout.vue';
-import { Head, Link } from '@inertiajs/vue3';
+import { Link } from '@inertiajs/vue3';
+import Seo from '@/Components/Seo.vue';
 </script>
 
 <template>
-    <Head title="Terms & Conditions" />
+    <Seo
+        title="Terms &amp; Conditions"
+        description="The terms that govern your use of ComeYay's event website and digital invitation services."
+    />
 
     <PublicLayout theme="light">
         <div class="pb-20" style="padding-top: calc(var(--nav-offset, 62px) + 3rem)">

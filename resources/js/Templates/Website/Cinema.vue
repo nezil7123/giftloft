@@ -6,7 +6,7 @@ import { useReveal } from '../useReveal.js';
 import { useScrollFx } from '../useScrollFx.js';
 
 const props = defineProps({ event: { type: Object, required: true } });
-const { typeLabel, hosts, tagline, dressCode, rsvpNote, schedule, faqs, location, venueNote, venuePhoto, travel, stay, mapUrl, gallery, coverPhoto, registryUrl, countdown, fmtFull, fmtDate } = useEventDisplay(() => props.event);
+const { showRegistry, typeLabel, hosts, tagline, dressCode, rsvpNote, schedule, faqs, location, venueNote, venuePhoto, travel, stay, mapUrl, gallery, coverPhoto, registryUrl, countdown, fmtFull, fmtDate } = useEventDisplay(() => props.event);
 useReveal();
 const root = ref(null);
 useScrollFx(root);
@@ -155,9 +155,11 @@ const acts = ['ACT I', 'ACT II', 'ACT III', 'ACT IV', 'ACT V'];
         <!-- CTA — end credits -->
         <section class="gl-grain border-t border-neutral-800 px-6 py-32 text-center sm:px-12">
             <p data-reveal class="text-xs uppercase tracking-[0.5em] text-neutral-500">The end… is a beginning</p>
-            <h3 data-fx="chars" class="gl-display-sm mt-6 font-serif uppercase text-white">Send a gift</h3>
-            <p data-reveal class="mx-auto mt-5 max-w-md text-neutral-400">{{ rsvpNote || 'Browse our wishlist and be part of the story.' }}</p>
-            <Link :href="registryUrl" data-reveal class="gl-btn mt-10 inline-flex items-center justify-center bg-white px-10 py-4 text-xs font-semibold uppercase tracking-[0.3em] text-neutral-950 transition hover:scale-105">View the registry</Link>
+            <template v-if="showRegistry">
+                <h3 data-fx="chars" class="gl-display-sm mt-6 font-serif uppercase text-white">Send a gift</h3>
+                <p data-reveal class="mx-auto mt-5 max-w-md text-neutral-400">{{ rsvpNote || 'Browse our wishlist and be part of the story.' }}</p>
+                <Link :href="registryUrl" data-reveal class="gl-btn mt-10 inline-flex items-center justify-center bg-white px-10 py-4 text-xs font-semibold uppercase tracking-[0.3em] text-neutral-950 transition hover:scale-105">View the registry</Link>
+            </template>
             <p class="mt-16 text-[10px] uppercase tracking-[0.4em] text-neutral-600">{{ event.user?.name }} · A ComeYay production</p>
         </section>
     </div>

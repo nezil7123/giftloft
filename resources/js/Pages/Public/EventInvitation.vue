@@ -1,5 +1,6 @@
 <script setup>
-import { Head, Link } from '@inertiajs/vue3';
+import { Link } from '@inertiajs/vue3';
+import Seo from '@/Components/Seo.vue';
 import { resolveInvitationTemplate } from '@/Templates/registry.js';
 import { computed, ref } from 'vue';
 import { toCanvas } from 'html-to-image';
@@ -63,7 +64,7 @@ const download = async () => {
 </script>
 
 <template>
-    <Head :title="`You're invited — ${event.title}`" />
+    <Seo :title="`You're invited — ${event.title}`" noindex />
 
     <div class="flex min-h-screen flex-col items-center justify-center gap-8 bg-neutral-100 px-6 py-16">
         <component :is="template" ref="cardComponent" :event="event" />

@@ -6,7 +6,7 @@ import { useReveal } from '../useReveal.js';
 import { useScrollFx } from '../useScrollFx.js';
 
 const props = defineProps({ event: { type: Object, required: true } });
-const { typeLabel, hosts, tagline, dressCode, rsvpNote, schedule, faqs, location, venueNote, venuePhoto, travel, stay, mapUrl, gallery, coverPhoto, registryUrl, countdown, fmtFull, fmtDate } = useEventDisplay(() => props.event);
+const { showRegistry, typeLabel, hosts, tagline, dressCode, rsvpNote, schedule, faqs, location, venueNote, venuePhoto, travel, stay, mapUrl, gallery, coverPhoto, registryUrl, countdown, fmtFull, fmtDate } = useEventDisplay(() => props.event);
 useReveal();
 const root = ref(null);
 useScrollFx(root);
@@ -146,7 +146,7 @@ const marquee = computed(() => [hosts.value || props.event.title, '◆', tagline
 
         <!-- CTA -->
         <section class="px-6 pb-24 sm:px-10">
-            <div data-reveal="zoom" class="relative mx-auto max-w-6xl overflow-hidden rounded-[3rem] bg-neutral-950 px-8 py-20 text-center text-white">
+            <div v-if="showRegistry" data-reveal="zoom" class="relative mx-auto max-w-6xl overflow-hidden rounded-[3rem] bg-neutral-950 px-8 py-20 text-center text-white">
                 <div class="gl-aurora"></div>
                 <h3 class="relative text-4xl font-black tracking-tight sm:text-6xl">Make their day.<br /><span class="bg-gradient-to-r from-violet-400 via-fuchsia-400 to-sky-400 bg-clip-text text-transparent">Send a gift.</span></h3>
                 <p class="relative mx-auto mt-5 max-w-md text-neutral-300">{{ rsvpNote || 'Browse our wishlist and send a thoughtful gift.' }}</p>

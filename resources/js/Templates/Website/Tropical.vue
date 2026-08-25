@@ -6,7 +6,7 @@ import { useReveal } from '../useReveal.js';
 import { useScrollFx } from '../useScrollFx.js';
 
 const props = defineProps({ event: { type: Object, required: true } });
-const { typeLabel, hosts, tagline, dressCode, rsvpNote, schedule, faqs, location, venueNote, venuePhoto, travel, stay, mapUrl, gallery, coverPhoto, registryUrl, countdown, fmtFull, fmtDate } = useEventDisplay(() => props.event);
+const { showRegistry, typeLabel, hosts, tagline, dressCode, rsvpNote, schedule, faqs, location, venueNote, venuePhoto, travel, stay, mapUrl, gallery, coverPhoto, registryUrl, countdown, fmtFull, fmtDate } = useEventDisplay(() => props.event);
 useReveal();
 const root = ref(null);
 useScrollFx(root);
@@ -145,7 +145,7 @@ const petals = Array.from({ length: 14 }, (_, i) => ({ left: (i * 67) % 100, del
 
         <!-- CTA -->
         <section class="px-6 py-28 sm:px-10">
-            <div data-reveal="zoom" class="gl-border-glow relative mx-auto max-w-5xl overflow-hidden rounded-[2.5rem] px-8 py-20 text-center" style="--gl-bg:#0f2a1b">
+            <div v-if="showRegistry" data-reveal="zoom" class="gl-border-glow relative mx-auto max-w-5xl overflow-hidden rounded-[2.5rem] px-8 py-20 text-center" style="--gl-bg:#0f2a1b">
                 <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(132,204,22,0.18),transparent_60%)]"></div>
                 <h3 class="relative font-serif text-4xl text-white sm:text-5xl">Wishlist</h3>
                 <p class="relative mx-auto mt-4 max-w-md text-emerald-200">{{ rsvpNote || 'Browse our wishlist and send a thoughtful gift.' }}</p>

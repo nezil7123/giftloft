@@ -19,7 +19,7 @@ class HelpController extends Controller
     public function index()
     {
         return Inertia::render('Help/Index', [
-            'guides' => collect(HelpGuides::all())->except(['wishlist', 'gifting'])->all(),
+            'guides' => HelpGuides::visible(),
         ]);
     }
 

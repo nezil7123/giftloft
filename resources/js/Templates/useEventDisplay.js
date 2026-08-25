@@ -6,6 +6,11 @@ const TYPE_LABELS = {
     graduation: 'Graduation', housewarming: 'Housewarming', other: 'Celebration',
 };
 
+// Gifting ships in phase 2, so every template's wishlist/registry block stays
+// hidden for the phase-1 launch. Flip this to true to bring them all back —
+// the event Design editor reads it too, to hide the now-inert wishlist note.
+export const SHOW_REGISTRY = false;
+
 /**
  * Shared display logic for event templates.
  * @param {() => object} getEvent - getter returning the reactive event prop
@@ -68,5 +73,5 @@ export function useEventDisplay(getEvent) {
         };
     });
 
-    return { event, data, typeLabel, hosts, tagline, dressCode, rsvpNote, schedule, faqs, location, venueNote, venuePhoto, travel, stay, mapUrl, gallery, coverPhoto, registryUrl, countdown, fmtFull, fmtDate };
+    return { showRegistry: SHOW_REGISTRY, event, data, typeLabel, hosts, tagline, dressCode, rsvpNote, schedule, faqs, location, venueNote, venuePhoto, travel, stay, mapUrl, gallery, coverPhoto, registryUrl, countdown, fmtFull, fmtDate };
 }

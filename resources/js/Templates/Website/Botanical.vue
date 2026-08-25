@@ -6,7 +6,7 @@ import { useReveal } from '../useReveal.js';
 import { useScrollFx } from '../useScrollFx.js';
 
 const props = defineProps({ event: { type: Object, required: true } });
-const { typeLabel, hosts, tagline, dressCode, rsvpNote, schedule, faqs, location, venueNote, venuePhoto, travel, stay, mapUrl, gallery, coverPhoto, registryUrl, countdown, fmtFull, fmtDate } = useEventDisplay(() => props.event);
+const { showRegistry, typeLabel, hosts, tagline, dressCode, rsvpNote, schedule, faqs, location, venueNote, venuePhoto, travel, stay, mapUrl, gallery, coverPhoto, registryUrl, countdown, fmtFull, fmtDate } = useEventDisplay(() => props.event);
 useReveal();
 const root = ref(null);
 useScrollFx(root);
@@ -166,7 +166,7 @@ const marquee = computed(() => [hosts.value || props.event.title, '❧', fmtDate
 
         <!-- CTA -->
         <section class="px-6 py-28 sm:px-10">
-            <div data-reveal="zoom" class="gl-grain relative mx-auto max-w-5xl overflow-hidden rounded-[2.5rem] bg-emerald-800 px-8 py-20 text-center text-white">
+            <div v-if="showRegistry" data-reveal="zoom" class="gl-grain relative mx-auto max-w-5xl overflow-hidden rounded-[2.5rem] bg-emerald-800 px-8 py-20 text-center text-white">
                 <div class="gl-aurora opacity-25"></div>
                 <div class="gl-float pointer-events-none absolute -left-6 -top-6 text-8xl opacity-20">🌿</div>
                 <div class="gl-float pointer-events-none absolute -bottom-8 -right-6 text-8xl opacity-20" style="animation-delay:3s">🍃</div>

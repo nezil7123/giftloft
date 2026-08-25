@@ -10,7 +10,7 @@ import { useScrollFx } from '../useScrollFx.js';
 gsap.registerPlugin(ScrollTrigger);
 
 const props = defineProps({ event: { type: Object, required: true } });
-const { typeLabel, hosts, tagline, dressCode, rsvpNote, schedule, faqs, location, venueNote, venuePhoto, travel, stay, mapUrl, gallery, coverPhoto, registryUrl, countdown, fmtFull, fmtDate } = useEventDisplay(() => props.event);
+const { showRegistry, typeLabel, hosts, tagline, dressCode, rsvpNote, schedule, faqs, location, venueNote, venuePhoto, travel, stay, mapUrl, gallery, coverPhoto, registryUrl, countdown, fmtFull, fmtDate } = useEventDisplay(() => props.event);
 useReveal();
 const root = ref(null);
 useScrollFx(root);
@@ -209,7 +209,7 @@ onUnmounted(() => ctx?.revert());
 
         <!-- ═══ CTA ═══ -->
         <section class="px-6 py-28 sm:px-10">
-            <div data-reveal="zoom" class="gl-border-glow gl-grain relative mx-auto max-w-5xl overflow-hidden rounded-[2.5rem] px-8 py-20 text-center" style="--gl-bg:#05050c">
+            <div v-if="showRegistry" data-reveal="zoom" class="gl-border-glow gl-grain relative mx-auto max-w-5xl overflow-hidden rounded-[2.5rem] px-8 py-20 text-center" style="--gl-bg:#05050c">
                 <div class="gl-pan pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(34,211,238,0.14),transparent_60%)]"></div>
                 <p data-fx="decrypt" class="relative text-[10px] font-bold uppercase tracking-[0.6em] text-cyan-300">Final directive</p>
                 <h3 data-fx="chars" class="relative mt-5 text-4xl font-black uppercase tracking-tight text-white sm:text-5xl">Send a gift</h3>
