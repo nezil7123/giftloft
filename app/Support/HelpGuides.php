@@ -76,7 +76,7 @@ class HelpGuides
                 'gradient' => 'from-fuchsia-500 to-pink-600',
                 'mockupLabel' => 'comeyay.app/e/our-event',
                 'title' => 'How to create your event website',
-                'subtitle' => 'A full shareable page with your story, schedule, venue and wishlist — live in minutes, no code required.',
+                'subtitle' => 'A full shareable page with your story, schedule, venue, travel details and photo gallery — live in minutes, no code required.',
                 'steps' => [
                     ['title' => 'Create your event', 'description' => 'Tell us the basics — event type, date, and where it\'s happening.', 'icon' => 'M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z'],
                     ['title' => 'Pick a template', 'description' => 'Choose from designer templates — Classic, Modern, Festive, Botanical, Midnight or Storybook — each fully live-previewed.', 'icon' => 'M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z'],

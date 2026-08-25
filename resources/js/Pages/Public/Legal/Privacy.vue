@@ -4,10 +4,7 @@ import PublicLayout from '@/Layouts/PublicLayout.vue';
 </script>
 
 <template>
-    <Seo
-        title="Privacy Policy"
-        description="How ComeYay collects, uses and protects your personal information when you create an event website or send digital invitations."
-    />
+    <Seo title="Privacy Policy" />
 
     <PublicLayout theme="light">
         <div class="pb-20" style="padding-top: calc(var(--nav-offset, 62px) + 3rem)">

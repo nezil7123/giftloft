@@ -9,7 +9,7 @@ const props = defineProps({
 </script>
 
 <template>
-    <Seo :title="guide.title" :description="guide.subtitle" />
+    <Seo :title="guide.title" />
 
     <PublicLayout theme="light">
         <div class="pb-20 pt-28 sm:pt-32">

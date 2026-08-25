@@ -22,10 +22,7 @@ const invitationSample = (key) => ({ ...props.samples[selectedType.value], invit
 
 <template>
     <PublicLayout theme="light">
-        <Seo
-            title="Event Website &amp; Invitation Templates"
-            description="Browse 22 animated event website designs and 21 digital invitation cards for weddings, birthdays, baby showers and more. Preview any template free — no code required."
-        />
+        <Seo title="Event Website &amp; Invitation Templates" />
 
         <!-- Hero -->
         <section class="bg-gradient-to-b from-indigo-50 to-white pb-10 pt-32">

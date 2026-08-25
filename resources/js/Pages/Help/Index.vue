@@ -13,10 +13,7 @@ const stagger = ['gl-d1', 'gl-d2', 'gl-d3', 'gl-d4'];
 </script>
 
 <template>
-    <Seo
-        title="How ComeYay Works"
-        description="Step-by-step guides for building your event website and sending digital invitations with ComeYay — from picking a design to sharing the link with your guests."
-    />
+    <Seo title="How ComeYay Works" />
 
     <PublicLayout theme="light">
         <div class="mx-auto max-w-5xl px-6 pb-20 pt-28 sm:px-8 sm:pt-32">

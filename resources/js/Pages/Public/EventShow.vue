@@ -18,7 +18,7 @@ const navTheme = computed(() => (LIGHT_TEMPLATES.includes(props.event.template) 
 
 <template>
     <PublicLayout :theme="navTheme">
-        <Seo :title="event.title" noindex />
+        <Seo :title="event.title" />
         <component :is="template" :event="event" />
     </PublicLayout>
 </template>

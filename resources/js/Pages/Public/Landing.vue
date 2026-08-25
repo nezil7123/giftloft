@@ -77,10 +77,7 @@ onUnmounted(() => {
 
 <template>
     <PublicLayout hero-brand>
-        <Seo
-            title="ComeYay — Free Event Websites &amp; Digital Invitations"
-            description="Create a free event website and digital invitations for your wedding, birthday, baby shower or party. 22 premium designs, schedule, travel details and photo gallery — live in minutes."
-        />
+        <Seo title="ComeYay — Free Event Websites &amp; Digital Invitations" />
 
         <!-- ╔══════════════════════════════════════════╗ -->
         <!-- ║  HERO — cinematic mesh + grain           ║ -->

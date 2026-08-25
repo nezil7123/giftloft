@@ -20,7 +20,7 @@ const itemsLeft = computed(() => props.wishlist.items.filter((i) => !isClaimed(i
 
 <template>
     <PublicLayout>
-        <Seo :title="`${wishlist.name} — Wishlist`" noindex />
+        <Seo :title="`${wishlist.name} — Wishlist`" />
 
         <!-- Header -->
         <section class="bg-gradient-to-br from-indigo-700 via-violet-700 to-purple-800 pb-16 pt-32">

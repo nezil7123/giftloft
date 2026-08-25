@@ -14,10 +14,7 @@ const template = computed(() => resolveWebsiteTemplate(props.templateKey));
 </script>
 
 <template>
-    <Seo
-        :title="`${templateKey.charAt(0).toUpperCase() + templateKey.slice(1)} — Event Website Template`"
-        :description="`Preview the ${templateKey} event website design on ComeYay — a free, fully animated template for weddings, birthdays and every celebration.`"
-    />
+    <Seo :title="`${templateKey.charAt(0).toUpperCase() + templateKey.slice(1)} — Event Website Template`" />
 
     <!-- Embed mode: bare design only (used inside gallery iframes) -->
     <component :is="template" v-if="embed" :event="event" />

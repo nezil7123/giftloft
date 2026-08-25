@@ -64,7 +64,7 @@ const download = async () => {
 </script>
 
 <template>
-    <Seo :title="`You're invited — ${event.title}`" noindex />
+    <Seo :title="`You're invited — ${event.title}`" />
 
     <div class="flex min-h-screen flex-col items-center justify-center gap-8 bg-neutral-100 px-6 py-16">
         <component :is="template" ref="cardComponent" :event="event" />
