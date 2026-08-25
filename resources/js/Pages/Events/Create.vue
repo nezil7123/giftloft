@@ -23,7 +23,7 @@ const form = useForm({
     travel: '',
     stay: '',
     is_public: true,
-    status: 'draft',
+    status: 'published',
 });
 
 const submit = () => form.post(route('events.store'));

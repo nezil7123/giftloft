@@ -39,6 +39,9 @@ class Event extends Model
     protected $attributes = [
         'template' => 'classic',
         'invitation_template' => 'elegant',
+        // New events go live immediately — a freshly created event whose share
+        // link 404s for guests is the more surprising default.
+        'status' => 'published',
     ];
 
     public function user()

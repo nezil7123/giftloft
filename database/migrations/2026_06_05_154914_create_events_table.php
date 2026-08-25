@@ -24,7 +24,7 @@ return new class extends Migration
             $table->dateTime('starts_at')->nullable();
             $table->dateTime('ends_at')->nullable();
             $table->boolean('is_public')->default(true);
-            $table->string('status')->default('draft');
+            $table->string('status')->default('published');
             $table->string('share_code')->nullable()->unique();
             $table->timestamps();
         });

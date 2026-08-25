@@ -55,6 +55,18 @@ php artisan route:cache
 php artisan view:cache
 ```
 
+## Already imported an older copy of this dump?
+
+The `events.status` column default changed from `draft` to `published`, so new
+events go live as soon as they're created. If you imported before that change,
+run this once instead of re-importing:
+
+```sql
+ALTER TABLE events MODIFY status VARCHAR(255) NOT NULL DEFAULT 'published';
+```
+
+Existing events keep whatever status they already have.
+
 ## Admin account
 
 Sign in at `/login`, then **change the password immediately** under

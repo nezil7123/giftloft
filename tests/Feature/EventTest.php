@@ -54,6 +54,58 @@ class EventTest extends TestCase
         $response->assertRedirect("/events/{$event->id}");
     }
 
+    public function test_a_new_event_defaults_to_published_so_its_share_link_works_immediately(): void
+    {
+        $user = User::factory()->create();
+
+        // The create form posts status: 'published' by default.
+        $this->actingAs($user)->post('/events', [
+            'title' => 'Sarah & James',
+            'type' => 'wedding',
+            'is_public' => true,
+            'status' => 'published',
+        ]);
+
+        $event = Event::first();
+        $this->assertSame('published', $event->status);
+        $this->assertNotNull($event->share_code);
+
+        // A guest with the link can see it right away — no extra publish step.
+        $this->get("/e/{$event->share_code}")->assertOk();
+    }
+
+    public function test_an_event_created_without_a_status_is_published(): void
+    {
+        $user = User::factory()->create();
+
+        $event = Event::create([
+            'user_id' => $user->id,
+            'title' => 'Defaults',
+            'type' => 'birthday',
+        ]);
+
+        $this->assertSame('published', $event->status);
+    }
+
+    public function test_an_event_can_still_be_kept_as_a_draft(): void
+    {
+        $user = User::factory()->create();
+
+        $this->actingAs($user)->post('/events', [
+            'title' => 'Not ready yet',
+            'type' => 'wedding',
+            'is_public' => true,
+            'status' => 'draft',
+        ]);
+
+        $event = Event::first();
+        $this->assertSame('draft', $event->status);
+
+        // Drafts stay hidden from guests.
+        auth()->logout();
+        $this->get("/e/{$event->share_code}")->assertNotFound();
+    }
+
     public function test_user_can_create_an_event_with_an_uploaded_cover_photo(): void
     {
         Storage::fake('public');
