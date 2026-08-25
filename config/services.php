@@ -38,7 +38,10 @@ return [
     'google' => [
         'client_id' => env('GOOGLE_CLIENT_ID'),
         'client_secret' => env('GOOGLE_CLIENT_SECRET'),
-        'redirect' => env('GOOGLE_REDIRECT_URI'),
+        // Falls back to APP_URL so the callback follows the deployed domain
+        // automatically. Whatever this resolves to must be listed verbatim as an
+        // "Authorised redirect URI" on the Google Cloud OAuth client.
+        'redirect' => env('GOOGLE_REDIRECT_URI', rtrim(env('APP_URL', 'http://localhost'), '/').'/auth/google/callback'),
     ],
 
     'razorpay' => [
