@@ -1,1 +1,0 @@
-import{P as e,T as t,g as n,t as r}from"./app-BLKXdY4H.js";var i={__name:`Seo`,props:{title:{type:String,required:!0}},setup(i){return(a,o)=>(t(),n(e(r),{title:i.title},null,8,[`title`]))}};export{i as t};

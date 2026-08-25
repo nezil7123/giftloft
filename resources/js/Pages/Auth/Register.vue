@@ -37,8 +37,11 @@ const inputClass =
             {{ flashError }}
         </div>
 
-        <!-- Google first — the fast path -->
-        <Link
+        <!-- Google first — the fast path.
+             Plain <a>, not Inertia's <Link>: OAuth needs a real browser
+             navigation. An Inertia visit would XHR this and the redirect to
+             accounts.google.com would die on CORS. -->
+        <a
             :href="route('auth.google')"
             class="gl-enter gl-d1 mt-8 inline-flex w-full items-center justify-center gap-3 rounded-xl bg-white px-4 py-3 text-sm font-semibold text-neutral-700 ring-1 ring-neutral-200 transition hover:bg-neutral-50 hover:ring-neutral-300"
         >
@@ -49,7 +52,7 @@ const inputClass =
                 <path fill="#EA4335" d="M12 4.77c1.76 0 3.34.61 4.59 1.8l3.43-3.43C17.95 1.19 15.24 0 12 0 7.31 0 3.26 2.69 1.29 6.62l3.98 3.1C6.22 6.88 8.87 4.77 12 4.77z"/>
             </svg>
             Sign up with Google
-        </Link>
+        </a>
 
         <div class="gl-enter gl-d1 my-7 flex items-center gap-4">
             <span class="h-px flex-1 bg-neutral-200"></span>
