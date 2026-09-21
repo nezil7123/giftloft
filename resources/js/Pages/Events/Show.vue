@@ -51,6 +51,7 @@ const destroy = () => {
                 </div>
                 <div class="flex items-center gap-2">
                     <Link :href="route('events.design.edit', event.id)" class="rounded-full border border-neutral-300 px-5 py-2 text-sm font-semibold text-neutral-700 transition hover:bg-neutral-100">Customize design</Link>
+                    <Link :href="route('events.rsvps', event.id)" class="rounded-full border border-neutral-300 px-5 py-2 text-sm font-semibold text-neutral-700 transition hover:bg-neutral-100">RSVPs</Link>
                     <Link :href="route('events.edit', event.id)" class="rounded-full bg-neutral-900 px-5 py-2 text-sm font-semibold text-white transition hover:bg-neutral-700">Edit</Link>
                 </div>
             </div>

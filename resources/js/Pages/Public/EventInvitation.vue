@@ -1,12 +1,14 @@
 <script setup>
 import { Link } from '@inertiajs/vue3';
 import Seo from '@/Components/Seo.vue';
+import RsvpForm from '@/Components/RsvpForm.vue';
 import { resolveInvitationTemplate } from '@/Templates/registry.js';
 import { computed, ref } from 'vue';
 import { toCanvas } from 'html-to-image';
 
 const props = defineProps({
     event: { type: Object, required: true },
+    rsvpSettings: { type: Object, default: () => ({ enabled: true, ask_meal: true, ask_accommodation: true, deadline: null }) },
 });
 
 const template = computed(() => resolveInvitationTemplate(props.event.invitation_template));
@@ -87,6 +89,12 @@ const download = async () => {
             </div>
             <p v-if="downloadError" class="text-xs font-medium text-rose-500">Couldn't create the image — please try again.</p>
         </div>
+        <!-- Sits outside cardComponent on purpose: the JPG capture only grabs
+             the invitation card, so the form never lands in the download. -->
+        <div class="w-full">
+            <RsvpForm :event="event" :settings="rsvpSettings" theme="light" />
+        </div>
+
         <p class="text-xs text-neutral-400">Powered by ComeYay</p>
     </div>
 </template>

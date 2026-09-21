@@ -15,6 +15,7 @@ use App\Http\Controllers\GiftController;
 use App\Http\Controllers\HelpController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RsvpController;
 use App\Http\Controllers\SeoController;
 use App\Http\Controllers\RazorpayWebhookController;
 use App\Http\Controllers\UserSearchController;
@@ -66,6 +67,10 @@ Route::get('/help/{guide}', [HelpController::class, 'show'])->name('help.show');
 
 Route::get('/e/{shareCode}', [PublicEventController::class, 'show'])->name('public.event');
 Route::get('/e/{shareCode}/invitation', [PublicEventController::class, 'invitation'])->name('public.event.invitation');
+// Guests reply without an account; throttled because it is an open endpoint.
+Route::post('/e/{shareCode}/rsvp', [RsvpController::class, 'store'])
+    ->middleware('throttle:10,1')
+    ->name('public.event.rsvp');
 Route::get('/r/{slug}', [PublicWishlistController::class, 'show'])->name('public.wishlist');
 Route::get('/u/{identifier}', [PublicProfileController::class, 'show'])->name('public.profile');
 
@@ -78,6 +83,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->name('people.find');
 
     Route::resource('events', EventController::class);
+    Route::get('events/{event}/rsvps', [RsvpController::class, 'index'])->name('events.rsvps');
     Route::get('events/{event}/design', [EventDesignController::class, 'edit'])->name('events.design.edit');
     Route::put('events/{event}/design', [EventDesignController::class, 'update'])->name('events.design.update');
     Route::post('events/{event}/photos', [EventPhotoController::class, 'store'])->name('events.photos.store');

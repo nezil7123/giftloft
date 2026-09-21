@@ -49,6 +49,33 @@ class Event extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function rsvps()
+    {
+        return $this->hasMany(Rsvp::class);
+    }
+
+    /**
+     * Headline numbers the host needs: who is coming, how many people that adds
+     * up to, the veg/non-veg split, and how many need a room.
+     *
+     * @return array<string, int>
+     */
+    public function rsvpSummary(): array
+    {
+        $rsvps = $this->relationLoaded('rsvps') ? $this->rsvps : $this->rsvps()->get();
+        $attending = $rsvps->where('status', Rsvp::STATUS_ATTENDING);
+
+        return [
+            'responses' => $rsvps->count(),
+            'attending' => $attending->count(),
+            'not_attending' => $rsvps->where('status', Rsvp::STATUS_NOT_ATTENDING)->count(),
+            'head_count' => (int) $attending->sum('party_size'),
+            'veg' => $attending->where('meal_preference', Rsvp::MEAL_VEG)->count(),
+            'non_veg' => $attending->where('meal_preference', Rsvp::MEAL_NON_VEG)->count(),
+            'accommodation' => $attending->where('needs_accommodation', true)->count(),
+        ];
+    }
+
     public function wishlists()
     {
         return $this->hasMany(Wishlist::class);

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Public;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\RsvpController;
 use App\Models\Event;
 use Inertia\Inertia;
 
@@ -19,6 +20,7 @@ class EventController extends Controller
         return Inertia::render('Public/EventShow', [
             'event' => $event,
             'isAuthenticated' => auth()->check(),
+            'rsvpSettings' => RsvpController::settings($event),
         ]);
     }
 
@@ -31,6 +33,7 @@ class EventController extends Controller
 
         return Inertia::render('Public/EventInvitation', [
             'event' => $event,
+            'rsvpSettings' => RsvpController::settings($event),
         ]);
     }
 

@@ -27,6 +27,10 @@ const form = useForm({
         tagline: d.tagline ?? '',
         dress_code: d.dress_code ?? '',
         rsvp_note: d.rsvp_note ?? '',
+        rsvp_enabled: d.rsvp_enabled ?? true,
+        rsvp_ask_meal: d.rsvp_ask_meal ?? true,
+        rsvp_ask_accommodation: d.rsvp_ask_accommodation ?? true,
+        rsvp_deadline: d.rsvp_deadline ?? '',
         venue_note: d.venue_note ?? '',
         venue_map_url: d.venue_map_url ?? '',
         travel: d.travel ?? '',
@@ -229,12 +233,45 @@ const inviteUrl = props.event.share_code ? `/e/${props.event.share_code}/invitat
                             <label class="text-sm font-semibold text-neutral-800">Dress code</label>
                             <input v-model="form.template_data.dress_code" type="text" :class="inputClass" placeholder="e.g. Cocktail / Black tie" />
                         </div>
-                        <!-- The note only renders inside the templates' wishlist block, which is
-                             hidden until gifting ships — so the field is hidden with it. -->
+                        <!-- Renders inside the templates' wishlist block, so it follows
+                             the same SHOW_REGISTRY switch. -->
                         <div v-if="SHOW_REGISTRY">
-                            <label class="text-sm font-semibold text-neutral-800">Wishlist / RSVP note</label>
+                            <label class="text-sm font-semibold text-neutral-800">Wishlist note</label>
                             <input v-model="form.template_data.rsvp_note" type="text" :class="inputClass" placeholder="A short note for the gifts section" />
                         </div>
+                    </div>
+
+                    <!-- Guest RSVPs -->
+                    <div class="mt-8 rounded-2xl border border-neutral-200 bg-neutral-50/70 p-5">
+                        <div class="flex flex-wrap items-center justify-between gap-3">
+                            <div>
+                                <p class="text-sm font-semibold text-neutral-900">Guest RSVPs</p>
+                                <p class="mt-0.5 text-xs text-neutral-500">Collect replies on your event page and invitation.</p>
+                            </div>
+                            <label class="flex cursor-pointer items-center gap-2.5 rounded-xl border border-neutral-300 bg-white px-4 py-2.5">
+                                <input v-model="form.template_data.rsvp_enabled" type="checkbox" class="rounded border-neutral-300 text-indigo-600 focus:ring-indigo-500" />
+                                <span class="text-sm font-medium text-neutral-700">Collect RSVPs</span>
+                            </label>
+                        </div>
+
+                        <div v-if="form.template_data.rsvp_enabled" class="mt-5 grid gap-4 sm:grid-cols-3">
+                            <label class="flex cursor-pointer items-center gap-2.5 rounded-xl border border-neutral-300 bg-white px-4 py-2.5">
+                                <input v-model="form.template_data.rsvp_ask_meal" type="checkbox" class="rounded border-neutral-300 text-indigo-600 focus:ring-indigo-500" />
+                                <span class="text-sm text-neutral-700">Ask veg / non-veg</span>
+                            </label>
+                            <label class="flex cursor-pointer items-center gap-2.5 rounded-xl border border-neutral-300 bg-white px-4 py-2.5">
+                                <input v-model="form.template_data.rsvp_ask_accommodation" type="checkbox" class="rounded border-neutral-300 text-indigo-600 focus:ring-indigo-500" />
+                                <span class="text-sm text-neutral-700">Ask about accommodation</span>
+                            </label>
+                            <div>
+                                <input v-model="form.template_data.rsvp_deadline" type="date" :class="inputClass" />
+                                <p class="mt-1 text-[11px] text-neutral-500">Reply-by date (optional)</p>
+                            </div>
+                        </div>
+
+                        <Link :href="route('events.rsvps', event.id)" class="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-indigo-600 hover:text-indigo-500">
+                            View responses →
+                        </Link>
                     </div>
 
                     <!-- Schedule repeater -->

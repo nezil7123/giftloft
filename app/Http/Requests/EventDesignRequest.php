@@ -27,6 +27,12 @@ class EventDesignRequest extends FormRequest
             'template_data.tagline' => ['nullable', 'string', 'max:255'],
             'template_data.dress_code' => ['nullable', 'string', 'max:255'],
             'template_data.rsvp_note' => ['nullable', 'string', 'max:1000'],
+
+            // RSVP collection settings.
+            'template_data.rsvp_enabled' => ['nullable', 'boolean'],
+            'template_data.rsvp_ask_meal' => ['nullable', 'boolean'],
+            'template_data.rsvp_ask_accommodation' => ['nullable', 'boolean'],
+            'template_data.rsvp_deadline' => ['nullable', 'date'],
             'template_data.venue_note' => ['nullable', 'string', 'max:600'],
             'template_data.venue_map_url' => ['nullable', 'url', 'max:2048'],
             'template_data.travel' => ['nullable', 'string', 'max:600'],
