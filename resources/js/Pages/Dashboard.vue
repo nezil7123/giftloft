@@ -34,9 +34,12 @@ const designHref = computed(() =>
     props.recentEvents.length ? route('events.design.edit', props.recentEvents[0].id) : route('events.create')
 );
 
-// Gifting/wishlist/shop are hidden for the phase 1 launch (coming in phase 2)
-// — their nav entry points, quick actions, and guides are pulled from here
-// too so nothing on the dashboard dead-ends into a feature nobody can reach.
+// Send people straight to their wishlists if they already have one, otherwise
+// into the create flow.
+const wishlistHref = computed(() =>
+    props.stats?.wishlists ? route('wishlists.index') : route('wishlists.create')
+);
+
 const quickActions = computed(() => [
     {
         label: 'Create an event',
@@ -52,11 +55,42 @@ const quickActions = computed(() => [
         gradient: 'from-fuchsia-500 to-pink-600',
         icon: 'M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z',
     },
+    {
+        label: 'Build a wishlist',
+        description: 'Curate the gifts you would love',
+        href: wishlistHref.value,
+        gradient: 'from-indigo-500 to-blue-600',
+        icon: 'M21 11.25v8.25a1.5 1.5 0 01-1.5 1.5H5.25a1.5 1.5 0 01-1.5-1.5v-8.25M12 4.875A2.625 2.625 0 109.375 7.5H12m0-2.625V7.5m0-2.625A2.625 2.625 0 1114.625 7.5H12M3.75 7.5h16.5a1.5 1.5 0 011.5 1.5v.75H2.25V9a1.5 1.5 0 011.5-1.5zM12 7.5v12',
+    },
+    {
+        label: 'Order a gift',
+        description: 'Shop the curated gift catalogue',
+        href: route('public.shop'),
+        gradient: 'from-amber-500 to-orange-600',
+        icon: 'M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z',
+    },
+    {
+        label: 'Track orders & gifts',
+        description: 'See everything sent and received',
+        href: route('orders.index'),
+        gradient: 'from-emerald-500 to-teal-600',
+        icon: 'M20 7L12 3 4 7m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4',
+    },
+]);
+
+// Headline numbers, in the order people care about them.
+const statTiles = computed(() => [
+    { label: 'Events', value: props.stats?.events ?? 0, href: route('events.index'), accent: 'text-indigo-600' },
+    { label: 'Wishlists', value: props.stats?.wishlists ?? 0, href: route('wishlists.index'), accent: 'text-blue-600' },
+    { label: 'Gifts', value: props.stats?.gifts ?? 0, href: route('gifts.index'), accent: 'text-rose-600' },
+    { label: 'Orders', value: props.stats?.orders ?? 0, href: route('orders.index'), accent: 'text-emerald-600' },
 ]);
 
 const guides = [
     { slug: 'website', emoji: '🌐', label: 'How to create a website', gradient: 'from-fuchsia-500 to-pink-600' },
     { slug: 'invitation', emoji: '💌', label: 'How to create an invitation', gradient: 'from-violet-500 to-purple-700' },
+    { slug: 'wishlist', emoji: '🎁', label: 'How wishlists work', gradient: 'from-rose-500 to-orange-500' },
+    { slug: 'gifting', emoji: '🛍️', label: 'How to send a gift', gradient: 'from-emerald-500 to-teal-600' },
 ];
 </script>
 
@@ -77,12 +111,21 @@ const guides = [
                 <div class="rounded-[2rem] bg-gradient-to-br from-indigo-600 via-violet-600 to-purple-700 p-8 text-white shadow-sm sm:p-10">
                     <p class="text-sm font-semibold uppercase tracking-[0.28em] text-white/70">Welcome back</p>
                     <h1 class="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">{{ user.name.split(' ')[0] }} 👋</h1>
-                    <p class="mt-3 max-w-xl text-sm leading-6 text-white/80">Plan an event and design your website or invitation — pick up right where you left off.</p>
+                    <p class="mt-3 max-w-xl text-sm leading-6 text-white/80">Plan an event, build a wishlist, and send gifts — pick up right where you left off.</p>
+                </div>
+
+                <!-- Stats -->
+                <div class="mt-6 grid grid-cols-2 gap-4 lg:grid-cols-4">
+                    <Link v-for="tile in statTiles" :key="tile.label" :href="tile.href"
+                        class="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-neutral-200/70 transition hover:-translate-y-1 hover:shadow-lg">
+                        <p class="text-xs font-semibold uppercase tracking-wide text-neutral-500">{{ tile.label }}</p>
+                        <p class="mt-1 text-3xl font-bold tabular-nums" :class="tile.accent">{{ tile.value }}</p>
+                    </Link>
                 </div>
 
                 <!-- Quick actions -->
                 <h3 class="mb-4 mt-10 text-sm font-bold uppercase tracking-wide text-neutral-500">Quick actions</h3>
-                <div class="grid gap-4 grid-cols-1 sm:grid-cols-2">
+                <div class="grid gap-4 grid-cols-2 sm:grid-cols-3 lg:grid-cols-5">
                     <Link v-for="action in quickActions" :key="action.label" :href="action.href"
                         class="group flex flex-col rounded-2xl bg-white p-5 shadow-sm ring-1 ring-neutral-200/70 transition hover:-translate-y-1 hover:shadow-lg">
                         <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br text-white" :class="action.gradient">
@@ -102,7 +145,7 @@ const guides = [
                     <h3 class="text-sm font-bold uppercase tracking-wide text-neutral-500">New here? See how it works</h3>
                     <Link :href="route('help.index')" class="text-xs font-semibold text-indigo-600 hover:text-indigo-500">All guides →</Link>
                 </div>
-                <div class="grid gap-4 grid-cols-2">
+                <div class="grid gap-4 grid-cols-2 lg:grid-cols-4">
                     <Link v-for="guide in guides" :key="guide.slug" :href="route('help.show', guide.slug)"
                         class="group overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-neutral-200/70 transition hover:-translate-y-1 hover:shadow-lg">
                         <div class="flex h-16 items-center justify-center bg-gradient-to-br text-3xl" :class="guide.gradient">{{ guide.emoji }}</div>

@@ -6,10 +6,10 @@ const TYPE_LABELS = {
     graduation: 'Graduation', housewarming: 'Housewarming', other: 'Celebration',
 };
 
-// Gifting ships in phase 2, so every template's wishlist/registry block stays
-// hidden for the phase-1 launch. Flip this to true to bring them all back —
-// the event Design editor reads it too, to hide the now-inert wishlist note.
-export const SHOW_REGISTRY = false;
+// Master switch for every template's wishlist/registry block, and for the
+// wishlist note field in the event Design editor. Set to false to hide the
+// gifting side of the product again without touching any markup.
+export const SHOW_REGISTRY = true;
 
 /**
  * Shared display logic for event templates.

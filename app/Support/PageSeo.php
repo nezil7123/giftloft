@@ -38,6 +38,13 @@ class PageSeo
                 'description' => self::DEFAULT_DESCRIPTION,
             ],
 
+            'Public/Shop' => [
+                'title' => 'Gift Shop — Curated Gifts for Every Celebration',
+                'description' => 'Browse a curated catalogue of wedding, birthday and celebration gifts. Add them to a wishlist, or send one straight to the recipient with premium wrapping.',
+            ],
+
+            'Public/ProductDetail' => self::product($props),
+
             'Public/Templates/Index' => [
                 'title' => 'Event Website & Invitation Templates',
                 'description' => 'Browse 22 animated event website designs and 21 digital invitation cards for weddings, birthdays, baby showers and more. Preview any template free — no code required.',
@@ -115,6 +122,30 @@ class PageSeo
         }
 
         return rtrim(config('app.url'), '/').'/'.ltrim($path, '/');
+    }
+
+    /**
+     * A single shop product — real title, description and photo so the page can
+     * be indexed and shared on its own merits.
+     *
+     * @param  array<string, mixed>  $props
+     * @return array<string, mixed>
+     */
+    private static function product(array $props): array
+    {
+        $name = (string) data_get($props, 'product.name', 'Gift');
+        $description = trim((string) data_get($props, 'product.description', ''));
+        $image = data_get($props, 'product.image_url');
+
+        return [
+            'title' => $name,
+            'description' => $description !== ''
+                ? Str::limit($description, 180)
+                : "Send {$name} as a gift on ComeYay — add it to a wishlist or ship it straight to the recipient with premium wrapping.",
+            'image' => $image ?: self::DEFAULT_IMAGE,
+            'imageAlt' => $name,
+            'type' => 'product',
+        ];
     }
 
     /**

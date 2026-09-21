@@ -13,6 +13,7 @@ const props = defineProps({
 
 const page = usePage();
 const user = computed(() => page.props.auth?.user ?? null);
+const cartCount = computed(() => page.props.cartCount ?? 0);
 
 const mobileOpen = ref(false);
 const hidden     = ref(false);
@@ -49,6 +50,7 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll));
 // sign-ups.
 const navLinks = [
     { label: 'How it works', href: '/help' },
+    { label: 'Shop gifts', href: '/shop' },
     { label: 'Invitations & websites', href: '/templates' },
 ];
 </script>
@@ -98,6 +100,10 @@ const navLinks = [
 
                     <!-- Desktop right actions -->
                     <div class="hidden items-center gap-3 sm:flex">
+                        <Link href="/cart" class="nav-item nav-chip relative rounded-xl p-2 transition-all duration-200" aria-label="Cart">
+                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m-10 0a2 2 0 100 4 2 2 0 000-4zm10 0a2 2 0 100 4 2 2 0 000-4z" /></svg>
+                            <span v-if="cartCount > 0" class="absolute -right-1 -top-1 flex h-4.5 min-w-[1.125rem] items-center justify-center rounded-full bg-indigo-500 px-1 text-[10px] font-bold text-white">{{ cartCount }}</span>
+                        </Link>
                         <template v-if="user">
                             <Link
                                 :href="route('dashboard')"
@@ -124,6 +130,10 @@ const navLinks = [
 
                     <!-- Mobile actions -->
                     <div class="flex items-center gap-1 sm:hidden">
+                        <Link href="/cart" class="nav-item nav-chip relative rounded-xl p-2 transition" aria-label="Cart">
+                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m-10 0a2 2 0 100 4 2 2 0 000-4zm10 0a2 2 0 100 4 2 2 0 000-4z" /></svg>
+                            <span v-if="cartCount > 0" class="absolute -right-0.5 -top-0.5 flex h-4 min-w-[1rem] items-center justify-center rounded-full bg-indigo-500 px-1 text-[9px] font-bold text-white">{{ cartCount }}</span>
+                        </Link>
                         <!-- Mobile hamburger -->
                         <button
                             @click="mobileOpen = !mobileOpen"
@@ -192,7 +202,7 @@ const navLinks = [
                         <Link href="/" class="flex w-fit items-center">
                             <img src="/brand/comeyay-logo-white.png?v=2" alt="ComeYay" class="h-6 w-auto" />
                         </Link>
-                        <p class="mt-3 max-w-xs text-xs leading-5 text-white/40">The most beautiful way to celebrate — event websites and invitations in one place.</p>
+                        <p class="mt-3 max-w-xs text-xs leading-5 text-white/40">The most beautiful way to celebrate and gift — events, wishlists, and shopping in one place.</p>
                     </div>
                     <div class="flex gap-12">
                         <div>
@@ -201,6 +211,14 @@ const navLinks = [
                                 <Link href="/register" class="text-sm text-white/60 transition hover:text-white">Create Event</Link>
                                 <Link href="/register" class="text-sm text-white/60 transition hover:text-white">Wedding Website</Link>
                                 <Link href="/register" class="text-sm text-white/60 transition hover:text-white">Invitations</Link>
+                            </div>
+                        </div>
+                        <div>
+                            <p class="text-[10px] font-semibold uppercase tracking-widest text-white/40">Shop</p>
+                            <div class="mt-3 flex flex-col gap-2">
+                                <Link href="/shop" class="text-sm text-white/60 transition hover:text-white">All Gifts</Link>
+                                <Link href="/shop?category=wedding" class="text-sm text-white/60 transition hover:text-white">Wedding</Link>
+                                <Link href="/shop?category=birthday" class="text-sm text-white/60 transition hover:text-white">Birthday</Link>
                             </div>
                         </div>
                         <div>

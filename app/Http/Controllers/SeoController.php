@@ -41,6 +41,7 @@ class SeoController extends Controller
         $urls = [
             ['/', 'weekly', '1.0'],
             ['/templates', 'weekly', '0.9'],
+            ['/shop', 'weekly', '0.9'],
             ['/help', 'monthly', '0.7'],
             ['/privacy', 'yearly', '0.3'],
             ['/terms', 'yearly', '0.3'],

@@ -10,13 +10,12 @@ namespace App\Support;
 class HelpGuides
 {
     /**
-     * Guides for features that ship in phase 2. They stay reachable directly at
-     * /help/{slug}, but are kept out of the hub listing and the sitemap while
-     * gifting is hidden. Empty this array to bring them back.
+     * Guides to keep out of the hub listing and the sitemap — for features that
+     * are built but not yet launched. Empty means every guide is listed.
      *
      * @var list<string>
      */
-    public const PHASE_TWO = ['wishlist', 'gifting'];
+    public const PHASE_TWO = [];
 
     /**
      * Guides shown publicly right now — the hub listing and sitemap use this.
