@@ -1,2 +1,13 @@
+# Runtime uploads (event photos, admin-added product shots) stay out of git —
+# they belong to whichever machine they were uploaded on.
 *
+
 !.gitignore
+
+# …except the seeded catalogue artwork, which the production SQL dump points
+# at by path. Tracking it means a deploy is `git pull` + `storage:link`, with
+# no separate archive to remember to copy across.
+!products/
+!products/**
+!gift-addons/
+!gift-addons/**

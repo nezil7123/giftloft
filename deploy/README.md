@@ -1,11 +1,14 @@
 # ComeYay — production deployment files
 
-Two artifacts, both generated fresh (no dev/test data):
+One artifact, generated fresh (no dev/test data):
 
 | File | What it is |
 |---|---|
 | `comeyay-production.sql` | Full schema + admin user + 65 products + 10 gift addons |
-| `comeyay-images.tar.gz` | The 38 image files the imported rows point at — 28 product photos and 10 gift-addon graphics |
+
+The images those rows point at are **in the repo**, under
+`storage/app/public/products/` and `storage/app/public/gift-addons/`, so
+`git pull` brings them down with the code. There is no archive to copy.
 
 **Event website and invitation templates are code, not data** — they ship with
 the repo and need nothing imported.
@@ -21,22 +24,23 @@ Verified to import cleanly on MySQL 5.7+, MySQL 8.x/9.x and MariaDB 10.x.
 The `migrations` table is pre-filled (30/30), so `php artisan migrate` reports
 nothing pending and future migrations still apply normally.
 
-## 2. Restore the images
+## 2. Link the images
+
+The 38 catalogue images (28 product photos, 10 gift-addon graphics) arrive with
+`git pull`. They only become web-reachable once the symlink exists:
 
 ```bash
-tar -xzf comeyay-images.tar.gz -C storage/app/public
 php artisan storage:link
 ```
 
-This unpacks two directories:
+That creates `public/storage -> storage/app/public`, which is what makes
+`https://comeyay.com/storage/products/...` resolve. Skip it and every product
+tile and gift-wrapping option renders as a blank placeholder.
 
-- `products/` — 28 photos. Skip it and 28 of the 65 products show blank tiles.
-  Their URLs are already rewritten to `https://comeyay.com/storage/products/...`.
-- `gift-addons/` — 10 SVGs for the packaging, sticker and card pickers at
-  checkout. Skip it and every gift-wrapping option renders without artwork.
-
-`php artisan storage:link` is what makes `/storage/...` resolve at all, so a
-missing symlink breaks both sets at once.
+Runtime uploads — event photos, and any product shots you add through the admin
+panel — are *not* tracked. They live on the server only, so take them into
+account in your backups, and never run `git clean -fdx` on the deploy, which
+would delete them.
 
 ## 3. Configure `.env`
 
@@ -103,10 +107,11 @@ VALUES ('2026_09_21_120000_create_rsvps_table',
 The `migrations` row matters: without it `php artisan migrate` will try to
 create the table a second time and fail.
 
-**2. Gift-addon images were missing from the first images archive.** If your
-checkout shows gift-wrapping options with no artwork, that is why — re-extract
-from the new `comeyay-images.tar.gz` (see step 2 above). No database change is
-involved; the rows always pointed at `/storage/gift-addons/...`.
+**2. Gift-addon images were missing from the original archive.** If your
+checkout shows gift-wrapping options with no artwork, that is why. They are
+tracked in the repo now, so `git pull` plus `php artisan storage:link` fixes it.
+No database change is involved; the rows always pointed at
+`/storage/gift-addons/...`.
 
 **3. `events.status` default.** It changed from `draft` to `published`, so new
 events go live as soon as they're created. If you imported before that change:
