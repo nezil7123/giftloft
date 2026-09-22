@@ -1,6 +1,7 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import InputError from '@/Components/InputError.vue';
+import Thumb from '@/Components/Thumb.vue';
 import { openRazorpay } from '@/razorpay.js';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 import { computed, ref, watch } from 'vue';
@@ -227,7 +228,7 @@ const pay = async () => {
                                         class="flex items-center gap-3 rounded-xl border-2 p-2.5 text-left transition"
                                         :class="form.packaging_addon_id === a.id ? 'border-indigo-500 bg-indigo-50/60' : 'border-neutral-200 hover:border-neutral-300'">
                                         <div class="h-14 w-14 shrink-0 overflow-hidden rounded-lg bg-neutral-100">
-                                            <img v-if="a.image" :src="a.image" :alt="a.name" class="h-full w-full object-cover" />
+                                            <Thumb :src="a.image" />
                                         </div>
                                         <div class="min-w-0">
                                             <span class="block truncate text-sm font-semibold text-neutral-900">{{ a.name }}</span>
@@ -238,7 +239,7 @@ const pay = async () => {
                                 <InputError class="mt-1.5" :message="form.errors.packaging_addon_id" />
 
                                 <div v-if="selectedPackaging?.image" class="mt-3 flex items-center gap-3 rounded-xl bg-neutral-50 p-3">
-                                    <img :src="selectedPackaging.image" :alt="selectedPackaging.name" class="h-16 w-16 shrink-0 rounded-lg object-cover" />
+                                    <div class="h-16 w-16 shrink-0 overflow-hidden rounded-lg bg-neutral-100"><Thumb :src="selectedPackaging.image" /></div>
                                     <p class="text-xs text-neutral-500">Preview of <span class="font-semibold text-neutral-700">{{ selectedPackaging.name }}</span> — {{ selectedPackaging.description }}</p>
                                 </div>
                             </div>
@@ -251,8 +252,7 @@ const pay = async () => {
                                         class="rounded-xl border-2 p-2 text-center transition"
                                         :class="form.message_sticker_addon_id === c.id ? 'border-indigo-500 bg-indigo-50/60' : 'border-neutral-200 hover:border-neutral-300'">
                                         <div class="mx-auto h-16 w-16 overflow-hidden rounded-lg bg-neutral-100">
-                                            <img v-if="c.image" :src="c.image" :alt="c.name" class="h-full w-full object-cover" />
-                                            <span v-else class="flex h-full w-full items-center justify-center text-lg text-neutral-300">—</span>
+                                            <Thumb :src="c.image" />
                                         </div>
                                         <span class="mt-1.5 block truncate text-[11px] font-semibold text-neutral-800">{{ c.name }}</span>
                                         <span v-if="Number(c.price) > 0" class="block text-[10px] text-neutral-500">+{{ money(c.price) }}</span>
@@ -265,7 +265,7 @@ const pay = async () => {
 
                                     <!-- Live preview: template image with the buyer's text overlaid -->
                                     <div class="relative mx-auto mt-3 h-36 w-36 overflow-hidden rounded-full ring-1 ring-neutral-200">
-                                        <img :src="selectedSticker.image" :alt="selectedSticker.name" class="h-full w-full object-cover" />
+                                        <Thumb :src="selectedSticker.image" placeholder="" />
                                         <div class="absolute inset-0 flex items-center justify-center p-4">
                                             <p class="line-clamp-3 text-center text-[11px] font-semibold leading-snug text-neutral-800 [text-shadow:0_1px_2px_white,0_-1px_2px_white]">{{ form.message_sticker_note || 'Your message here' }}</p>
                                         </div>
@@ -282,8 +282,7 @@ const pay = async () => {
                                         class="rounded-xl border-2 p-2 text-center transition"
                                         :class="form.custom_card_addon_id === c.id ? 'border-indigo-500 bg-indigo-50/60' : 'border-neutral-200 hover:border-neutral-300'">
                                         <div class="mx-auto h-16 w-16 overflow-hidden rounded-lg bg-neutral-100">
-                                            <img v-if="c.image" :src="c.image" :alt="c.name" class="h-full w-full object-cover" />
-                                            <span v-else class="flex h-full w-full items-center justify-center text-lg text-neutral-300">—</span>
+                                            <Thumb :src="c.image" />
                                         </div>
                                         <span class="mt-1.5 block truncate text-[11px] font-semibold text-neutral-800">{{ c.name }}</span>
                                         <span v-if="Number(c.price) > 0" class="block text-[10px] text-neutral-500">+{{ money(c.price) }}</span>
@@ -296,7 +295,7 @@ const pay = async () => {
 
                                     <!-- Live preview: template image with the buyer's text overlaid -->
                                     <div class="relative mx-auto mt-3 h-44 w-32 overflow-hidden rounded-lg ring-1 ring-neutral-200">
-                                        <img :src="selectedCard.image" :alt="selectedCard.name" class="h-full w-full object-cover" />
+                                        <Thumb :src="selectedCard.image" placeholder="" />
                                         <div class="absolute inset-x-0 bottom-3 flex justify-center px-3">
                                             <p class="line-clamp-4 text-center text-[10px] font-medium leading-snug text-neutral-800 [text-shadow:0_1px_2px_white,0_-1px_2px_white]">{{ form.custom_card_note || 'Your message here' }}</p>
                                         </div>
@@ -314,7 +313,7 @@ const pay = async () => {
                             <div class="mt-5 space-y-4">
                                 <div v-for="row in items" :key="row.product.id" class="flex gap-3">
                                     <div class="h-14 w-14 shrink-0 overflow-hidden rounded-xl bg-neutral-100">
-                                        <img v-if="row.product.image_url" :src="row.product.image_url" :alt="row.product.name" class="h-full w-full object-cover" />
+                                        <Thumb :src="row.product.image_url" />
                                     </div>
                                     <div class="min-w-0 flex-1">
                                         <p class="truncate text-sm font-bold text-neutral-900">{{ row.product.name }}</p>

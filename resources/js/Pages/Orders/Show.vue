@@ -1,5 +1,6 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import Thumb from '@/Components/Thumb.vue';
 import { Head, Link } from '@inertiajs/vue3';
 
 const props = defineProps({
@@ -36,7 +37,7 @@ const fmtDate = (iso) => (iso ? new Date(iso).toLocaleString(undefined, { day: '
                     <div class="mt-6 divide-y divide-neutral-100 border-t border-neutral-100">
                         <div v-for="item in order.items" :key="item.id" class="flex gap-4 py-4">
                             <div class="h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-neutral-100">
-                                <img v-if="item.image_url" :src="item.image_url" :alt="item.name" class="h-full w-full object-cover" />
+                                <Thumb :src="item.image_url" />
                             </div>
                             <div class="min-w-0 flex-1">
                                 <p class="text-sm font-bold text-neutral-900">{{ item.name }}</p>
@@ -51,7 +52,7 @@ const fmtDate = (iso) => (iso ? new Date(iso).toLocaleString(undefined, { day: '
                         <div v-for="addon in order.addons" :key="addon.id" class="flex items-start justify-between gap-4 py-3">
                             <div class="flex min-w-0 items-start gap-3">
                                 <div v-if="addon.image" class="h-12 w-12 shrink-0 overflow-hidden rounded-lg bg-neutral-100">
-                                    <img :src="addon.image" :alt="addon.name" class="h-full w-full object-cover" />
+                                    <Thumb :src="addon.image" />
                                 </div>
                                 <div class="min-w-0">
                                     <p class="text-sm font-semibold text-neutral-800">{{ addon.name }}</p>

@@ -1,5 +1,6 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import Thumb from '@/Components/Thumb.vue';
 import AdminNav from './Partials/AdminNav.vue';
 import InputError from '@/Components/InputError.vue';
 import { Head, router, useForm } from '@inertiajs/vue3';
@@ -128,8 +129,7 @@ const labelClass = 'mb-1.5 block text-sm font-medium text-neutral-700';
                                 <tr v-for="a in (addons[type] ?? [])" :key="a.id" class="transition hover:bg-neutral-50/60">
                                     <td class="px-6 py-3.5">
                                         <div class="h-12 w-12 overflow-hidden rounded-xl bg-neutral-100 ring-1 ring-neutral-200/70">
-                                            <img v-if="a.image" :src="a.image" :alt="a.name" class="h-full w-full object-cover" />
-                                            <span v-else class="flex h-full w-full items-center justify-center text-lg">🎁</span>
+                                            <Thumb :src="a.image" placeholder="🎁" />
                                         </div>
                                     </td>
                                     <td class="px-4 py-3.5">
